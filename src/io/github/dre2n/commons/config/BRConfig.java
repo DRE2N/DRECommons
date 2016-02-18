@@ -11,11 +11,15 @@ public abstract class BRConfig {
 	private File file;
 	private FileConfiguration config;
 	
+	public BRConfig() {
+	}
+	
 	public BRConfig(File file) {
 		this.file = file;
 		
 		if ( !file.exists()) {
 			try {
+				file.getParentFile().mkdirs();
 				file.createNewFile();
 				
 			} catch (IOException exception) {

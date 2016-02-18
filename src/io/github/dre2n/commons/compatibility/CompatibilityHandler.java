@@ -1,19 +1,64 @@
 package io.github.dre2n.commons.compatibility;
 
-import io.github.dre2n.commons.config.CoreConfig;
-
-import java.util.ArrayList;
-import java.util.List;
+import io.github.dre2n.commons.config.BRSettings;
 
 public class CompatibilityHandler {
 	
-	CoreConfig config;
+	BRSettings settings;
 	
+	private Version version;
 	private Internals internals;
 	private boolean spigot;
 	
-	public CompatibilityHandler(CoreConfig config) {
-		this.config = config;
+	public CompatibilityHandler() {
+		version = Version.getByServer();
+		
+		if (Package.getPackage("net.glowstone") != null) {
+			internals = Internals.GLOWSTONE;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_9_R1") != null) {
+			internals = Internals.v1_9_R1;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_8_R3") != null) {
+			internals = Internals.v1_8_R3;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_8_R2") != null) {
+			internals = Internals.v1_8_R2;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_8_R1") != null) {
+			internals = Internals.v1_8_R1;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_7_R4") != null) {
+			internals = Internals.v1_7_R4;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_7_R3") != null) {
+			internals = Internals.v1_7_R3;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_7_R2") != null) {
+			internals = Internals.v1_7_R2;
+			
+		} else if (Package.getPackage("net.minecraft.server.v1_7_R1") != null) {
+			internals = Internals.v1_7_R1;
+			
+		} else {
+			for (Package internal : Package.getPackages()) {
+				if (internal.getName().matches("net.minecraft.server.v1_[4-6]_.*")) {
+					internals = Internals.OUTDATED;
+				}
+			}
+		}
+		
+		if (internals == null) {
+			internals = Internals.UNKNOWN;
+		}
+		
+		spigot = Package.getPackage("org.spigotmc") != null;
+	}
+	
+	public CompatibilityHandler(BRSettings settings) {
+		this.settings = settings;
+		
+		version = Version.getByServer();
 		
 		if (Package.getPackage("net.minecraft.server.v1_9_R1") != null) {
 			internals = Internals.v1_9_R1;
@@ -51,21 +96,20 @@ public class CompatibilityHandler {
 			internals = Internals.UNKNOWN;
 		}
 		
-		if (Package.getPackage("org.spigotmc") != null) {
-			spigot = true;
-			
-		} else {
-			spigot = false;
-		}
+		spigot = Package.getPackage("org.spigotmc") != null;
 	}
 	
+	/**
+	 * @return the Minecraft version
+	 */
+	public Version getVersion() {
+		return version;
+	}
+	
+	/**
+	 * @return the package version of the server internals
+	 */
 	public Internals getInternals() {
-		if (config != null) {
-			if ( !config.useCompatibilityInternals()) {
-				return Internals.UNKNOWN;
-			}
-		}
-		
 		return internals;
 	}
 	
@@ -74,33 +118,6 @@ public class CompatibilityHandler {
 	 */
 	public boolean isSpigot() {
 		return spigot;
-	}
-	
-	public static List<Internals> andHigher(Internals internals) {
-		List<Internals> andHigher = new ArrayList<Internals>();
-		
-		switch (internals) {
-			case v1_7_R1:
-				andHigher.add(Internals.v1_7_R1);
-			case v1_7_R2:
-				andHigher.add(Internals.v1_7_R2);
-			case v1_7_R3:
-				andHigher.add(Internals.v1_7_R3);
-			case v1_7_R4:
-				andHigher.add(Internals.v1_7_R4);
-			case v1_8_R1:
-				andHigher.add(Internals.v1_8_R1);
-			case v1_8_R2:
-				andHigher.add(Internals.v1_8_R2);
-			case v1_8_R3:
-				andHigher.add(Internals.v1_8_R3);
-			case v1_9_R1:
-				andHigher.add(Internals.v1_9_R1);
-			default:
-				break;
-		}
-		
-		return andHigher;
 	}
 	
 }

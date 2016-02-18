@@ -2,12 +2,8 @@ package io.github.dre2n.commons.javaplugin;
 
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.compatibility.Internals;
-import io.github.dre2n.commons.config.CoreConfig;
+import io.github.dre2n.commons.config.BRSettings;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -17,33 +13,40 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class CorePlugin extends JavaPlugin {
 	
-	private static CorePlugin plugin;
+	protected static CorePlugin plugin;
 	
-	private List<Internals> requirements = new ArrayList<Internals>();
+	protected BRSettings settings;
+	protected CompatibilityHandler compatibilityHandler;
 	
-	private CoreConfig coreConfig;
-	private CompatibilityHandler compatibilityHandler;
-	
-	private Economy economyProvider;
-	private Permission permissionProvider;
+	protected Economy economyProvider;
+	protected Permission permissionProvider;
 	
 	@Override
 	public void onEnable() {
 		plugin = this;
+		MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
 		
 		loadCompatibilityHandler();
-		loadEconomyProvider();
-		loadPermissionProvider();
-		
-		MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
 		MessageUtil.log("&fInternals: [&e" + compatibilityHandler.getInternals() + "&f]");
 		MessageUtil.log("&fSpigot API: [&e" + compatibilityHandler.isSpigot() + "&f]");
-		MessageUtil.log("&fUUIDs: [&e" + compatibilityHandler.getInternals().useUUIDs() + "&f]");
-		MessageUtil.log("&f[&9###############################&f]");
+		MessageUtil.log("&fUUIDs: [&e" + compatibilityHandler.getVersion().useUUIDs() + "&f]");
 		
 		if (compatibilityHandler.getInternals() == Internals.OUTDATED) {
 			MessageUtil.log("&cWarning: Your CraftBukkit version is deprecated. " + getName() + " does not support it.");
 		}
+		
+		loadEconomyProvider();
+		MessageUtil.log("&fEconomy: [&e" + (economyProvider != null) + "&f]");
+		
+		loadPermissionProvider();
+		MessageUtil.log("&fPermissions: [&e" + (permissionProvider != null) + "&f]");
+		
+		MessageUtil.log("&f[&9###############################&f]");
+	}
+	
+	@Override
+	public void onDisable() {
+		plugin = null;
 	}
 	
 	/**
@@ -54,32 +57,10 @@ public abstract class CorePlugin extends JavaPlugin {
 	}
 	
 	/**
-	 * @return the requirements
+	 * @return the settings
 	 */
-	public List<Internals> getRequirements() {
-		return requirements;
-	}
-	
-	/**
-	 * @param requirements
-	 * the minimum compatibilities this plugin needs to work
-	 */
-	public void setRequirements(List<Internals> requirements) {
-		this.requirements = requirements;
-	}
-	
-	/**
-	 * @return the coreConfig
-	 */
-	public CoreConfig getCoreConfig() {
-		return coreConfig;
-	}
-	
-	/**
-	 * load / reload a new instance of CoreConfig
-	 */
-	public void loadCoreConfig(File file) {
-		coreConfig = new CoreConfig(file);
+	public BRSettings getSettings() {
+		return settings;
 	}
 	
 	/**
@@ -93,7 +74,7 @@ public abstract class CorePlugin extends JavaPlugin {
 	 * load / reload a new instance of CompatibilityHandler
 	 */
 	public void loadCompatibilityHandler() {
-		compatibilityHandler = new CompatibilityHandler(coreConfig);
+		compatibilityHandler = new CompatibilityHandler(settings);
 	}
 	
 	/**
@@ -107,16 +88,16 @@ public abstract class CorePlugin extends JavaPlugin {
 	 * load / reload a new instance of Permission
 	 */
 	public void loadEconomyProvider() {
-		try {
-			if (coreConfig.useEconomy()) {
+		if (settings.economy) {
+			try {
 				RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
 				if (economyProvider != null) {
 					this.economyProvider = economyProvider.getProvider();
 				}
+				
+			} catch (NoClassDefFoundError error) {
+				MessageUtil.log("&cCould not hook into Vault to register an economy provider!");
 			}
-			
-		} catch (NoClassDefFoundError error) {
-			MessageUtil.log("&cCould not hook into Vault to register an economy provider!");
 		}
 	}
 	
@@ -131,14 +112,16 @@ public abstract class CorePlugin extends JavaPlugin {
 	 * load / reload a new instance of Permission
 	 */
 	public void loadPermissionProvider() {
-		try {
-			RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
-			if (permissionProvider != null) {
-				this.permissionProvider = permissionProvider.getProvider();
+		if (settings.permissions) {
+			try {
+				RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
+				if (permissionProvider != null) {
+					this.permissionProvider = permissionProvider.getProvider();
+				}
+				
+			} catch (NoClassDefFoundError error) {
+				MessageUtil.log("&cCould not hook into Vault to register a permission provider!");
 			}
-			
-		} catch (NoClassDefFoundError error) {
-			MessageUtil.log("&cCould not hook into Vault to register a permission provider!");
 		}
 	}
 	
