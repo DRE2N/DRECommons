@@ -2,7 +2,6 @@ package io.github.dre2n.commons.util.playerutil;
 
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.compatibility.Internals;
-import io.github.dre2n.commons.javaplugin.CorePlugin;
 
 import java.util.UUID;
 
@@ -11,9 +10,9 @@ import org.bukkit.entity.Player;
 
 public class PlayerUtil {
 	
+	static CompatibilityHandler compat = CompatibilityHandler.getInstance();
+	
 	public static Player getOfflinePlayer(String name, UUID uuid, Location location) {
-		CompatibilityHandler compat = CorePlugin.getPlugin().getCompatibilityHandler();
-		
 		if (compat.getInternals() == Internals.v1_9_R1) {
 			return v1_9_R1.getOfflinePlayer(name, uuid, location);
 			

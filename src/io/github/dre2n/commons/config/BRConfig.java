@@ -6,13 +6,10 @@ import java.io.IOException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public abstract class BRConfig {
+public class BRConfig {
 	
-	private File file;
-	private FileConfiguration config;
-	
-	public BRConfig() {
-	}
+	protected File file;
+	protected FileConfiguration config;
 	
 	public BRConfig(File file) {
 		this.file = file;

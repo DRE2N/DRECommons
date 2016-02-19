@@ -2,36 +2,35 @@ package io.github.dre2n.commons.javaplugin;
 
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.compatibility.Internals;
-import io.github.dre2n.commons.config.BRSettings;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
-
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public abstract class CorePlugin extends JavaPlugin {
+public abstract class BRPlugin extends JavaPlugin {
 	
-	protected static CorePlugin plugin;
+	private static BRPlugin instance;
 	
-	protected BRSettings settings;
-	protected CompatibilityHandler compatibilityHandler;
+	private static CompatibilityHandler compat;
 	
-	protected Economy economyProvider;
-	protected Permission permissionProvider;
+	protected BRPluginSettings settings;
+	
+	private Economy economyProvider;
+	private Permission permissionProvider;
 	
 	@Override
 	public void onEnable() {
-		plugin = this;
+		instance = this;
+		compat = CompatibilityHandler.getInstance();
+		
 		MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
+		MessageUtil.log("&fInternals: [&e" + compat.getInternals() + "&f]");
+		MessageUtil.log("&fSpigot API: [&e" + compat.isSpigot() + "&f]");
+		MessageUtil.log("&fUUIDs: [&e" + compat.getVersion().useUUIDs() + "&f]");
 		
-		loadCompatibilityHandler();
-		MessageUtil.log("&fInternals: [&e" + compatibilityHandler.getInternals() + "&f]");
-		MessageUtil.log("&fSpigot API: [&e" + compatibilityHandler.isSpigot() + "&f]");
-		MessageUtil.log("&fUUIDs: [&e" + compatibilityHandler.getVersion().useUUIDs() + "&f]");
-		
-		if (compatibilityHandler.getInternals() == Internals.OUTDATED) {
+		if (compat.getInternals() == Internals.OUTDATED) {
 			MessageUtil.log("&cWarning: Your CraftBukkit version is deprecated. " + getName() + " does not support it.");
 		}
 		
@@ -46,35 +45,21 @@ public abstract class CorePlugin extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		plugin = null;
+		instance = null;
 	}
 	
 	/**
 	 * @return the plugin instance
 	 */
-	public static CorePlugin getPlugin() {
-		return plugin;
+	public static BRPlugin getInstance() {
+		return instance;
 	}
 	
 	/**
 	 * @return the settings
 	 */
-	public BRSettings getSettings() {
+	public BRPluginSettings getSettings() {
 		return settings;
-	}
-	
-	/**
-	 * @return the loaded instance of CompatibilityHandler
-	 */
-	public CompatibilityHandler getCompatibilityHandler() {
-		return compatibilityHandler;
-	}
-	
-	/**
-	 * load / reload a new instance of CompatibilityHandler
-	 */
-	public void loadCompatibilityHandler() {
-		compatibilityHandler = new CompatibilityHandler(settings);
 	}
 	
 	/**
@@ -88,7 +73,7 @@ public abstract class CorePlugin extends JavaPlugin {
 	 * load / reload a new instance of Permission
 	 */
 	public void loadEconomyProvider() {
-		if (settings.economy) {
+		if (settings.requiresEconomy()) {
 			try {
 				RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
 				if (economyProvider != null) {
@@ -112,7 +97,7 @@ public abstract class CorePlugin extends JavaPlugin {
 	 * load / reload a new instance of Permission
 	 */
 	public void loadPermissionProvider() {
-		if (settings.permissions) {
+		if (settings.requiresPermissions()) {
 			try {
 				RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
 				if (permissionProvider != null) {

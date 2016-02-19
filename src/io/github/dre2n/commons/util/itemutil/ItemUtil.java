@@ -1,7 +1,6 @@
 package io.github.dre2n.commons.util.itemutil;
 
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
-import io.github.dre2n.commons.javaplugin.CorePlugin;
 import io.github.dre2n.commons.util.NumberUtil;
 
 import org.bukkit.Material;
@@ -9,17 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemUtil {
 	
-	static CompatibilityHandler compat = CorePlugin.getPlugin().getCompatibilityHandler();
-	
-	public enum Slot {
-		mainhand,
-		offhand,
-		head,
-		torso,
-		legs,
-		feet,
-		UNKNOWN
-	}
+	private static CompatibilityHandler compat = CompatibilityHandler.getInstance();
 	
 	public static ItemStack setAttribute(ItemStack itemStack, String attributeName, double value, Slot slot) {
 		switch (compat.getInternals()) {
