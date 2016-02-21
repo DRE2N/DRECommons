@@ -11,8 +11,8 @@ import org.bukkit.plugin.Plugin;
 
 public class MessageUtil {
 	
-	private static BRPlugin plugin = BRPlugin.getInstance();
-	private static CompatibilityHandler compat = CompatibilityHandler.getInstance();
+	protected static BRPlugin plugin = BRPlugin.getInstance();
+	protected static CompatibilityHandler compat = CompatibilityHandler.getInstance();
 	
 	private final static int CENTER_PX = 154;
 	
@@ -60,40 +60,36 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * Logs a message to the console.
-	 * Supports color codes.
+	 * Logs a message to the console. Supports color codes.
 	 */
 	public static void log(String message) {
 		plugin.getLogger().info(ChatColor.translateAlternateColorCodes('&', message));
 	}
 	
 	/**
-	 * Broadcasts a message to all players.
-	 * Supports color codes.
+	 * Broadcasts a message to all players. Supports color codes.
 	 */
 	public static void broadcastMessage(String message) {
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
 	}
 	
 	/**
-	 * Broadcasts a perfectly centered message to all players.
-	 * Supports color codes.
+	 * Broadcasts a perfectly centered message to all players. Supports color codes.
 	 */
 	public static void broadcastCenteredMessage(String message) {
 		Bukkit.broadcastMessage(center(message));
 	}
 	
 	/**
-	 * Sends a message to a specific player (or another ConsoleSender).
-	 * Supports color codes.
+	 * Sends a message to a specific player (or another ConsoleSender). Supports color codes.
 	 */
 	public static void sendMessage(CommandSender sender, String message) {
 		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 	}
 	
 	/**
-	 * Sends a perfectly centered message to a specific player (or another ConsoleSender).
-	 * Supports color codes.
+	 * Sends a perfectly centered message to a specific player (or another ConsoleSender). Supports
+	 * color codes.
 	 */
 	public static void sendCenteredMessage(CommandSender sender, String message) {
 		sender.sendMessage(center(message));

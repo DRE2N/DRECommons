@@ -6,6 +6,7 @@ import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,7 +14,8 @@ public abstract class BRPlugin extends JavaPlugin {
 	
 	private static BRPlugin instance;
 	
-	private static CompatibilityHandler compat;
+	protected static CompatibilityHandler compat;
+	protected static PluginManager manager;
 	
 	protected BRPluginSettings settings;
 	
@@ -24,6 +26,7 @@ public abstract class BRPlugin extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		compat = CompatibilityHandler.getInstance();
+		manager = getServer().getPluginManager();
 		
 		MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
 		MessageUtil.log("&fInternals: [&e" + compat.getInternals() + "&f]");

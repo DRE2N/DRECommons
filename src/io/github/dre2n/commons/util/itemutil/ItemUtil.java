@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemUtil {
 	
-	private static CompatibilityHandler compat = CompatibilityHandler.getInstance();
+	protected static CompatibilityHandler compat = CompatibilityHandler.getInstance();
 	
 	public static ItemStack setAttribute(ItemStack itemStack, String attributeName, double value, Slot slot) {
 		switch (compat.getInternals()) {

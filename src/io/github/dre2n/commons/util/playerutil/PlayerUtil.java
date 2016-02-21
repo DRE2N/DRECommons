@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class PlayerUtil {
 	
-	static CompatibilityHandler compat = CompatibilityHandler.getInstance();
+	protected static CompatibilityHandler compat = CompatibilityHandler.getInstance();
 	
 	public static Player getOfflinePlayer(String name, UUID uuid, Location location) {
 		if (compat.getInternals() == Internals.v1_9_R1) {
