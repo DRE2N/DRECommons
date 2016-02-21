@@ -10,13 +10,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public abstract class BRConfig {
 	
-	public int CONFIG_VERSION;
+	public final int CONFIG_VERSION;
 	
 	protected File file;
 	protected FileConfiguration config;
 	protected int configVersion;
+	protected boolean initialize;
 	
-	public BRConfig(File file) {
+	public BRConfig(File file, int configVersion) {
+		CONFIG_VERSION = configVersion;
 		this.file = file;
 		
 		if ( !file.exists()) {
@@ -25,7 +27,8 @@ public abstract class BRConfig {
 				file.createNewFile();
 				config = YamlConfiguration.loadConfiguration(file);
 				config.set("configVersion", CONFIG_VERSION);
-				initialize();
+				initialize = true;
+				save();
 				
 			} catch (IOException exception) {
 				exception.printStackTrace();
@@ -33,12 +36,15 @@ public abstract class BRConfig {
 			
 		} else {
 			config = YamlConfiguration.loadConfiguration(file);
-			load();
-			if (configVersion != CONFIG_VERSION) {
+			this.configVersion = config.getInt("configVersion");
+			
+			if (this.configVersion != CONFIG_VERSION) {
 				MessageUtil.log("The configuration file " + file.getName() + " seems to be outdated.");
 				MessageUtil.log("Adding missing values...");
-				initialize();
+				
+				initialize = true;
 				config.set("configVersion", CONFIG_VERSION);
+				save();
 			}
 		}
 	}
@@ -62,6 +68,17 @@ public abstract class BRConfig {
 	 */
 	public int getConfigVersion() {
 		return configVersion;
+	}
+	
+	/**
+	 * Save the configuration to the file
+	 */
+	public void save() {
+		try {
+			config.save(file);
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 	}
 	
 	// Abstracts
