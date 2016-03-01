@@ -24,6 +24,7 @@ import org.bukkit.Bukkit;
  */
 public enum Version {
 
+    MC1_9(true, v1_9_R1),
     MC1_8_9(true, UNKNOWN),
     MC1_8_8(true, v1_8_R3),
     MC1_8_7(true, v1_8_R3),
@@ -51,7 +52,8 @@ public enum Version {
     MC1_4_6(false, OUTDATED),
     MC1_4_5(false, OUTDATED),
     MC1_4_4(false, OUTDATED),
-    MC1_4_2(false, OUTDATED);
+    MC1_4_2(false, OUTDATED),
+    DEFAULT(true, UNKNOWN);
 
     private boolean uuids;
     private Internals craftBukkitInternals;
@@ -96,7 +98,7 @@ public enum Version {
             }
         }
 
-        return null;
+        return DEFAULT;
     }
 
 }
