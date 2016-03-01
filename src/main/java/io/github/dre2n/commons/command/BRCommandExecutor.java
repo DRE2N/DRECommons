@@ -37,9 +37,11 @@ public class BRCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command unused, String arg, String[] args) {
-        BRCommand command = plugin.getCommands().getCommand(args[0]);
+        BRCommand command;
 
         if (args.length > 0) {
+            command = plugin.getCommands().getCommand(args[0]);
+
             if (command != null) {
                 if (sender instanceof ConsoleCommandSender) {
                     if (!command.isConsoleCommand()) {
@@ -74,7 +76,13 @@ public class BRCommandExecutor implements CommandExecutor {
             }
         }
 
-        plugin.getCommands().getCommand("main").onExecute(null, sender);
+        command = plugin.getCommands().getCommand("main");
+        if (command != null) {
+            command.onExecute(null, sender);
+
+        } else {
+            MessageUtil.sendMessage(sender, "&cThis command does not exist!");
+        }
 
         return true;
     }
