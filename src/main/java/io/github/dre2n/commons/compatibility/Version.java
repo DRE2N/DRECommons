@@ -17,6 +17,9 @@
 package io.github.dre2n.commons.compatibility;
 
 import static io.github.dre2n.commons.compatibility.Internals.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.Bukkit;
 
 /**
@@ -81,10 +84,23 @@ public enum Version {
 
     @Override
     public String toString() {
-        return super.toString().replaceAll("_", ".").split("MC")[1];
+        String[] string = super.toString().replaceAll("_", ".").split("MC");
+
+        if (string.length == 2) {
+            return string[1];
+
+        } else {
+            return string[0];
+        }
     }
 
     /* Statics */
+    public static final Set<Version> INDEPENDENT;
+
+    static {
+        INDEPENDENT = new HashSet<>(Arrays.asList(Version.values()));
+    }
+
     /**
      * @return
      * the version string taken directly from the server translated into a Version
@@ -99,6 +115,79 @@ public enum Version {
         }
 
         return DEFAULT;
+    }
+
+    /**
+     * @param version
+     * the oldest version in the Set
+     */
+    public static Set<Version> andHigher(Version version) {
+        Set<Version> andHigher = new HashSet<>();
+
+        switch (version) {
+            case MC1_4_2:
+                andHigher.add(Version.MC1_4_2);
+            case MC1_4_4:
+                andHigher.add(Version.MC1_4_4);
+            case MC1_4_5:
+                andHigher.add(Version.MC1_4_5);
+            case MC1_4_6:
+                andHigher.add(Version.MC1_4_6);
+            case MC1_4_7:
+                andHigher.add(Version.MC1_4_7);
+            case MC1_5:
+                andHigher.add(Version.MC1_5);
+            case MC1_5_1:
+                andHigher.add(Version.MC1_5_1);
+            case MC1_5_2:
+                andHigher.add(Version.MC1_5_2);
+            case MC1_6_1:
+                andHigher.add(Version.MC1_6_1);
+            case MC1_6_2:
+                andHigher.add(Version.MC1_6_2);
+            case MC1_6_4:
+                andHigher.add(Version.MC1_6_4);
+            case MC1_7_2:
+                andHigher.add(Version.MC1_7_2);
+            case MC1_7_4:
+                andHigher.add(Version.MC1_7_4);
+            case MC1_7_5:
+                andHigher.add(Version.MC1_7_5);
+            case MC1_7_6:
+                andHigher.add(Version.MC1_7_6);
+            case MC1_7_7:
+                andHigher.add(Version.MC1_7_7);
+            case MC1_7_8:
+                andHigher.add(Version.MC1_7_8);
+            case MC1_7_9:
+                andHigher.add(Version.MC1_7_9);
+            case MC1_7_10:
+                andHigher.add(Version.MC1_7_10);
+            case MC1_8:
+                andHigher.add(Version.MC1_8);
+            case MC1_8_1:
+                andHigher.add(Version.MC1_8_1);
+            case MC1_8_3:
+                andHigher.add(Version.MC1_8_3);
+            case MC1_8_4:
+                andHigher.add(Version.MC1_8_4);
+            case MC1_8_5:
+                andHigher.add(Version.MC1_8_5);
+            case MC1_8_6:
+                andHigher.add(Version.MC1_8_6);
+            case MC1_8_7:
+                andHigher.add(Version.MC1_8_7);
+            case MC1_8_8:
+                andHigher.add(Version.MC1_8_8);
+            case MC1_8_9:
+                andHigher.add(Version.MC1_8_9);
+            case MC1_9:
+                andHigher.add(Version.MC1_9);
+            default:
+                break;
+        }
+
+        return andHigher;
     }
 
 }

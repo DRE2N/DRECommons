@@ -16,6 +16,7 @@
  */
 package io.github.dre2n.commons.compatibility;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,18 +39,11 @@ public enum Internals {
     UNKNOWN;
 
     /* Statics */
-    public static final Set<Internals> INDEPENDENT;
-
-    static {
-        INDEPENDENT = andHigher(v1_7_R1);
-        INDEPENDENT.add(GLOWSTONE);
-        INDEPENDENT.add(OUTDATED);
-        INDEPENDENT.add(UNKNOWN);
-    }
+    public static final Set<Internals> INDEPENDENT = new HashSet<>(Arrays.asList(Internals.values()));
 
     /**
      * @param internals
-     * the oldest internals in the list
+     * the oldest internals in the Set
      */
     public static Set<Internals> andHigher(Internals internals) {
         Set<Internals> andHigher = new HashSet<>();
