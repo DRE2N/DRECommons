@@ -40,7 +40,9 @@ public abstract class BRConfig {
 
         if (!file.exists()) {
             try {
-                file.getParentFile().mkdirs();
+                if (file.getParentFile() != null) {
+                    file.getParentFile().mkdirs();
+                }
                 file.createNewFile();
                 config = YamlConfiguration.loadConfiguration(file);
                 config.set("configVersion", CONFIG_VERSION);

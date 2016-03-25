@@ -106,7 +106,6 @@ public abstract class BRPlugin extends JavaPlugin {
                 }
 
             } catch (NoClassDefFoundError error) {
-                MessageUtil.log("&cCould not hook into Vault to register an economy provider!");
             }
         }
     }
@@ -130,7 +129,6 @@ public abstract class BRPlugin extends JavaPlugin {
                 }
 
             } catch (NoClassDefFoundError error) {
-                MessageUtil.log("&cCould not hook into Vault to register a permission provider!");
             }
         }
     }

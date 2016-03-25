@@ -91,7 +91,7 @@ public class MessageUtil {
      * @param fadeOut
      * the time in ticks it takes for the message to disappear
      */
-    public static void sendScreenMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
+    public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         switch (compat.getInternals()) {
             case v1_9_R1:
                 v1_9_R1.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
@@ -122,7 +122,7 @@ public class MessageUtil {
      * the message of the second, small line
      */
     public static void sendTitleMessage(Player player, String title, String subtitle) {
-        sendScreenMessage(player, title, subtitle, 20, 60, 20);
+        sendTitleMessage(player, title, subtitle, 20, 60, 20);
     }
 
     /**
@@ -132,7 +132,7 @@ public class MessageUtil {
      * the message of the first, big line
      */
     public static void sendTitleMessage(Player player, String title) {
-        sendScreenMessage(player, title, "", 20, 60, 20);
+        sendTitleMessage(player, title, "", 20, 60, 20);
     }
 
 }
