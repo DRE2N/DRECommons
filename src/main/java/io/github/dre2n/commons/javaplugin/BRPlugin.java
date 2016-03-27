@@ -20,6 +20,8 @@ import io.github.dre2n.commons.command.BRCommands;
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.compatibility.Internals;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
+import java.io.File;
+import java.lang.reflect.Field;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.PluginManager;
@@ -161,6 +163,17 @@ public abstract class BRPlugin extends JavaPlugin {
      */
     public void setCommands(BRCommands commands) {
         this.commands = commands;
+    }
+
+    protected void setDataFolder(File dataFolder) {
+        try {
+            Field field = JavaPlugin.class.getDeclaredField("dataFolder");
+            field.setAccessible(true);
+            field.set(this, dataFolder);
+
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException exception) {
+            MessageUtil.log("&cError: Could not set data folder!");
+        }
     }
 
 }
