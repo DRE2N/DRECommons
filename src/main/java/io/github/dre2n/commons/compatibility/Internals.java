@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author Daniel Saukel
  */
 public enum Internals {
