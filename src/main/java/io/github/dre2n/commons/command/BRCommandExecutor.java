@@ -36,7 +36,7 @@ public class BRCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command unused, String arg, String[] args) {
+    public boolean onCommand(CommandSender sender, Command unused1, String unused2, String[] args) {
         BRCommand command;
 
         if (args.length > 0) {
