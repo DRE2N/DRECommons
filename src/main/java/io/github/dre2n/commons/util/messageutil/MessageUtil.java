@@ -55,6 +55,90 @@ public class MessageUtil {
     }
 
     /**
+     * Broadcasts the plugin name formatted to a player (or another sender), for example as a headline.
+     */
+    public static void broadcastPluginTag(CommandSender sender, Plugin plugin) {
+        broadcastCenteredMessage("&4&l[ &6" + plugin.getDescription().getName() + " &4&l]");
+    }
+
+    /**
+     * Broadcasts a title message.
+     * Supports color codes.
+     *
+     * @param title
+     * the message of the first, big line
+     * @param subtitle
+     * the message of the second, small line
+     * @param fadeIn
+     * the time in ticks it takes for the message to appear
+     * @param show
+     * the time in ticks how long the message will be visible
+     * @param fadeOut
+     * the time in ticks it takes for the message to disappear
+     */
+    public static void broadcastTitleMessage(String title, String subtitle, int fadeIn, int show, int fadeOut) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
+        }
+    }
+
+    /**
+     * Broadcasts a title message.
+     * Supports color codes.
+     *
+     * @param title
+     * the message of the first, big line
+     * @param subtitle
+     * the message of the second, small line
+     */
+    public static void broadcastTitleMessage(String title, String subtitle) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendTitleMessage(player, title, subtitle, 20, 60, 20);
+        }
+    }
+
+    /**
+     * Broadcasts a title message.
+     * Supports color codes.
+     *
+     * @param title
+     * the message of the first, big line
+     */
+    public static void broadcastTitleMessage(String title) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendTitleMessage(player, title, "", 20, 60, 20);
+        }
+    }
+
+    /**
+     * Broadcasts an action bar message.
+     * Supports color code.
+     *
+     * @param message
+     * the message String
+     */
+    public static void broadcastActionBarMessage(String message) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendActionBarMessage(player, message);
+        }
+    }
+
+    /**
+     * Sends an item bar message.
+     * Supports color codes.
+     *
+     * WARNING: Very hacky. Fails in Spectator Mode!
+     *
+     * @param message
+     * the message String
+     */
+    public static void broadcastItemBarMessage(String message) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendItemBarMessage(player, message);
+        }
+    }
+
+    /**
      * Sends a message to a specific player (or another CommandSender).
      * Supports color codes.
      */
@@ -78,6 +162,9 @@ public class MessageUtil {
     }
 
     /**
+     * Sends a title message.
+     * Supports color codes.
+     *
      * @param player
      * the player who will receive the message
      * @param title
@@ -109,11 +196,15 @@ public class MessageUtil {
                 UNKNOWN.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
                 break;
             default:
-                OUTDATED.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
+                MessageUtil.sendCenteredMessage(player, title);
+                MessageUtil.sendCenteredMessage(player, title);
         }
     }
 
     /**
+     * Sends a title message.
+     * Supports color codes.
+     *
      * @param player
      * the player who will receive the message
      * @param title
@@ -126,6 +217,9 @@ public class MessageUtil {
     }
 
     /**
+     * Sends a title message.
+     * Supports color codes.
+     *
      * @param player
      * the player who will receive the message
      * @param title
@@ -133,6 +227,66 @@ public class MessageUtil {
      */
     public static void sendTitleMessage(Player player, String title) {
         sendTitleMessage(player, title, "", 20, 60, 20);
+    }
+
+    /**
+     * Sends an action bar message.
+     * Supports color code.
+     *
+     * @param player
+     * the player who will receive the message
+     * @param message
+     * the message String
+     */
+    public static void sendActionBarMessage(Player player, String message) {
+        switch (compat.getInternals()) {
+            case v1_9_R1:
+                v1_9_R1.sendActionBarMessage(player, message);
+                break;
+            case v1_8_R3:
+                v1_8_R3.sendActionBarMessage(player, message);
+                break;
+            case v1_8_R2:
+                v1_8_R2.sendActionBarMessage(player, message);
+                break;
+            case v1_8_R1:
+                v1_8_R1.sendActionBarMessage(player, message);
+                break;
+            default:
+                MessageUtil.sendCenteredMessage(player, message);
+                MessageUtil.sendCenteredMessage(player, message);
+        }
+    }
+
+    /**
+     * Sends an item bar message.
+     * Supports color codes.
+     *
+     * WARNING: Very hacky. Fails in Spectator Mode!
+     *
+     * @param player
+     * the player who will receive the message
+     * @param message
+     * the message String
+     */
+    public static void sendItemBarMessage(Player player, String message) {
+        switch (compat.getInternals()) {
+            case v1_9_R1:
+                v1_9_R1.sendItemBarMessage(player, message);
+                break;
+            case v1_8_R3:
+                v1_8_R3.sendItemBarMessage(player, message);
+                break;
+            case v1_8_R2:
+                v1_8_R2.sendItemBarMessage(player, message);
+                break;
+            case v1_8_R1:
+                v1_8_R1.sendItemBarMessage(player, message);
+                break;
+            default:
+                MessageUtil.sendCenteredMessage(player, message);
+                MessageUtil.sendCenteredMessage(player, message);
+        }
     }
 
 }

@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author Daniel Saukel
  */
 public enum Internals {
@@ -66,7 +65,7 @@ public enum Internals {
             case v1_9_R1:
                 andHigher.add(Internals.v1_9_R1);
             default:
-                break;
+                andHigher.add(UNKNOWN);
         }
 
         return andHigher;

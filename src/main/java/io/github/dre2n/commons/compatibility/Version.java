@@ -17,6 +17,7 @@
 package io.github.dre2n.commons.compatibility;
 
 import static io.github.dre2n.commons.compatibility.Internals.*;
+import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,21 +28,22 @@ import org.bukkit.Bukkit;
  */
 public enum Version {
 
+    MC1_9_2(true, v1_9_R1),
     MC1_9(true, v1_9_R1),
-    MC1_8_9(true, UNKNOWN),
+    MC1_8_9(true, Internals.UNKNOWN),
     MC1_8_8(true, v1_8_R3),
     MC1_8_7(true, v1_8_R3),
     MC1_8_6(true, v1_8_R3),
     MC1_8_5(true, v1_8_R3),
     MC1_8_4(true, v1_8_R3),
     MC1_8_3(true, v1_8_R2),
-    MC1_8_1(true, UNKNOWN),
+    MC1_8_1(true, Internals.UNKNOWN),
     MC1_8(true, v1_8_R1),
     MC1_7_10(true, v1_7_R4),
     MC1_7_9(true, v1_7_R3),
     MC1_7_8(true, v1_7_R3),
-    MC1_7_7(true, UNKNOWN),
-    MC1_7_6(true, UNKNOWN),
+    MC1_7_7(true, Internals.UNKNOWN),
+    MC1_7_6(true, Internals.UNKNOWN),
     MC1_7_5(false, v1_7_R2),
     MC1_7_4(false, OUTDATED),
     MC1_7_2(false, v1_7_R1),
@@ -56,7 +58,7 @@ public enum Version {
     MC1_4_5(false, OUTDATED),
     MC1_4_4(false, OUTDATED),
     MC1_4_2(false, OUTDATED),
-    DEFAULT(true, UNKNOWN);
+    UNKNOWN(true, Internals.UNKNOWN);
 
     private boolean uuids;
     private Internals craftBukkitInternals;
@@ -106,15 +108,20 @@ public enum Version {
      * the version string taken directly from the server translated into a Version
      */
     public static Version getByServer() {
-        String versionString = Bukkit.getServer().getVersion().split("\\(MC: ")[1].split("\\)")[0];
+        try {
+            String versionString = Bukkit.getServer().getVersion().split("\\(MC: ")[1].split("\\)")[0];
 
-        for (Version version : Version.values()) {
-            if (version.toString().equals(versionString)) {
-                return version;
+            for (Version version : Version.values()) {
+                if (version.toString().equals(versionString)) {
+                    return version;
+                }
             }
+
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            MessageUtil.log("&4This Bukkit implementation does not use a known version format.");
         }
 
-        return DEFAULT;
+        return UNKNOWN;
     }
 
     /**
@@ -183,8 +190,10 @@ public enum Version {
                 andHigher.add(Version.MC1_8_9);
             case MC1_9:
                 andHigher.add(Version.MC1_9);
+            case MC1_9_2:
+                andHigher.add(Version.MC1_9_2);
             default:
-                break;
+                andHigher.add(UNKNOWN);
         }
 
         return andHigher;

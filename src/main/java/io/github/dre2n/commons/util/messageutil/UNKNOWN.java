@@ -28,6 +28,7 @@ class UNKNOWN {
     static void sendTitleMessage(Player player, String title, String subtitle, long fadeIn, long show, long fadeOut) {
         subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
         title = ChatColor.translateAlternateColorCodes('&', title);
+
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "title " + player.getName() + " time " + fadeIn + " " + show + " " + fadeOut);
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "title " + player.getName() + " subtitle " + subtitle);
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "title " + player.getName() + " title " + title);
