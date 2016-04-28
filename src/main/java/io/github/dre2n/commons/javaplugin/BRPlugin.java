@@ -184,7 +184,7 @@ public abstract class BRPlugin extends JavaPlugin {
             field.set(this, dataFolder);
 
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException exception) {
-            MessageUtil.log("&cError: Could not set data folder!");
+            MessageUtil.log(this, "&cError: Could not set data folder!");
         }
     }
 

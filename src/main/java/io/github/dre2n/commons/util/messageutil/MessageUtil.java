@@ -39,6 +39,14 @@ public class MessageUtil {
     }
 
     /**
+     * Logs a message to the console.
+     * Supports color codes.
+     */
+    public static void log(Plugin plugin, String message) {
+        Bukkit.getConsoleSender().sendMessage("[" + plugin.getName() + "] " + ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    /**
      * Broadcasts a message to all players.
      * Supports color codes.
      */
