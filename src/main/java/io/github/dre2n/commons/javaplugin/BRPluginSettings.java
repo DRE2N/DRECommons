@@ -30,21 +30,24 @@ public class BRPluginSettings {
     private boolean uuid;
     private boolean economy;
     private boolean permissions;
+    private boolean metrics;
     private Set<Internals> internals;
 
-    public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, Set<Internals> internals) {
+    public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Set<Internals> internals) {
         this.spigot = spigot;
         this.uuid = uuid;
         this.economy = economy;
         this.permissions = permissions;
+        this.metrics = metrics;
         this.internals = internals;
     }
 
-    public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, Internals... internals) {
+    public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Internals... internals) {
         this.spigot = spigot;
         this.uuid = uuid;
         this.economy = economy;
         this.permissions = permissions;
+        this.metrics = metrics;
         this.internals = new HashSet<>(Arrays.asList(internals));
     }
 
@@ -78,6 +81,14 @@ public class BRPluginSettings {
      */
     public boolean requiresVaultPermissions() {
         return permissions;
+    }
+
+    /**
+     * @return
+     * if this plugin uses Metrics
+     */
+    public boolean usesMetrics() {
+        return metrics;
     }
 
     /**

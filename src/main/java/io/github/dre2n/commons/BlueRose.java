@@ -33,7 +33,7 @@ public class BlueRose extends BRPlugin {
     private ServerConfig config;
 
     public BlueRose() {
-        settings = new BRPluginSettings(false, false, false, false, Internals.INDEPENDENT);
+        settings = new BRPluginSettings(false, false, false, false, false, Internals.INDEPENDENT);
     }
 
     @Override

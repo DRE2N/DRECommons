@@ -21,12 +21,14 @@ import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.compatibility.Internals;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 /**
  * @author Daniel Saukel
@@ -65,6 +67,16 @@ public abstract class BRPlugin extends JavaPlugin {
 
         loadPermissionProvider();
         MessageUtil.log("&fPermissions: [&e" + (permissionProvider != null) + "&f]");
+
+        Metrics metrics = null;
+        if (settings.usesMetrics()) {
+            try {
+                metrics = new Metrics(this);
+                metrics.start();
+            } catch (IOException exception) {
+            }
+        }
+        MessageUtil.log("&fMetrics: [&e" + (metrics != null) + "&f]");
 
         MessageUtil.log("&f[&9###############################&f]");
     }
