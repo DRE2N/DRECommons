@@ -25,17 +25,32 @@ import java.util.Set;
  */
 public enum Internals {
 
-    v1_9_R1,
-    v1_8_R3,
-    v1_8_R2,
-    v1_8_R1,
-    v1_7_R4,
-    v1_7_R3,
-    v1_7_R2,
-    v1_7_R1,
-    GLOWSTONE,
-    OUTDATED,
-    UNKNOWN;
+    v1_9_R1(true),
+    v1_8_R3(true),
+    v1_8_R2(true),
+    v1_8_R1(true),
+    v1_7_R4(true),
+    v1_7_R3(true),
+    v1_7_R2(true),
+    v1_7_R1(true),
+    OUTDATED(true),
+    NEW(true),
+    UNKNOWN(false),
+    GLOWSTONE(false);
+
+    private boolean craftBukkitInternals;
+
+    Internals(boolean craftBukkitInternals) {
+        this.craftBukkitInternals = craftBukkitInternals;
+    }
+
+    /**
+     * @return
+     * true if the server (supposingly) uses CraftBukkit internals
+     */
+    public boolean usesCraftBukkitInternals() {
+        return craftBukkitInternals;
+    }
 
     /* Statics */
     public static final Set<Internals> INDEPENDENT = new HashSet<>(Arrays.asList(Internals.values()));
@@ -65,7 +80,7 @@ public enum Internals {
             case v1_9_R1:
                 andHigher.add(Internals.v1_9_R1);
             default:
-                andHigher.add(UNKNOWN);
+                andHigher.add(NEW);
         }
 
         return andHigher;
