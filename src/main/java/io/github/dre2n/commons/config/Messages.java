@@ -37,6 +37,12 @@ public interface Messages {
     public String getMessage();
 
     /**
+     * @param args
+     * String to replace possible variables in the message
+     */
+    public String getMessage(String... args);
+
+    /**
      * @param message
      * the message to set
      */
