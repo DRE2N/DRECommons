@@ -35,6 +35,9 @@ public class CompatibilityHandler {
         if (Package.getPackage("net.glowstone") != null) {
             internals = Internals.GLOWSTONE;
 
+        } else if (Package.getPackage("net.minecraft.server.v1_9_R2") != null) {
+            internals = Internals.v1_9_R2;
+
         } else if (Package.getPackage("net.minecraft.server.v1_9_R1") != null) {
             internals = Internals.v1_9_R1;
 

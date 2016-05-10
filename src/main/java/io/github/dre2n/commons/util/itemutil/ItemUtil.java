@@ -42,6 +42,8 @@ public class ItemUtil {
      */
     public static ItemStack setAttribute(ItemStack itemStack, String attributeName, double value, Slot slot) {
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                return v1_9_R2.setAttribute(itemStack, attributeName, value, slot);
             case v1_9_R1:
                 return v1_9_R1.setAttribute(itemStack, attributeName, value, slot);
             case v1_8_R3:
@@ -76,6 +78,8 @@ public class ItemUtil {
         }
 
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                return v1_9_R2.setUnbreakable(itemStack);
             case v1_9_R1:
                 return v1_9_R1.setUnbreakable(itemStack);
             case v1_8_R3:
@@ -104,10 +108,12 @@ public class ItemUtil {
      * the UUID of the SkullOwner
      * @param textureValue
      * the texture value
-     * @return 
+     * @return
      */
     public static ItemStack setSkullOwner(ItemStack itemStack, String id, String textureValue) {
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                return v1_9_R2.setSkullOwner(itemStack, id, textureValue);
             case v1_9_R1:
                 return v1_9_R1.setSkullOwner(itemStack, id, textureValue);
             case v1_8_R3:

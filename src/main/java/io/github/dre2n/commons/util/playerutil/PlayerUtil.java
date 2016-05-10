@@ -44,6 +44,8 @@ public class PlayerUtil {
         }
 
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                return v1_9_R2.getOfflinePlayer(name, uuid, location);
             case v1_9_R1:
                 return v1_9_R1.getOfflinePlayer(name, uuid, location);
             case v1_8_R3:

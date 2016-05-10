@@ -188,6 +188,9 @@ public class MessageUtil {
      */
     public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                v1_9_R2.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
+                break;
             case v1_9_R1:
                 v1_9_R1.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
                 break;
@@ -248,6 +251,9 @@ public class MessageUtil {
      */
     public static void sendActionBarMessage(Player player, String message) {
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                v1_9_R2.sendActionBarMessage(player, message);
+                break;
             case v1_9_R1:
                 v1_9_R1.sendActionBarMessage(player, message);
                 break;
@@ -279,6 +285,9 @@ public class MessageUtil {
      */
     public static void sendItemBarMessage(Player player, String message) {
         switch (compat.getInternals()) {
+            case v1_9_R2:
+                v1_9_R2.sendItemBarMessage(player, message);
+                break;
             case v1_9_R1:
                 v1_9_R1.sendItemBarMessage(player, message);
                 break;
