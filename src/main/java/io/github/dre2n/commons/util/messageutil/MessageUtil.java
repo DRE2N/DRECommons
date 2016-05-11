@@ -16,7 +16,6 @@
  */
 package io.github.dre2n.commons.util.messageutil;
 
-import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +27,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class MessageUtil {
 
-    protected static CompatibilityHandler compat = CompatibilityHandler.getInstance();
+    static InternalsProvider internals = InternalsProvider.getInstance();
 
     /**
      * Logs a message to the console.
@@ -100,9 +99,7 @@ public class MessageUtil {
      * the message of the second, small line
      */
     public static void broadcastTitleMessage(String title, String subtitle) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            sendTitleMessage(player, title, subtitle, 20, 60, 20);
-        }
+        broadcastTitleMessage(title, subtitle, 20, 60, 20);
     }
 
     /**
@@ -113,9 +110,7 @@ public class MessageUtil {
      * the message of the first, big line
      */
     public static void broadcastTitleMessage(String title) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            sendTitleMessage(player, title, "", 20, 60, 20);
-        }
+        broadcastTitleMessage(title, "", 20, 60, 20);
     }
 
     /**
@@ -187,29 +182,7 @@ public class MessageUtil {
      * the time in ticks it takes for the message to disappear
      */
     public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                v1_9_R2.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
-                break;
-            case v1_9_R1:
-                v1_9_R1.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
-                break;
-            case v1_8_R3:
-                v1_8_R3.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
-                break;
-            case v1_8_R2:
-                v1_8_R2.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
-                break;
-            case v1_8_R1:
-                v1_8_R1.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
-                break;
-            case UNKNOWN:
-                UNKNOWN.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
-                break;
-            default:
-                MessageUtil.sendCenteredMessage(player, title);
-                MessageUtil.sendCenteredMessage(player, title);
-        }
+        internals.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
     }
 
     /**
@@ -250,26 +223,7 @@ public class MessageUtil {
      * the message String
      */
     public static void sendActionBarMessage(Player player, String message) {
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                v1_9_R2.sendActionBarMessage(player, message);
-                break;
-            case v1_9_R1:
-                v1_9_R1.sendActionBarMessage(player, message);
-                break;
-            case v1_8_R3:
-                v1_8_R3.sendActionBarMessage(player, message);
-                break;
-            case v1_8_R2:
-                v1_8_R2.sendActionBarMessage(player, message);
-                break;
-            case v1_8_R1:
-                v1_8_R1.sendActionBarMessage(player, message);
-                break;
-            default:
-                MessageUtil.sendCenteredMessage(player, message);
-                MessageUtil.sendCenteredMessage(player, message);
-        }
+        internals.sendActionBarMessage(player, message);
     }
 
     /**
@@ -284,26 +238,7 @@ public class MessageUtil {
      * the message String
      */
     public static void sendItemBarMessage(Player player, String message) {
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                v1_9_R2.sendItemBarMessage(player, message);
-                break;
-            case v1_9_R1:
-                v1_9_R1.sendItemBarMessage(player, message);
-                break;
-            case v1_8_R3:
-                v1_8_R3.sendItemBarMessage(player, message);
-                break;
-            case v1_8_R2:
-                v1_8_R2.sendItemBarMessage(player, message);
-                break;
-            case v1_8_R1:
-                v1_8_R1.sendItemBarMessage(player, message);
-                break;
-            default:
-                MessageUtil.sendCenteredMessage(player, message);
-                MessageUtil.sendCenteredMessage(player, message);
-        }
+        internals.sendItemBarMessage(player, message);
     }
 
 }

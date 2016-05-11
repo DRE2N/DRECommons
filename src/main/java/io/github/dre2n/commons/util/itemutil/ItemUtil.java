@@ -26,7 +26,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ItemUtil {
 
-    protected static CompatibilityHandler compat = CompatibilityHandler.getInstance();
+    static InternalsProvider internals = InternalsProvider.getInstance();
 
     /**
      * @param itemStack
@@ -41,28 +41,7 @@ public class ItemUtil {
      * a new Bukkit ItemStack with the attribute
      */
     public static ItemStack setAttribute(ItemStack itemStack, String attributeName, double value, Slot slot) {
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                return v1_9_R2.setAttribute(itemStack, attributeName, value, slot);
-            case v1_9_R1:
-                return v1_9_R1.setAttribute(itemStack, attributeName, value, slot);
-            case v1_8_R3:
-                return v1_8_R3.setAttribute(itemStack, attributeName, value);
-            case v1_8_R2:
-                return v1_8_R2.setAttribute(itemStack, attributeName, value);
-            case v1_8_R1:
-                return v1_8_R1.setAttribute(itemStack, attributeName, value);
-            case v1_7_R4:
-                return v1_7_R4.setAttribute(itemStack, attributeName, value);
-            case v1_7_R3:
-                return v1_7_R3.setAttribute(itemStack, attributeName, value);
-            case v1_7_R2:
-                return v1_7_R2.setAttribute(itemStack, attributeName, value);
-            case v1_7_R1:
-                return v1_7_R1.setAttribute(itemStack, attributeName, value);
-            default:
-                return itemStack;
-        }
+        return internals.setAttribute(itemStack, attributeName, value, slot);
     }
 
     /**
@@ -72,33 +51,7 @@ public class ItemUtil {
      * the ItemStack, but unbreakable
      */
     public static ItemStack setUnbreakable(ItemStack itemStack) {
-        if (compat.isSpigot()) {
-            itemStack.getItemMeta().spigot().setUnbreakable(true);
-            return itemStack;
-        }
-
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                return v1_9_R2.setUnbreakable(itemStack);
-            case v1_9_R1:
-                return v1_9_R1.setUnbreakable(itemStack);
-            case v1_8_R3:
-                return v1_8_R3.setUnbreakable(itemStack);
-            case v1_8_R2:
-                return v1_8_R2.setUnbreakable(itemStack);
-            case v1_8_R1:
-                return v1_8_R1.setUnbreakable(itemStack);
-            case v1_7_R4:
-                return v1_7_R4.setUnbreakable(itemStack);
-            case v1_7_R3:
-                return v1_7_R3.setUnbreakable(itemStack);
-            case v1_7_R2:
-                return v1_7_R2.setUnbreakable(itemStack);
-            case v1_7_R1:
-                return v1_7_R1.setUnbreakable(itemStack);
-            default:
-                return itemStack;
-        }
+        return internals.setUnbreakable(itemStack);
     }
 
     /**
@@ -111,28 +64,7 @@ public class ItemUtil {
      * @return
      */
     public static ItemStack setSkullOwner(ItemStack itemStack, String id, String textureValue) {
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                return v1_9_R2.setSkullOwner(itemStack, id, textureValue);
-            case v1_9_R1:
-                return v1_9_R1.setSkullOwner(itemStack, id, textureValue);
-            case v1_8_R3:
-                return v1_8_R3.setSkullOwner(itemStack, id, textureValue);
-            case v1_8_R2:
-                return v1_8_R2.setSkullOwner(itemStack, id, textureValue);
-            case v1_8_R1:
-                return v1_8_R1.setSkullOwner(itemStack, id, textureValue);
-            case v1_7_R4:
-                return v1_7_R4.setSkullOwner(itemStack, id, textureValue);
-            case v1_7_R3:
-                return v1_7_R3.setSkullOwner(itemStack, id, textureValue);
-            case v1_7_R2:
-                return v1_7_R2.setSkullOwner(itemStack, id, textureValue);
-            case v1_7_R1:
-                return v1_7_R1.setSkullOwner(itemStack, id, textureValue);
-            default:
-                return itemStack;
-        }
+        return internals.setSkullOwner(itemStack, id, textureValue);
     }
 
     /**

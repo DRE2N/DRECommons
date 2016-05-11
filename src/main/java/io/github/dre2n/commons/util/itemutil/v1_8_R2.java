@@ -29,9 +29,10 @@ import org.bukkit.inventory.ItemStack;
 /**
  * @author Daniel Saukel
  */
-class v1_8_R2 {
+class v1_8_R2 extends InternalsProvider {
 
-    static ItemStack setAttribute(ItemStack itemStack, String attributeName, double value) {
+    @Override
+    ItemStack setAttribute(ItemStack itemStack, String attributeName, double value) {
         net.minecraft.server.v1_8_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
 
         NBTTagCompound compound = nmsStack.getTag();
@@ -58,7 +59,8 @@ class v1_8_R2 {
         return CraftItemStack.asBukkitCopy(nmsStack);
     }
 
-    static ItemStack setSkullOwner(ItemStack itemStack, String id, String textureValue) {
+    @Override
+    ItemStack setSkullOwner(ItemStack itemStack, String id, String textureValue) {
         net.minecraft.server.v1_8_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
 
         NBTTagCompound compound = nmsStack.getTag();
@@ -84,7 +86,8 @@ class v1_8_R2 {
         return CraftItemStack.asBukkitCopy(nmsStack);
     }
 
-    static ItemStack setUnbreakable(ItemStack itemStack) {
+    @Override
+    ItemStack setUnbreakable(ItemStack itemStack) {
         net.minecraft.server.v1_8_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
 
         NBTTagCompound compound = nmsStack.getTag();

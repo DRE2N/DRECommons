@@ -36,9 +36,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * @author Daniel Saukel
  */
-class v1_8_R2 {
+class v1_8_R2 extends InternalsProvider {
 
-    static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
+    @Override
+    void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
         title = ChatColor.translateAlternateColorCodes('&', title);
 
@@ -55,7 +56,8 @@ class v1_8_R2 {
         connection.sendPacket(timesPacket);
     }
 
-    static void sendActionBarMessage(Player player, String message) {
+    @Override
+    void sendActionBarMessage(Player player, String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         IChatBaseComponent messageComponent = ChatSerializer.a("{\"text\": \"" + message + "\"}");
@@ -66,7 +68,8 @@ class v1_8_R2 {
         connection.sendPacket(barPacket);
     }
 
-    static void sendItemBarMessage(Player player, String message) {
+    @Override
+    void sendItemBarMessage(Player player, String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         final PlayerInventory inventory = player.getInventory();

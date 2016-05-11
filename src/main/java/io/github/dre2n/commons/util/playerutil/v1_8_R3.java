@@ -31,39 +31,10 @@ import org.bukkit.entity.Player;
 /**
  * @author Frank Baumann, Daniel Saukel
  */
-class v1_8_R3 {
+class v1_8_R3 extends InternalsProvider {
 
-    static Player getOfflinePlayer(String name, UUID uuid) {
-        Player pplayer = null;
-
-        try {
-            File playerFolder = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "players");
-
-            for (File playerFile : playerFolder.listFiles()) {
-                String fileName = playerFile.getName();
-                String playerName = fileName.substring(0, fileName.length() - 4);
-
-                GameProfile profile = new GameProfile(uuid, playerName);
-
-                if (playerName.trim().equalsIgnoreCase(name)) {
-                    MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
-                    EntityPlayer entity = new EntityPlayer(server, server.getWorldServer(0), profile, new PlayerInteractManager(server.getWorldServer(0)));
-                    Player target = entity == null ? null : (Player) entity.getBukkitEntity();
-                    if (target != null) {
-                        target.loadData();
-                        return target;
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            return null;
-        }
-
-        return pplayer;
-    }
-
-    static Player getOfflinePlayer(String name, UUID uuid, Location location) {
+    @Override
+    Player getOfflinePlayer(String name, UUID uuid, Location location) {
         Player pplayer = null;
 
         try {

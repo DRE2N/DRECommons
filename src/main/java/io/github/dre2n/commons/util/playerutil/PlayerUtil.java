@@ -16,7 +16,6 @@
  */
 package io.github.dre2n.commons.util.playerutil;
 
-import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -25,8 +24,6 @@ import org.bukkit.entity.Player;
  * @author Frank Baumann, Daniel Saukel
  */
 public class PlayerUtil {
-
-    protected static CompatibilityHandler compat = CompatibilityHandler.getInstance();
 
     /**
      * @param name
@@ -39,28 +36,7 @@ public class PlayerUtil {
      * the player (who is offline) as an actual Player
      */
     public static Player getOfflinePlayer(String name, UUID uuid, Location location) {
-        if (compat.getInternals() == null) {
-            return null;
-        }
-
-        switch (compat.getInternals()) {
-            case v1_9_R2:
-                return v1_9_R2.getOfflinePlayer(name, uuid, location);
-            case v1_9_R1:
-                return v1_9_R1.getOfflinePlayer(name, uuid, location);
-            case v1_8_R3:
-                return v1_8_R3.getOfflinePlayer(name, uuid, location);
-            case v1_8_R2:
-                return v1_8_R2.getOfflinePlayer(name, uuid, location);
-            case v1_8_R1:
-                return v1_8_R1.getOfflinePlayer(name, uuid, location);
-            case v1_7_R4:
-                return v1_7_R4.getOfflinePlayer(name, uuid, location);
-            case v1_7_R3:
-                return v1_7_R3.getOfflinePlayer(name, uuid, location);
-            default:
-                return null;
-        }
+        return InternalsProvider.getInstance().getOfflinePlayer(name, uuid, location);
     }
 
     /**

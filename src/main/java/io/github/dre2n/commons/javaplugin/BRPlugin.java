@@ -45,6 +45,8 @@ public abstract class BRPlugin extends JavaPlugin {
     private Economy economyProvider;
     private Permission permissionProvider;
 
+    private Metrics metrics;
+
     private BRCommands commands;
 
     @Override
@@ -68,7 +70,6 @@ public abstract class BRPlugin extends JavaPlugin {
         loadPermissionProvider();
         MessageUtil.log("&fPermissions: [&e" + (permissionProvider != null) + "&f]");
 
-        Metrics metrics = null;
         if (settings.usesMetrics()) {
             try {
                 metrics = new Metrics(this);
@@ -159,6 +160,14 @@ public abstract class BRPlugin extends JavaPlugin {
         }
 
         return false;
+    }
+
+    /**
+     * @return
+     * the Metrics instance
+     */
+    public Metrics getMetrics() {
+        return metrics;
     }
 
     /**
