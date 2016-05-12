@@ -19,12 +19,17 @@ package io.github.dre2n.commons.javaplugin;
 import io.github.dre2n.commons.command.BRCommands;
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.compatibility.Internals;
+import io.github.dre2n.commons.util.guiutil.GUIListener;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,6 +53,7 @@ public abstract class BRPlugin extends JavaPlugin {
     private Metrics metrics;
 
     private BRCommands commands;
+    private Set<Inventory> guis = new HashSet<>();
 
     @Override
     public void onEnable() {
@@ -80,6 +86,8 @@ public abstract class BRPlugin extends JavaPlugin {
         MessageUtil.log("&fMetrics: [&e" + (metrics != null) + "&f]");
 
         MessageUtil.log("&f[&9###############################&f]");
+
+        manager.registerEvents(new GUIListener(this), this);
     }
 
     @Override
@@ -184,6 +192,29 @@ public abstract class BRPlugin extends JavaPlugin {
      */
     public void setCommands(BRCommands commands) {
         this.commands = commands;
+    }
+
+    /**
+     * @return the inventory GUIs
+     */
+    public Set<Inventory> getGUIs() {
+        return guis;
+    }
+
+    /**
+     * @param gui
+     * the GUI to add
+     */
+    public void addGUI(Inventory gui) {
+        guis.add(gui);
+    }
+
+    /**
+     * @param gui
+     * the GUI to remove
+     */
+    public void removeGUI(Inventory gui) {
+        guis.remove(gui);
     }
 
     protected void setDataFolder(File dataFolder) {
