@@ -67,7 +67,7 @@ public class CompatibilityHandler {
                 if (internal.getName().matches("net.minecraft.server.v1_[4-6]_.*")) {
                     internals = Internals.OUTDATED;
 
-                } else if (internal.getName().matches("net.minecraft.server.v1_[9-99]_R[2-99]")) {
+                } else if (internal.getName().matches("net.minecraft.server.v1_[9-99]_R[3-99]")) {
                     internals = Internals.NEW;
                 }
             }

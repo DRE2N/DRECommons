@@ -30,24 +30,34 @@ class InternalsProvider {
         switch (CompatibilityHandler.getInstance().getInternals()) {
             case v1_9_R2:
                 instance = new v1_9_R2();
+                break;
             case v1_9_R1:
                 instance = new v1_9_R1();
+                break;
             case v1_8_R3:
                 instance = new v1_8_R3();
+                break;
             case v1_8_R2:
                 instance = new v1_8_R2();
+                break;
             case v1_8_R1:
                 instance = new v1_8_R1();
+                break;
             case v1_7_R4:
                 instance = new v1_7_R4();
+                break;
             case v1_7_R3:
                 instance = new v1_7_R3();
+                break;
             case v1_7_R2:
                 instance = new v1_7_R2();
+                break;
             case v1_7_R1:
                 instance = new v1_7_R1();
+                break;
             default:
                 instance = new InternalsProvider();
+                break;
         }
 
         return instance;
