@@ -86,7 +86,7 @@ public enum GUIUtil {
      */
     public static Inventory createGUI(BRPlugin plugin, String title, List<ItemStack> buttons) {
         int rows = (int) Math.ceil(((double) buttons.size()) / 9);
-        Inventory gui = plugin.getServer().createInventory(null, (rows + 1) * 9, ChatColor.translateAlternateColorCodes('&', title));
+        Inventory gui = plugin.getServer().createInventory(null, rows * 9, ChatColor.translateAlternateColorCodes('&', title));
 
         int slot = 0;
         int row = 0;

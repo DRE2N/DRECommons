@@ -16,6 +16,7 @@
  */
 package io.github.dre2n.commons.util.guiutil;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -29,12 +30,21 @@ public class ButtonClickEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
 
+    private Player player;
     private Inventory gui;
     private int slot;
 
-    public ButtonClickEvent(Inventory gui, int slot) {
+    public ButtonClickEvent(Player player, Inventory gui, int slot) {
+        this.player = player;
         this.gui = gui;
         this.slot = slot;
+    }
+
+    /**
+     * @return the player who clicked
+     */
+    public Player getPlayer() {
+        return player;
     }
 
     /**

@@ -16,8 +16,10 @@
  */
 package io.github.dre2n.commons.util.guiutil;
 
+import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.javaplugin.BRPlugin;
 import java.util.Set;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -39,11 +41,19 @@ public class GUIListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!guis.contains(event.getInventory())) {
+        Inventory gui = event.getInventory();
+        int slot = event.getSlot();
+        if (!guis.contains(gui) || !(event.getWhoClicked() instanceof Player) || slot > gui.getSize() - 1 || slot == -999 || gui.getItem(slot) == null) {
             return;
         }
 
-        ButtonClickEvent buttonClickEvent = new ButtonClickEvent(event.getInventory(), event.getSlot());
+        if (CompatibilityHandler.getInstance().isSpigot()) {
+            if (!guis.contains(event.getClickedInventory())) {
+                return;
+            }
+        }
+
+        ButtonClickEvent buttonClickEvent = new ButtonClickEvent((Player) event.getWhoClicked(), gui, slot);
         plugin.getServer().getPluginManager().callEvent(buttonClickEvent);
         if (!buttonClickEvent.isCancelled()) {
             event.setCancelled(true);
