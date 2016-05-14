@@ -19,7 +19,7 @@ package io.github.dre2n.commons.util.guiutil;
 import io.github.dre2n.commons.javaplugin.BRPlugin;
 import java.util.Arrays;
 import java.util.List;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
