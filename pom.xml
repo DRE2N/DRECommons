@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.dre2n</groupId>
     <artifactId>commons</artifactId>
-    <version>0.6.3</version>
+    <version>0.7</version>
     <packaging>jar</packaging>
     <name>BRCommons</name>
     <url>https://dre2n.github.io</url>
@@ -48,7 +48,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
-                                    <shadedPattern>io.github.dre2n.metrics</shadedPattern>
+                                    <shadedPattern>io.github.dre2n.commons.mcstats</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

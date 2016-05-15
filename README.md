@@ -6,7 +6,6 @@ BlueRoseCommons contains shared code between DungeonsXL, ItemsXL, Holographic Me
 
 Features:
 * A more fancy message util (screen messages, centered messages, ...)
-* Item util (attributes, unbreakable items, skull owners by uuid, ...)
 * Util to get Players (not OfflinePlayers) even if they are not online
 * Some Java utils (enum util, number util , ...)
 * Internals manager to provide compatibility for multiple NMS package versions easily
