@@ -38,6 +38,12 @@ public abstract class BRCommand {
         MessageUtil.sendMessage(sender, ChatColor.RED + help);
     }
 
+    /**
+     * @param player
+     * the player to check
+     * @return
+     * if the player has permission to use the command
+     */
     public boolean playerHasPermissions(Player player) {
         if (player.hasPermission(permission) || permission == null) {
             return true;

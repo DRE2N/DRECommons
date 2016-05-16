@@ -18,14 +18,12 @@ package io.github.dre2n.commons.javaplugin;
 
 import io.github.dre2n.commons.command.BRCommands;
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
-import io.github.dre2n.commons.compatibility.Internals;
 import io.github.dre2n.commons.util.guiutil.GUIListener;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -36,6 +34,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
 /**
+ * The custom JavaPlugin class.
+ * It provides simplified registration of and access to features of Vault, Metrics and BRCommons.
+ *
  * @author Daniel Saukel
  */
 public abstract class BRPlugin extends JavaPlugin {
@@ -62,19 +63,13 @@ public abstract class BRPlugin extends JavaPlugin {
         manager = getServer().getPluginManager();
 
         MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
-        MessageUtil.log("&fInternals: [&e" + compat.getInternals() + "&f]");
-        MessageUtil.log("&fSpigot API: [&e" + compat.isSpigot() + "&f]");
-        MessageUtil.log("&fUUIDs: [&e" + compat.getVersion().useUUIDs() + "&f]");
-
-        if (compat.getInternals() == Internals.OUTDATED) {
-            MessageUtil.log("&cWarning: Your CraftBukkit version is deprecated. " + getName() + " does not support it.");
-        }
-
+        MessageUtil.log("&fInternals: [" + (settings.getInternals().contains(compat.getInternals()) ? "&a" : "&4") + compat.getInternals() + "&f]");
+        MessageUtil.log("&fSpigot API: [" + (!settings.requiresSpigot() || compat.isSpigot() ? "&a" : "&4") + compat.isSpigot() + "&f]");
+        MessageUtil.log("&fUUIDs: [" + (!settings.requiresUUID() || compat.getVersion().useUUIDs() ? "&a" : "&4") + compat.getVersion().useUUIDs() + "&f]");
         loadEconomyProvider();
-        MessageUtil.log("&fEconomy: [&e" + (economyProvider != null) + "&f]");
-
+        MessageUtil.log("&fEconomy: [" + (!settings.requiresVaultEconomy() || economyProvider != null ? "&a" : "&4") + (economyProvider != null) + "&f]");
         loadPermissionProvider();
-        MessageUtil.log("&fPermissions: [&e" + (permissionProvider != null) + "&f]");
+        MessageUtil.log("&fPermissions: [" + (!settings.requiresVaultPermissions() || permissionProvider != null ? "&a" : "&4") + (permissionProvider != null) + "&f]");
 
         if (settings.usesMetrics()) {
             try {

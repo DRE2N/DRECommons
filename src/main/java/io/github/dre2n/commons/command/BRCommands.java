@@ -24,9 +24,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * @author Daniel Saukel
- *
  * Note that DRE2N plugins are usually designed to have just one instance of BRCommands.
+ * One instance of BRCommands represents one command and contains all of its subcommands.
+ *
+ * @author Daniel Saukel
  */
 public class BRCommands {
 

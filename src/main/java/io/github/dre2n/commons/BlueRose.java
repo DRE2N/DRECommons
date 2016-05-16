@@ -21,6 +21,8 @@ import io.github.dre2n.commons.javaplugin.BRPlugin;
 import io.github.dre2n.commons.javaplugin.BRPluginSettings;
 
 /**
+ * This class is the default implementation of BRCommons for standalone functionality.
+ *
  * @author Daniel Saukel
  */
 public class BlueRose extends BRPlugin {

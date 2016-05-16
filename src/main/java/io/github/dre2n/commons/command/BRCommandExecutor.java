@@ -25,6 +25,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 /**
+ * The default CommandExecutor for all BRCommands.
+ *
  * @author Frank Baumann, Daniel Saukel
  */
 public class BRCommandExecutor implements CommandExecutor {
