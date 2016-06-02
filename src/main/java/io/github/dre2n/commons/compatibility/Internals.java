@@ -25,6 +25,7 @@ import java.util.Set;
  */
 public enum Internals {
 
+    v1_10_R1(true),
     v1_9_R2(true),
     v1_9_R1(true),
     v1_8_R3(true),
@@ -82,6 +83,8 @@ public enum Internals {
                 andHigher.add(Internals.v1_9_R1);
             case v1_9_R2:
                 andHigher.add(Internals.v1_9_R2);
+            case v1_10_R1:
+                andHigher.add(Internals.v1_10_R1);
             default:
                 andHigher.add(NEW);
         }

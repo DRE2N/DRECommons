@@ -31,6 +31,9 @@ class InternalsProvider {
 
     static InternalsProvider getInstance() {
         switch (CompatibilityHandler.getInstance().getInternals()) {
+            case v1_10_R1:
+                instance = new v1_10_R1();
+                break;
             case v1_9_R2:
                 instance = new v1_9_R2();
                 break;
