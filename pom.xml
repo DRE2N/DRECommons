@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.dre2n</groupId>
     <artifactId>commons</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0${buildNo}</version>
     <packaging>jar</packaging>
     <name>BRCommons</name>
     <url>https://dre2n.github.io</url>
@@ -43,12 +43,17 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.mcstats.*:*</include>
+                                    <include>org.inventivetalent.update</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
                                     <shadedPattern>io.github.dre2n.commons.mcstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.inventivetalent.update</pattern>
+                                    <shadedPattern>io.github.dre2n.commons.update</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -77,6 +82,12 @@
             <version>R8-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.inventivetalent.update</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -86,6 +97,10 @@
         <repository>
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>
+        </repository>
+        <repository>
+            <id>inventive-repo</id>
+            <url>http://repo.inventivetalent.org/content/groups/public/</url>
         </repository>
     </repositories>
 </project>

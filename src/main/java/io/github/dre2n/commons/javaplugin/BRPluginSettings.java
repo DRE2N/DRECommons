@@ -31,6 +31,7 @@ public class BRPluginSettings {
     private boolean economy;
     private boolean permissions;
     private boolean metrics;
+    private int resourceId;
     private Set<Internals> internals;
 
     public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Set<Internals> internals) {
@@ -43,12 +44,17 @@ public class BRPluginSettings {
     }
 
     public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Internals... internals) {
-        this.spigot = spigot;
-        this.uuid = uuid;
-        this.economy = economy;
-        this.permissions = permissions;
-        this.metrics = metrics;
-        this.internals = new HashSet<>(Arrays.asList(internals));
+        this(spigot, uuid, economy, permissions, metrics, new HashSet<>(Arrays.asList(internals)));
+    }
+
+    public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, int resourceId, Set<Internals> internals) {
+        this(spigot, uuid, economy, permissions, metrics, internals);
+        this.resourceId = resourceId;
+    }
+
+    public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, int resourceId, Internals... internals) {
+        this(spigot, uuid, economy, permissions, metrics, internals);
+        this.resourceId = resourceId;
     }
 
     /**
@@ -89,6 +95,22 @@ public class BRPluginSettings {
      */
     public boolean usesMetrics() {
         return metrics;
+    }
+
+    /**
+     * @return
+     * if there is a resource thread at SpigotMC.org
+     */
+    public boolean isSpigotMCResource() {
+        return resourceId != -1;
+    }
+
+    /**
+     * @return
+     * the SpigotMC.org resource ID or -1 if there is no thread
+     */
+    public int getSpigotMCResourceId() {
+        return resourceId;
     }
 
     /**

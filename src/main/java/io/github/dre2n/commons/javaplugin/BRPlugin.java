@@ -31,6 +31,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.inventivetalent.update.spigot.SpigotUpdater;
 import org.mcstats.Metrics;
 
 /**
@@ -62,14 +63,8 @@ public abstract class BRPlugin extends JavaPlugin {
         compat = CompatibilityHandler.getInstance();
         manager = getServer().getPluginManager();
 
-        MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
-        MessageUtil.log("&fInternals: [" + (settings.getInternals().contains(compat.getInternals()) ? "&a" : "&4") + compat.getInternals() + "&f]");
-        MessageUtil.log("&fSpigot API: [" + (!settings.requiresSpigot() || compat.isSpigot() ? "&a" : "&4") + compat.isSpigot() + "&f]");
-        MessageUtil.log("&fUUIDs: [" + (!settings.requiresUUID() || compat.getVersion().useUUIDs() ? "&a" : "&4") + compat.getVersion().useUUIDs() + "&f]");
         loadEconomyProvider();
-        MessageUtil.log("&fEconomy: [" + (!settings.requiresVaultEconomy() || economyProvider != null ? "&a" : "&4") + (economyProvider != null) + "&f]");
         loadPermissionProvider();
-        MessageUtil.log("&fPermissions: [" + (!settings.requiresVaultPermissions() || permissionProvider != null ? "&a" : "&4") + (permissionProvider != null) + "&f]");
 
         if (settings.usesMetrics()) {
             try {
@@ -78,11 +73,25 @@ public abstract class BRPlugin extends JavaPlugin {
             } catch (IOException exception) {
             }
         }
-        MessageUtil.log("&fMetrics: [&e" + (metrics != null) + "&f]");
 
-        MessageUtil.log("&f[&9###############################&f]");
+        if (settings.isSpigotMCResource()) {
+            try {
+                new SpigotUpdater(this, settings.getSpigotMCResourceId());
+            } catch (IOException exception) {
+            }
+        }
 
         manager.registerEvents(new GUIListener(this), this);
+
+        MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
+        MessageUtil.log("&fInternals: [" + (settings.getInternals().contains(compat.getInternals()) ? "&a" : "&4") + compat.getInternals() + "&f]");
+        MessageUtil.log("&fSpigot API: [" + (!settings.requiresSpigot() || compat.isSpigot() ? "&a" : "&4") + compat.isSpigot() + "&f]");
+        MessageUtil.log("&fUUIDs: [" + (!settings.requiresUUID() || compat.getVersion().useUUIDs() ? "&a" : "&4") + compat.getVersion().useUUIDs() + "&f]");
+        MessageUtil.log("&fEconomy: [" + (!settings.requiresVaultEconomy() || economyProvider != null ? "&a" : "&4") + (economyProvider != null) + "&f]");
+        MessageUtil.log("&fPermissions: [" + (!settings.requiresVaultPermissions() || permissionProvider != null ? "&a" : "&4") + (permissionProvider != null) + "&f]");
+        MessageUtil.log("&fMetrics: [&e" + (metrics != null) + "&f]");
+        MessageUtil.log("&fSpigotMC ID: [&e" + (settings.isSpigotMCResource() ? settings.getSpigotMCResourceId() : "none") + "&f]");
+        MessageUtil.log("&f[&9###############################&f]");
     }
 
     @Override
