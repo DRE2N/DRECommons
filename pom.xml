@@ -7,6 +7,9 @@
     <name>BRCommons</name>
     <url>https://dre2n.github.io</url>
     <description>Shared code between DungeonsXL, ItemsXL, Holographic Menus and other Bukkit plugins by DRE2N.</description>
+    <properties>
+        <buildNo></buildNo>
+    </properties>
     <build>
         <finalName>commons-${project.version}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
