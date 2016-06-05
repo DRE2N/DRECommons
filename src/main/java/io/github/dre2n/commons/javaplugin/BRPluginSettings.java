@@ -31,7 +31,7 @@ public class BRPluginSettings {
     private boolean economy;
     private boolean permissions;
     private boolean metrics;
-    private int resourceId;
+    private int resourceId = -1;
     private Set<Internals> internals;
 
     public BRPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Set<Internals> internals) {
