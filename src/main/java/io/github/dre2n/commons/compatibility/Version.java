@@ -28,7 +28,7 @@ import org.bukkit.Bukkit;
  */
 public enum Version {
 
-    MC1_10_2(true, Internals.UNKNOWN),
+    MC1_10_2(true, v1_10_R1),
     MC1_10_1(true, Internals.UNKNOWN),
     MC1_10(true, v1_10_R1),
     MC1_9_4(true, v1_9_R2),
