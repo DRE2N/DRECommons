@@ -25,6 +25,7 @@ import java.util.Set;
  */
 public enum Internals {
 
+    v1_11_R1(true),
     v1_10_R1(true),
     v1_9_R2(true),
     v1_9_R1(true),
