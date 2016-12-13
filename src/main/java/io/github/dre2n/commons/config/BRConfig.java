@@ -19,6 +19,7 @@ package io.github.dre2n.commons.config;
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import java.io.File;
 import java.io.IOException;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -54,14 +55,34 @@ public abstract class BRConfig {
             }
 
         } else {
-            config = YamlConfiguration.loadConfiguration(file);
-            this.configVersion = config.getInt("configVersion");
-
-            if (this.configVersion != CONFIG_VERSION) {
-                MessageUtil.log("The configuration file " + file.getName() + " seems to be outdated.");
-                MessageUtil.log("Adding missing values...");
+            config = new YamlConfiguration();
+            try {
+                config.load(file);
+            } catch (IOException | InvalidConfigurationException exception) {
+                MessageUtil.log("&4The configuration file &6" + file.getPath() + " &4seems to be erroneous.");
+                MessageUtil.log("&4This is not a bug. Try to fix the configuration file with &6http://yamllint.com&4.");
+                String path = file.getPath();
+                file.renameTo(new File(path + "_backup_" + System.currentTimeMillis()));
+                try {
+                    file.createNewFile();
+                    config.load(file);
+                } catch (IOException | InvalidConfigurationException exception2) {
+                    exception2.printStackTrace();
+                }
+                MessageUtil.log("&4The file has been regenerated. A backup of the erroneous file has been saved.");
 
                 initialize = true;
+            }
+
+            this.configVersion = config.getInt("configVersion");
+
+            if (this.configVersion != CONFIG_VERSION && !initialize) {
+                MessageUtil.log("&4The configuration file &6" + file.getPath() + " &4seems to be outdated.");
+                MessageUtil.log("&4Adding missing values...");
+                initialize = true;
+            }
+
+            if (initialize) {
                 config.set("configVersion", CONFIG_VERSION);
                 save();
             }
@@ -96,7 +117,7 @@ public abstract class BRConfig {
         try {
             config.save(file);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            MessageUtil.log("&4Could not save &6" + file.getPath() + "&4...");
         }
     }
 
