@@ -205,6 +205,8 @@ public enum Version {
                 andHigher.add(Version.MC1_10_1);
             case MC1_10_2:
                 andHigher.add(Version.MC1_10_2);
+            case MC1_11:
+                andHigher.add(Version.MC1_11);
             default:
                 andHigher.add(UNKNOWN);
         }

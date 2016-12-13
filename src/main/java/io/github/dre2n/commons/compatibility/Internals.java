@@ -86,6 +86,8 @@ public enum Internals {
                 andHigher.add(Internals.v1_9_R2);
             case v1_10_R1:
                 andHigher.add(Internals.v1_10_R1);
+            case v1_11_R1:
+                andHigher.add(Internals.v1_11_R1);
             default:
                 andHigher.add(NEW);
         }
