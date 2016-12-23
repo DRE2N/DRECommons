@@ -50,7 +50,10 @@ public class MessageUtil {
      * Supports color codes.
      */
     public static void broadcastMessage(String message) {
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
+        String toSend = ChatColor.translateAlternateColorCodes('&', message);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(toSend);
+        }
     }
 
     /**
@@ -58,7 +61,10 @@ public class MessageUtil {
      * Supports color codes.
      */
     public static void broadcastCenteredMessage(String message) {
-        Bukkit.broadcastMessage(DefaultFontInfo.center(message));
+        String toSend = DefaultFontInfo.center(message);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(toSend);
+        }
     }
 
     /**

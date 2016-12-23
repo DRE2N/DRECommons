@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.dre2n</groupId>
     <artifactId>commons</artifactId>
-    <version>1.0.4${buildNo}</version>
+    <version>1.0.5${buildNo}</version>
     <packaging>jar</packaging>
     <name>BRCommons</name>
     <url>https://dre2n.github.io</url>
