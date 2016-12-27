@@ -65,7 +65,7 @@ public class BRCommands {
      */
     public BRCommand getCommand(String commandName) {
         for (BRCommand command : commands) {
-            if (command.getCommand().equals(commandName)) {
+            if (command.getCommand().equalsIgnoreCase(commandName)) {
                 return command;
             }
         }
