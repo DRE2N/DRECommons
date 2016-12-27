@@ -111,6 +111,14 @@ public abstract class BRConfig {
     }
 
     /**
+     * Initial setup
+     */
+    public void initialize() {
+        config.set("configVersion", CONFIG_VERSION);
+        save();
+    }
+
+    /**
      * Save the configuration to the file
      */
     public void save() {
@@ -122,11 +130,6 @@ public abstract class BRConfig {
     }
 
     /* Abstracts */
-    /**
-     * Initial setup
-     */
-    public abstract void initialize();
-
     /**
      * Load the config from file
      */
