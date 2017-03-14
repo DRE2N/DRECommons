@@ -20,8 +20,6 @@ import net.minecraft.server.v1_11_R1.IChatBaseComponent;
 import net.minecraft.server.v1_11_R1.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
 import net.minecraft.server.v1_11_R1.PacketPlayOutHeldItemSlot;
-import net.minecraft.server.v1_11_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_11_R1.PacketPlayOutTitle.EnumTitleAction;
 import net.minecraft.server.v1_11_R1.PlayerConnection;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,18 +44,7 @@ class v1_11_R1 extends InternalsProvider {
     void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
         title = ChatColor.translateAlternateColorCodes('&', title);
-
-        IChatBaseComponent subtitleComponent = ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
-        IChatBaseComponent titleComponent = ChatSerializer.a("{\"text\": \"" + title + "\"}");
-
-        PacketPlayOutTitle subtitlePacket = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleComponent);
-        PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleComponent);
-        PacketPlayOutTitle timesPacket = new PacketPlayOutTitle(fadeIn, show, fadeOut);
-
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(subtitlePacket);
-        connection.sendPacket(titlePacket);
-        connection.sendPacket(timesPacket);
+        player.sendTitle(title, subtitle, fadeIn, show, fadeOut);
     }
 
     @Override

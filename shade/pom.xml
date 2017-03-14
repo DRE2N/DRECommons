@@ -47,6 +47,7 @@
                                 <includes>
                                     <include>org.mcstats.*:*</include>
                                     <include>org.inventivetalent.update</include>
+                                    <include>io.github.dre2n:commons-*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -83,6 +84,48 @@
         <dependency>
             <groupId>io.github.dre2n</groupId>
             <artifactId>commons-craftbukkit_1_11_R1</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-craftbukkit_1_10_R1</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-craftbukkit_1_9_R2</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-craftbukkit_1_9_R1</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-craftbukkit_1_8_R3</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-craftbukkit_1_8_R2</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-craftbukkit_1_8_R1</artifactId>
             <version>${parent.version}</version>
             <type>jar</type>
             <scope>compile</scope>
