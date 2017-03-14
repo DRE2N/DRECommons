@@ -33,6 +33,8 @@ public class MessageUtil {
 
     static {
         switch (CompatibilityHandler.getInstance().getInternals()) {
+            case GLOWSTONE:
+                internals = new Glowstone();
             case v1_11_R1:
                 internals = new v1_11_R1(BRPlugin.getInstance());
                 break;

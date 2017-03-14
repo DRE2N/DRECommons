@@ -83,6 +83,13 @@
         </dependency>
         <dependency>
             <groupId>io.github.dre2n</groupId>
+            <artifactId>commons-glowstone</artifactId>
+            <version>${parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dre2n</groupId>
             <artifactId>commons-craftbukkit_1_11_R1</artifactId>
             <version>${parent.version}</version>
             <type>jar</type>
