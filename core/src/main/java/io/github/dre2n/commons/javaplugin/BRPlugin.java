@@ -184,23 +184,24 @@ public abstract class BRPlugin extends JavaPlugin {
 
     /**
      * @return
-     * the commands of the plugin
+     * the CommandCache of the plugin
      */
-    public BRCommandCache getCommands() {
+    public BRCommandCache getCommandCache() {
         return commands;
     }
 
     /**
-     * @param command
-     * the command to set
+     * @param commands
+     * the CommandCache to set
      */
-    public void setCommands(BRCommandCache commands) {
+    public void setCommandCache(BRCommandCache commands) {
         this.commands = commands;
     }
 
     /**
      * @return the inventory GUIs
      */
+    @Deprecated
     public Set<Inventory> getGUIs() {
         return guis;
     }
@@ -209,6 +210,7 @@ public abstract class BRPlugin extends JavaPlugin {
      * @param gui
      * the GUI to add
      */
+    @Deprecated
     public void addGUI(Inventory gui) {
         guis.add(gui);
     }
@@ -217,6 +219,7 @@ public abstract class BRPlugin extends JavaPlugin {
      * @param gui
      * the GUI to remove
      */
+    @Deprecated
     public void removeGUI(Inventory gui) {
         guis.remove(gui);
     }

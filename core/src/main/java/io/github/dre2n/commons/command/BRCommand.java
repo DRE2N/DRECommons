@@ -17,6 +17,9 @@
 package io.github.dre2n.commons.command;
 
 import io.github.dre2n.commons.util.messageutil.MessageUtil;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,6 +30,7 @@ import org.bukkit.entity.Player;
 public abstract class BRCommand {
 
     private String command;
+    private Set<String> aliases = new HashSet<>();
     private int minArgs;
     private int maxArgs;
     private String help;
@@ -66,6 +70,22 @@ public abstract class BRCommand {
      */
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    /**
+     * @return
+     * the command aliases
+     */
+    public Set<String> getAliases() {
+        return aliases;
+    }
+
+    /**
+     * @param aliases
+     * the command aliases to set
+     */
+    public void setAliases(String... aliases) {
+        this.aliases.addAll(Arrays.asList(aliases));
     }
 
     /**

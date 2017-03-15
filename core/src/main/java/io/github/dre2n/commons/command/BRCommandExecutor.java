@@ -42,7 +42,7 @@ public class BRCommandExecutor implements CommandExecutor {
         BRCommand command;
 
         if (args.length > 0) {
-            command = plugin.getCommands().getCommand(args[0]);
+            command = plugin.getCommandCache().getCommand(args[0]);
 
             if (command != null) {
                 if (sender instanceof ConsoleCommandSender) {
@@ -78,7 +78,7 @@ public class BRCommandExecutor implements CommandExecutor {
             }
         }
 
-        command = plugin.getCommands().getCommand("main");
+        command = plugin.getCommandCache().getCommand("main");
         if (command != null) {
             command.onExecute(null, sender);
 

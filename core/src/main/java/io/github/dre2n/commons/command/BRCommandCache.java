@@ -65,7 +65,7 @@ public class BRCommandCache {
      */
     public BRCommand getCommand(String commandName) {
         for (BRCommand command : commands) {
-            if (command.getCommand().equalsIgnoreCase(commandName)) {
+            if (command.getCommand().equalsIgnoreCase(commandName) || command.getAliases().contains(commandName)) {
                 return command;
             }
         }
