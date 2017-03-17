@@ -31,14 +31,14 @@ public class CompatibilityHandler {
 
     public CompatibilityHandler() {
         instance = this;
-
         version = Version.getByServer();
 
         if (Package.getPackage("net.glowstone") != null) {
             internals = Internals.GLOWSTONE;
 
-            /*} else if (Package.getPackage("net.minecraft.server.v1_11_R1") != null) {
-            internals = Internals.v1_11_R1;*/
+        } else if (Package.getPackage("net.minecraft.server.v1_11_R1") != null) {
+            internals = Internals.v1_11_R1;
+
         } else if (Package.getPackage("net.minecraft.server.v1_10_R1") != null) {
             internals = Internals.v1_10_R1;
 
