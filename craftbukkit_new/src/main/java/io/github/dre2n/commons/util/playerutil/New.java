@@ -16,6 +16,7 @@
  */
 package io.github.dre2n.commons.util.playerutil;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ class New extends InternalsProvider {
     String NET_MINECRAFT_SERVER = "net.minecraft.server.";
 
     Class ENTITYPLAYER;
-    Method ENTITYPLAYER_GET_PING;
+    Field ENTITYPLAYER_PING;
 
     Class CRAFTPLAYER;
     Method CRAFTPLAYER_GET_HANDLE;
@@ -40,12 +41,12 @@ class New extends InternalsProvider {
             NET_MINECRAFT_SERVER += version;
 
             ENTITYPLAYER = Class.forName(NET_MINECRAFT_SERVER + ".EntityPlayer");
-            ENTITYPLAYER_GET_PING = ENTITYPLAYER.getDeclaredMethod("getPing");
+            ENTITYPLAYER_PING = ENTITYPLAYER.getDeclaredField("ping");
 
             CRAFTPLAYER = Class.forName(ORG_BUKKIT_CRAFTBUKKIT + ".entity.CraftPlayer");
             CRAFTPLAYER_GET_HANDLE = CRAFTPLAYER.getDeclaredMethod("getHandle");
 
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException exception) {
+        } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException | SecurityException exception) {
         }
     }
 
@@ -53,7 +54,7 @@ class New extends InternalsProvider {
     int getPing(Player player) {
         try {
             Object entityPlayer = CRAFTPLAYER_GET_HANDLE.invoke(player);
-            return (int) ENTITYPLAYER_GET_PING.invoke(entityPlayer);
+            return ENTITYPLAYER_PING.getInt(entityPlayer);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
             return 0;
         }

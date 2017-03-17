@@ -16,6 +16,8 @@
  */
 package io.github.dre2n.commons.compatibility;
 
+import org.bukkit.Bukkit;
+
 /**
  * @author Daniel Saukel
  */
@@ -35,9 +37,8 @@ public class CompatibilityHandler {
         if (Package.getPackage("net.glowstone") != null) {
             internals = Internals.GLOWSTONE;
 
-        } else if (Package.getPackage("net.minecraft.server.v1_11_R1") != null) {
-            internals = Internals.v1_11_R1;
-
+            /*} else if (Package.getPackage("net.minecraft.server.v1_11_R1") != null) {
+            internals = Internals.v1_11_R1;*/
         } else if (Package.getPackage("net.minecraft.server.v1_10_R1") != null) {
             internals = Internals.v1_10_R1;
 
@@ -69,13 +70,11 @@ public class CompatibilityHandler {
             internals = Internals.v1_7_R1;
 
         } else {
-            for (Package internal : Package.getPackages()) {
-                if (internal.getName().matches("net.minecraft.server.v1_[4-6]_.*")) {
-                    internals = Internals.OUTDATED;
-
-                } else if (internal.getName().matches("net.minecraft.server.v1_[9-99]_R[3-99]")) {
-                    internals = Internals.NEW;
-                }
+            Package server = Bukkit.getServer().getClass().getPackage();
+            if (server.getName().matches("org.bukkit.craftbukkit.v1_[4-6]_.*")) {
+                internals = Internals.OUTDATED;
+            } else if (server.getName().matches("org.bukkit.craftbukkit.v1_[1-9][1-9]_R[1-9]")) {
+                internals = Internals.NEW;
             }
         }
 
