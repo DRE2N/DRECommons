@@ -35,6 +35,9 @@ public class MessageUtil {
         switch (CompatibilityHandler.getInstance().getInternals()) {
             case GLOWSTONE:
                 internals = new Glowstone();
+            case NEW:
+                internals = new New();
+                break;
             case v1_11_R1:
                 internals = new v1_11_R1(BRPlugin.getInstance());
                 break;

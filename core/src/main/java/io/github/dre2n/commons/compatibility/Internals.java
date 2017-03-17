@@ -19,6 +19,7 @@ package io.github.dre2n.commons.compatibility;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.bukkit.Bukkit;
 
 /**
  * @author Daniel Saukel
@@ -53,6 +54,15 @@ public enum Internals {
      */
     public boolean usesCraftBukkitInternals() {
         return craftBukkitInternals;
+    }
+
+    @Override
+    public String toString() {
+        if (this == NEW) {
+            return Bukkit.getServer().getClass().getPackage().getName().split(".")[3];
+        } else {
+            return name();
+        }
     }
 
     /* Statics */

@@ -17,6 +17,7 @@
 package io.github.dre2n.commons.util.playerutil;
 
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
+import io.github.dre2n.commons.compatibility.Internals;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -29,6 +30,9 @@ public class PlayerUtil {
 
     static {
         switch (CompatibilityHandler.getInstance().getInternals()) {
+            case NEW:
+                internals = new New(Internals.NEW.toString());
+                break;
             case v1_11_R1:
                 internals = new v1_11_R1();
                 break;
