@@ -92,7 +92,7 @@ public class MessageUtil {
     }
 
     /**
-     * Broadcasts basecomponents to all players.
+     * Broadcasts BaseComponents to all players.
      * Supports color codes.
      */
     public static void broadcastMessage(BaseComponent... message) {
@@ -212,11 +212,35 @@ public class MessageUtil {
     }
 
     /**
+     * Sends a BaseComponent message to a specific player (or another CommandSender).
+     * Supports color codes.
+     */
+    public static void sendMessage(CommandSender sender, BaseComponent... message) {
+        if (sender instanceof Player) {
+            ((Player) sender).spigot().sendMessage(message);
+        } else {
+            sender.sendMessage(TextComponent.toLegacyText(message));
+        }
+    }
+
+    /**
      * Sends a perfectly centered message to a specific player (or another CommandSender).
      * Supports color codes.
      */
     public static void sendCenteredMessage(CommandSender sender, String message) {
         sender.sendMessage(DefaultFontInfo.center(message));
+    }
+
+    /**
+     * Sends a perfectly centered BaseComponent message to a specific player (or another CommandSender).
+     * Supports color codes.
+     */
+    public static void sendCenteredMessage(CommandSender sender, BaseComponent... message) {
+        if (sender instanceof Player) {
+            ((Player) sender).spigot().sendMessage(DefaultFontInfo.center(message));
+        } else {
+            sender.sendMessage(TextComponent.toLegacyText(message));
+        }
     }
 
     /**
