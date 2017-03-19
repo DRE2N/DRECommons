@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <name>BRCommons</name>
     <url>https://dre2n.github.io</url>
-    <description>Create custom dungeons and adventure maps with ease!Shared code between DungeonsXL, ItemsXL, Holographic Menus and other Bukkit plugins by DRE2N.</description>
+    <description>Shared code between DungeonsXL, ItemsXL, Holographic Menus and other Bukkit plugins by DRE2N.</description>
     <properties>
         <buildNo></buildNo>
         <skipTests>true</skipTests>

@@ -18,6 +18,8 @@ package io.github.dre2n.commons.util.messageutil;
 
 import io.github.dre2n.commons.compatibility.CompatibilityHandler;
 import io.github.dre2n.commons.javaplugin.BRPlugin;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -90,6 +92,16 @@ public class MessageUtil {
     }
 
     /**
+     * Broadcasts basecomponents to all players.
+     * Supports color codes.
+     */
+    public static void broadcastMessage(BaseComponent... message) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.spigot().sendMessage(message);
+        }
+    }
+
+    /**
      * Broadcasts a perfectly centered message to all players.
      * Supports color codes.
      */
@@ -97,6 +109,17 @@ public class MessageUtil {
         String toSend = DefaultFontInfo.center(message);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(toSend);
+        }
+    }
+
+    /**
+     * Broadcasts a perfectly centered BaseComponent message to all players.
+     * Supports color codes.
+     */
+    public static void broadcastCenteredMessage(BaseComponent... message) {
+        BaseComponent[] toSend = DefaultFontInfo.center(message);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.spigot().sendMessage(toSend);
         }
     }
 

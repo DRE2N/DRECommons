@@ -16,6 +16,10 @@
  */
 package io.github.dre2n.commons.util.messageutil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 
 /**
@@ -177,6 +181,24 @@ public enum DefaultFontInfo {
      * Method to add spaces to a String to show up in the middle of the chat
      */
     public static String center(String message) {
+        return getCenterSpaces(message) + ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    /**
+     * Method to add spaces to BaseComponents to show up in the middle of the chat
+     */
+    public static BaseComponent[] center(BaseComponent... message) {
+        String legacy = new String();
+        for (BaseComponent component : message) {
+            legacy += component.toLegacyText();
+        }
+        TextComponent spaces = new TextComponent(getCenterSpaces(legacy));
+        ArrayList<BaseComponent> list = new ArrayList<>(Arrays.asList(message));
+        list.add(0, spaces);
+        return list.toArray(new BaseComponent[]{});
+    }
+
+    public static String getCenterSpaces(String message) {
         if (message == null || message.isEmpty()) {
             return "";
         }
@@ -218,7 +240,7 @@ public enum DefaultFontInfo {
             compensated += spaceLength;
         }
 
-        return sb.toString() + ChatColor.translateAlternateColorCodes('&', message);
+        return sb.toString();
     }
 
 }
