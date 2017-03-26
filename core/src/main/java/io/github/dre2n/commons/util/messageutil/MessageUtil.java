@@ -38,7 +38,7 @@ public class MessageUtil {
             case GLOWSTONE:
                 internals = new Glowstone();
             case NEW:
-                internals = new New();
+                internals = new New(CompatibilityHandler.getInstance().isSpigot());
                 break;
             case v1_11_R1:
                 internals = new v1_11_R1(BRPlugin.getInstance());

@@ -16,6 +16,8 @@
  */
 package io.github.dre2n.commons.util.messageutil;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -23,6 +25,12 @@ import org.bukkit.entity.Player;
  * @author Daniel Saukel
  */
 class New extends InternalsProvider {
+
+    boolean spigot;
+
+    New(boolean isSpigot) {
+        spigot = isSpigot;
+    }
 
     @Override
     void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
@@ -34,7 +42,11 @@ class New extends InternalsProvider {
     @Override
     void sendActionBarMessage(Player player, String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
-        player.sendTitle(message, new String(), 20, 60, 20);
+        if (spigot) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+        } else {
+            player.sendMessage(message);
+        }
     }
 
     @Override
