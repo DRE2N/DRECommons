@@ -31,7 +31,6 @@ public class CompatibilityHandler {
 
     public CompatibilityHandler() {
         instance = this;
-        version = Version.getByServer();
 
         if (Package.getPackage("net.glowstone") != null) {
             internals = Internals.GLOWSTONE;
@@ -82,7 +81,12 @@ public class CompatibilityHandler {
             internals = Internals.UNKNOWN;
         }
 
-        spigot = Package.getPackage("org.spigotmc") != null;
+        version = Version.getByServer();
+        try {
+            spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot") != null;
+        } catch (NoSuchMethodException | SecurityException ex) {
+            spigot = false;
+        }
     }
 
     /**

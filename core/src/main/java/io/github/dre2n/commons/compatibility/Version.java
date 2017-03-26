@@ -116,18 +116,26 @@ public enum Version {
      */
     public static Version getByServer() {
         try {
-            String versionString = Bukkit.getServer().getVersion().split("\\(MC: ")[1].split("\\)")[0];
+            if (Package.getPackage("org.bukkit.craftbukkit") != null) {
+                String versionString = Bukkit.getServer().getVersion().split("\\(MC: ")[1].split("\\)")[0];
+                for (Version version : Version.values()) {
+                    if (version.toString().equals(versionString)) {
+                        return version;
+                    }
+                }
 
-            for (Version version : Version.values()) {
-                if (version.toString().equals(versionString)) {
-                    return version;
+            } else if (Package.getPackage("net.glowstone") != null) {
+                String versionString = Bukkit.getServer().getVersion().split("-")[2];
+                for (Version version : Version.values()) {
+                    if (version.name().replaceAll("_", ".").equals(versionString)) {
+                        return version;
+                    }
                 }
             }
 
         } catch (ArrayIndexOutOfBoundsException exception) {
-            MessageUtil.log("&4This Bukkit implementation does not use a known version format.");
         }
-
+        MessageUtil.log("&4This Bukkit implementation does not use a known version format.");
         return UNKNOWN;
     }
 
