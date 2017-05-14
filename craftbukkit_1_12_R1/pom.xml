@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.dre2n</groupId>
-    <artifactId>commons-craftbukkit_new</artifactId>
+    <artifactId>commons-craftbukkit_1_12_R1</artifactId>
     <version>${parent.version}</version>
     <packaging>jar</packaging>
-    <name>commons-craftbukkit_new</name>
+    <name>commons-craftbukkit_1_12_R1</name>
     <parent>
         <groupId>io.github.dre2n</groupId>
         <artifactId>commons</artifactId>
@@ -23,6 +23,12 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.12-pre2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>io.github.dre2n</groupId>
             <artifactId>commons-abstract</artifactId>

@@ -40,6 +40,9 @@ public class MessageUtil {
             case NEW:
                 internals = new New(CompatibilityHandler.getInstance().isSpigot());
                 break;
+            case v1_12_R1:
+                internals = new v1_12_R1(BRPlugin.getInstance());
+                break;
             case v1_11_R1:
                 internals = new v1_11_R1(BRPlugin.getInstance());
                 break;

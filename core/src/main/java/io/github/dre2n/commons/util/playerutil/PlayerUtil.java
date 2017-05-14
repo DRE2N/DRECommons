@@ -33,6 +33,9 @@ public class PlayerUtil {
             case NEW:
                 internals = new New(Internals.NEW.toString());
                 break;
+            case v1_12_R1:
+                internals = new v1_12_R1();
+                break;
             case v1_11_R1:
                 internals = new v1_11_R1();
                 break;
