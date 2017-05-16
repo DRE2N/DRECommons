@@ -8,14 +8,17 @@
     <parent>
         <groupId>io.github.dre2n</groupId>
         <artifactId>commons</artifactId>
-        <version>2.0.1</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
     <build>
+        <directory>../target</directory>
+        <finalName>commons-${project.version}</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
                 <filtering>true</filtering>
-                <directory>src/main/resources/</directory>
+                <directory>${basedir}/src/main/resources/</directory>
                 <includes>
                     <include>plugin.yml</include>
                 </includes>
@@ -30,6 +33,38 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.mcstats.*:*</include>
+                                    <include>org.inventivetalent.update</include>
+                                    <include>io.github.dre2n:commons-*</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.mcstats</pattern>
+                                    <shadedPattern>io.github.dre2n.commons.mcstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.inventivetalent.update</pattern>
+                                    <shadedPattern>io.github.dre2n.commons.update</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -43,13 +78,6 @@
         <dependency>
             <groupId>io.github.dre2n</groupId>
             <artifactId>commons-glowstone</artifactId>
-            <version>${parent.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.dre2n</groupId>
-            <artifactId>commons-craftbukkit_new</artifactId>
             <version>${parent.version}</version>
             <type>jar</type>
             <scope>compile</scope>

@@ -16,7 +16,7 @@
  */
 package io.github.dre2n.commons.config;
 
-import io.github.dre2n.commons.util.messageutil.MessageUtil;
+import io.github.dre2n.commons.chat.MessageUtil;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -50,7 +50,7 @@ public class MessageConfig {
                 try {
                     config = (FileConfiguration) messages.getDeclaredMethod("toConfig").invoke(null);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-                    MessageUtil.log("[BRCommons] &cAn error occurred: Could not access method &rtoConfig&c.");
+                    MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
                 }
                 config.save(file);
 
@@ -76,7 +76,7 @@ public class MessageConfig {
                 try {
                     message = (Message) messages.getDeclaredMethod("getByIdentifier", String.class).invoke(null, key);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-                    MessageUtil.log("[BRCommons] &cAn error occurred: Could not access method &rgetByIdentifier&c.");
+                    MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rgetByIdentifier&c.");
                 }
                 if (message != null) {
                     message.setMessage(config.getString(key));
@@ -95,7 +95,7 @@ public class MessageConfig {
         try {
             freshConfig = (FileConfiguration) messages.getDeclaredMethod("toConfig").invoke(null);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-            MessageUtil.log("[BRCommons] &cAn error occurred: Could not access method &rtoConfig&c.");
+            MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
         }
 
         if (!freshConfig.getValues(false).equals(config.getValues(false))) {
@@ -121,7 +121,7 @@ public class MessageConfig {
             try {
                 ((FileConfiguration) messages.getDeclaredMethod("toConfig").invoke(null)).save(oldMessages);
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-                MessageUtil.log("[BRCommons] &cAn error occurred: Could not access method &rtoConfig&c.");
+                MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
             }
 
         } catch (IOException exception) {
