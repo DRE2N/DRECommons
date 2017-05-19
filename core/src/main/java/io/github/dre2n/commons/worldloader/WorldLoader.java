@@ -31,6 +31,9 @@ public class WorldLoader {
 
     static {
         switch (CompatibilityHandler.getInstance().getInternals()) {
+            case v1_12_R1:
+                internals = new v1_12_R1();
+                break;
             case v1_11_R1:
                 internals = new v1_11_R1();
                 break;
@@ -42,6 +45,15 @@ public class WorldLoader {
                 break;
             case v1_9_R1:
                 internals = new v1_9_R1();
+                break;
+            case v1_8_R3:
+                internals = new v1_8_R3();
+                break;
+            case v1_8_R2:
+                internals = new v1_8_R2();
+                break;
+            case v1_8_R1:
+                internals = new v1_8_R1();
                 break;
             default:
                 internals = new InternalsProvider();
