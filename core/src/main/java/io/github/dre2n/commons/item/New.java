@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * @author Daniel Saukel
  */
-public class New extends InternalsProvider {
+class New extends InternalsProvider {
 
     @Override
     ItemStack setAttribute(ItemStack itemStack, String attributeName, double amount, byte operation, Set<String> slots) {
