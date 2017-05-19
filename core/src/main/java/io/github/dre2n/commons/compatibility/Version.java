@@ -16,8 +16,8 @@
  */
 package io.github.dre2n.commons.compatibility;
 
+import io.github.dre2n.commons.chat.MessageUtil;
 import static io.github.dre2n.commons.compatibility.Internals.*;
-import io.github.dre2n.commons.util.messageutil.MessageUtil;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
