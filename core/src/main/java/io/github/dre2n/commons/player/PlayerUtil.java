@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.dre2n.commons.misc;
+package io.github.dre2n.commons.player;
 
+import io.github.dre2n.commons.misc.ReflectionUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 import org.bukkit.Bukkit;
@@ -24,10 +25,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
- * @deprecated Use {@link io.github.dre2n.commons.player.PlayerUtil} instead
  * @author Frank Baumann, Daniel Saukel
  */
-@Deprecated
 public class PlayerUtil {
 
     /**
@@ -65,7 +64,7 @@ public class PlayerUtil {
             return false;
         }
     }
-
+    
     /**
      * Forces the player to leave his vehicle before teleportation
      *
