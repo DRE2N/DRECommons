@@ -180,7 +180,12 @@ public class PlayerCollection {
      * if the collection contains the player
      */
     public boolean contains(Object player) {
-        if (player instanceof OfflinePlayer) {
+        if (player instanceof Collection) {
+            for (Object object : (Collection) player) {
+                remove(object);
+            }
+            return true;
+        } else if (player instanceof OfflinePlayer) {
             return uuids.contains(((OfflinePlayer) player).getUniqueId());
         } else if (player instanceof UUID) {
             return uuids.contains((UUID) player);
@@ -198,7 +203,12 @@ public class PlayerCollection {
     }
 
     public boolean add(Object player) {
-        if (player instanceof OfflinePlayer) {
+        if (player instanceof Collection) {
+            for (Object object : (Collection) player) {
+                add(object);
+            }
+            return true;
+        } else if (player instanceof OfflinePlayer) {
             return uuids.add(((OfflinePlayer) player).getUniqueId());
         } else if (player instanceof UUID) {
             return uuids.add((UUID) player);
