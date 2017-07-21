@@ -70,7 +70,7 @@ public class MessageConfig {
      */
     public void load() {
         if (config != null) {
-            Set<String> keySet = config.getKeys(false);
+            Set<String> keySet = config.getKeys(true);
             for (String key : keySet) {
                 Message message = null;
                 try {
