@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 public class PageGUI {
 
     private String title;
+    private boolean allowStealing;
     private Stack<Inventory> pages = new Stack<>();
 
     private int partitions;
@@ -42,21 +43,36 @@ public class PageGUI {
     private Stack<List<ItemStack>> pages3;
 
     public PageGUI(String title) {
+        this(title, false);
+    }
+
+    public PageGUI(String title, boolean allowStealing) {
         this.title = title;
+        this.allowStealing = allowStealing;
         newPage();
         DREPlugin.getInstance().getPageGUICache().guis.add(this);
     }
 
     /**
-     * partitions must be between 0 and 2
+     * @param partitions
+     * must be between 0 and 2
      */
     public PageGUI(String title, int partitions) {
+        this(title, false, partitions);
+    }
+
+    /**
+     * @param partitions
+     * must be between 0 and 2
+     */
+    public PageGUI(String title, boolean allowStealing, int partitions) {
         if (partitions < 0) {
             partitions = 0;
         } else if (partitions > 2) {
             partitions = 2;
         }
         this.title = title;
+        this.allowStealing = allowStealing;
         this.partitions = partitions;
         if (partitions > 0) {
             pages1 = new Stack<>();
@@ -179,6 +195,14 @@ public class PageGUI {
 
     public String getTitle() {
         return title;
+    }
+
+    public boolean isStealingAllowed() {
+        return allowStealing;
+    }
+
+    public void setStealingAllowed(boolean allowed) {
+        allowStealing = allowed;
     }
 
     public Stack<Inventory> getPages() {

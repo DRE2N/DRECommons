@@ -42,14 +42,22 @@ public class PageGUICache implements Listener {
             return;
         }
 
-        event.setCancelled(true);
         PageGUI.playSound(event);
         int index = gui.getPages().indexOf(inventory);
         HumanEntity player = event.getWhoClicked();
-        if (button.equals(NEXT_PAGE)) {
+        if (button.equals(PLACEHOLDER)) {
+            event.setCancelled(true);
+        } else if (button.equals(NEXT_PAGE)) {
+            event.setCancelled(true);
+            PageGUI.playSound(event);
             gui.open(player, index + 1);
         } else if (button.equals(PREVIOUS_PAGE)) {
+            event.setCancelled(true);
+            PageGUI.playSound(event);
             gui.open(player, index - 1);
+        } else if (!gui.isStealingAllowed()) {
+            event.setCancelled(true);
+            PageGUI.playSound(event);
         }
     }
 
