@@ -8,7 +8,7 @@
     <parent>
         <groupId>de.erethon</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>4.0</version>
+        <version>4.1-SNAPSHOT</version>
     </parent>
     <build>
         <plugins>

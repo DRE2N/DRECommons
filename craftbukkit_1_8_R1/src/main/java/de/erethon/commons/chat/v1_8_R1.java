@@ -12,7 +12,6 @@
  */
 package de.erethon.commons.chat;
 
-import de.erethon.commons.chat.InternalsProvider;
 import net.minecraft.server.v1_8_R1.ChatSerializer;
 import net.minecraft.server.v1_8_R1.EnumTitleAction;
 import net.minecraft.server.v1_8_R1.IChatBaseComponent;

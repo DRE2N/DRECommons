@@ -12,7 +12,6 @@
  */
 package de.erethon.commons.chat;
 
-import de.erethon.commons.chat.InternalsProvider;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
