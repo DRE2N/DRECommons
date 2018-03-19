@@ -47,9 +47,8 @@ public class DRECommandExecutor implements CommandExecutor {
                         MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
                         return false;
                     }
-                }
 
-                if (sender instanceof Player) {
+                } else if (sender instanceof Player) {
                     Player player = (Player) sender;
 
                     if (!command.isPlayerCommand()) {
@@ -77,7 +76,7 @@ public class DRECommandExecutor implements CommandExecutor {
 
         command = plugin.getCommandCache().getCommand("main");
         if (command != null) {
-            command.onExecute(null, sender);
+            command.onExecute(args, sender);
 
         } else {
             MessageUtil.sendMessage(sender, CommonMessage.CMD_DOES_NOT_EXIST.getMessage());
