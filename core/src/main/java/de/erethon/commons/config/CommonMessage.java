@@ -40,7 +40,7 @@ public enum CommonMessage implements Message {
         this.message = message;
     }
 
-    private static final MessageConfig CONFIG = new MessageConfig(CommonMessage.class, new File("/plugins/commons", "messages.yml"));
+    private static final MessageConfig CONFIG = new MessageConfig(CommonMessage.class, new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml"));
 
     /* Getters and setters */
     @Override
