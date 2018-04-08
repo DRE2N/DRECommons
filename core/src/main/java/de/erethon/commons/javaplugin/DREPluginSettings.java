@@ -23,6 +23,7 @@ import java.util.Set;
 public class DREPluginSettings {
 
     private boolean spigot;
+    private boolean paper;
     private boolean uuid;
     private boolean economy;
     private boolean permissions;
@@ -31,7 +32,12 @@ public class DREPluginSettings {
     private Set<Internals> internals;
 
     public DREPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Set<Internals> internals) {
+        this(spigot, false, uuid, economy, permissions, metrics, internals);
+    }
+
+    public DREPluginSettings(boolean spigot, boolean paper, boolean uuid, boolean economy, boolean permissions, boolean metrics, Set<Internals> internals) {
         this.spigot = spigot;
+        this.paper = paper;
         this.uuid = uuid;
         this.economy = economy;
         this.permissions = permissions;
@@ -41,6 +47,10 @@ public class DREPluginSettings {
 
     public DREPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, Internals... internals) {
         this(spigot, uuid, economy, permissions, metrics, new HashSet<>(Arrays.asList(internals)));
+    }
+
+    public DREPluginSettings(boolean spigot, boolean paper, boolean uuid, boolean economy, boolean permissions, boolean metrics, Internals... internals) {
+        this(spigot, paper, uuid, economy, permissions, metrics, new HashSet<>(Arrays.asList(internals)));
     }
 
     public DREPluginSettings(boolean spigot, boolean uuid, boolean economy, boolean permissions, boolean metrics, int resourceId, Set<Internals> internals) {
@@ -53,11 +63,29 @@ public class DREPluginSettings {
         this.resourceId = resourceId;
     }
 
+    public DREPluginSettings(boolean spigot, boolean paper, boolean uuid, boolean economy, boolean permissions, boolean metrics, int resourceId, Set<Internals> internals) {
+        this(spigot, paper, uuid, economy, permissions, metrics, internals);
+        this.resourceId = resourceId;
+    }
+
+    public DREPluginSettings(boolean spigot, boolean paper, boolean uuid, boolean economy, boolean permissions, boolean metrics, int resourceId, Internals... internals) {
+        this(spigot, paper, uuid, economy, permissions, metrics, internals);
+        this.resourceId = resourceId;
+    }
+
     /**
      * @return
      * if this plugin requires the Spigot API
      */
     public boolean requiresSpigot() {
+        return spigot;
+    }
+
+    /**
+     * @return
+     * if this plugin requires the PaperSpigot API
+     */
+    public boolean requiresPaper() {
         return spigot;
     }
 
