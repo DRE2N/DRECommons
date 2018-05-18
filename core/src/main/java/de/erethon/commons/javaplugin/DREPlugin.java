@@ -22,12 +22,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spigot.SpigotUpdater;
-import org.mcstats.Metrics;
 
 /**
  * The custom JavaPlugin class.
@@ -63,11 +63,7 @@ public abstract class DREPlugin extends JavaPlugin {
         loadPermissionProvider();
 
         if (settings.usesMetrics()) {
-            try {
-                metrics = new Metrics(this);
-                metrics.start();
-            } catch (IOException exception) {
-            }
+            metrics = new Metrics(this);
         }
 
         if (settings.isSpigotMCResource()) {

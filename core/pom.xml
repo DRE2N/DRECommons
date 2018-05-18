@@ -8,7 +8,7 @@
     <parent>
         <groupId>de.erethon</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>4.1</version>
+        <version>4.1.1</version>
     </parent>
     <build>
         <directory>../target</directory>
@@ -46,7 +46,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.mcstats.*:*</include>
+                                    <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.update</include>
                                     <include>de.erethon:commons-*</include>
                                     <include>de.erethon:asyncworldloader</include>
@@ -56,8 +56,8 @@
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.mcstats</pattern>
-                                    <shadedPattern>de.erethon.commons.mcstats</shadedPattern>
+                                    <pattern>org.bstats.bukkit</pattern>
+                                    <shadedPattern>de.erethon.commons.bstats</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.inventivetalent.update</pattern>
