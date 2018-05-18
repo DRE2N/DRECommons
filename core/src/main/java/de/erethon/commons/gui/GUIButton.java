@@ -30,7 +30,7 @@ public class GUIButton {
 
     /* Raw ItemStacks*/
     public static ItemStack BLACK_STAINED_GLASS_PANE = newMats ? new ItemStack(Material.valueOf("BLACK_STAINED_GLASS_PANE")) : new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, (short) 15);
-    public static ItemStack PLAYER_HEAD = newMats ? new ItemStack(Material.valueOf("PLAYER_HEAD")) : new ItemStack(Material.valueOf("SKULL"), 1, (short) 3);
+    public static ItemStack PLAYER_HEAD = newMats ? new ItemStack(Material.valueOf("PLAYER_HEAD")) : new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (short) 3);
 
     /* Raw skulls */
     public static final ItemStack LEFT = ItemUtil.setSkullOwner(PLAYER_HEAD, "69b9a08d-4e89-4878-8be8-551caeacbf2a",
