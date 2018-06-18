@@ -12,10 +12,8 @@
  */
 package de.erethon.commons.config;
 
-import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.javaplugin.DREPlugin;
 import java.io.File;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -40,7 +38,9 @@ public enum CommonMessage implements Message {
         this.message = message;
     }
 
-    private static final MessageConfig CONFIG = new MessageConfig(CommonMessage.class, new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml"));
+    static {
+        new MessageConfig(CommonMessage.class, new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml"));
+    }
 
     /* Getters and setters */
     @Override
@@ -49,26 +49,13 @@ public enum CommonMessage implements Message {
     }
 
     @Override
-    public String getMessage() {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    @Override
-    public String getMessage(String... args) {
-        return CONFIG.getMessage(this, args);
+    public String getRaw() {
+        return message;
     }
 
     @Override
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    /* Actions */
-    /**
-     * Sends the message to the console.
-     */
-    public void debug() {
-        MessageUtil.log(DREPlugin.getInstance(), getMessage());
     }
 
     /* Statics */
@@ -82,7 +69,6 @@ public enum CommonMessage implements Message {
                 return message;
             }
         }
-
         return null;
     }
 

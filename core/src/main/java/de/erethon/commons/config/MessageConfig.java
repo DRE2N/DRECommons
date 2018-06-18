@@ -16,6 +16,7 @@ import de.erethon.commons.chat.MessageUtil;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,19 +26,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public class MessageConfig {
 
-    private Class<? extends Message> messages;
+    private Method toConfig;
+    private Method getByIdentifier;
 
     private File file;
     private FileConfiguration config;
 
     /**
-     * @param messages
+     * @param messageProvider
      * the enum that implements Message
      * @param file
      * the file to save the messages to
      */
-    public MessageConfig(Class<? extends Message> messages, File file) {
-        this.messages = messages;
+    public MessageConfig(Class<? extends Message> messageProvider, File file) {
+        fetchMethods(messageProvider);
         this.file = file;
 
         if (!file.exists()) {
@@ -47,11 +49,7 @@ public class MessageConfig {
                     parent.mkdirs();
                 }
                 file.createNewFile();
-                try {
-                    config = (FileConfiguration) messages.getDeclaredMethod("toConfig").invoke(null);
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-                    MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
-                }
+                config = toConfig();
                 config.save(file);
 
             } catch (IOException exception) {
@@ -64,94 +62,75 @@ public class MessageConfig {
         }
     }
 
-    /**
-     * Load the messages from file
-     */
-    public void load() {
-        if (config != null) {
-            Set<String> keySet = config.getKeys(true);
-            for (String key : keySet) {
-                Message message = null;
-                try {
-                    message = (Message) messages.getDeclaredMethod("getByIdentifier", String.class).invoke(null, key);
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-                    MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rgetByIdentifier&c.");
-                }
-                if (message != null) {
-                    message.setMessage(config.getString(key));
-                }
-            }
-        }
-    }
-
-    /**
-     * @return
-     * if the file has been changed
-     */
-    public boolean changed() {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        FileConfiguration freshConfig = null;
+    /* Reflection */
+    private void fetchMethods(Class<? extends Message> messageProvider) {
         try {
-            freshConfig = (FileConfiguration) messages.getDeclaredMethod("toConfig").invoke(null);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-            MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
-        }
+            toConfig = messageProvider.getDeclaredMethod("toConfig");
+            getByIdentifier = messageProvider.getDeclaredMethod("getByIdentifier", String.class);
 
-        if (!freshConfig.getValues(false).equals(config.getValues(false))) {
-            return true;
-
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Save the data to the file and make a copy of the old data
-     */
-    public void save() {
-        if (!changed()) {
-            return;
-        }
-
-        String filePath = file.getPath();
-        File oldMessages = new File(filePath.substring(0, filePath.length() - 4) + "_old.yml");
-
-        try {
-            try {
-                ((FileConfiguration) messages.getDeclaredMethod("toConfig").invoke(null)).save(oldMessages);
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-                MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
-            }
-
-        } catch (IOException exception) {
+        } catch (NoSuchMethodException | SecurityException exception) {
+            MessageUtil.log("[DRECommons] &cAn error occurred: Could not fetch methods.");
             exception.printStackTrace();
         }
     }
 
+    private FileConfiguration toConfig() {
+        try {
+            return (FileConfiguration) toConfig.invoke(null);
+
+        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+            MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    private Message getByIdentifier(String key) {
+        try {
+            return (Message) getByIdentifier.invoke(null, key);
+
+        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+            MessageUtil.log("[DRECommons] &cAn error occurred: Could not access method &rtoConfig&c.");
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    /* Actions */
     /**
-     * @param message
-     * the matching enum value from the Message implementation
-     * @param args
-     * the args to replace &v[i]
-     * @return
-     * the message String to send
+     * Load the messages from file
      */
-    public String getMessage(Message message, String... args) {
-        String output = message.getMessage();
+    public void load() {
+        if (config == null) {
+            return;
+        }
 
-        int i = 0;
-        for (String arg : args) {
-            i++;
-
-            if (arg != null) {
-                output = output.replace("&v" + i, arg);
-
-            } else {
-                output = output.replace("&v" + i, "null");
+        Set<String> keySet = config.getKeys(true);
+        for (String key : keySet) {
+            Message message = getByIdentifier(key);
+            if (message != null) {
+                message.setMessage(config.getString(key));
             }
         }
 
-        return output;
+        FileConfiguration freshConfig = toConfig();
+        for (String key : freshConfig.getKeys(true)) {
+            if (!config.contains(key)) {
+                config.set(key, freshConfig.get(key));
+            }
+        }
+        save();
+    }
+
+    /**
+     * Save the data to the file
+     */
+    public void save() {
+        try {
+            config.save(file);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
 }
