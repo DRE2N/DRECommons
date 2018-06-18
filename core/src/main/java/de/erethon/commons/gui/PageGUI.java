@@ -12,6 +12,7 @@
  */
 package de.erethon.commons.gui;
 
+import de.erethon.commons.compatibility.Internals;
 import static de.erethon.commons.gui.GUIButton.*;
 import de.erethon.commons.javaplugin.DREPlugin;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ import org.bukkit.inventory.ItemStack;
  * @author Daniel Saukel
  */
 public class PageGUI {
+
+    private static final Sound BLOCK_ANVIL_PLACE = Sound.valueOf(Internals.isAtLeast(Internals.v1_9_R1) ? "BLOCK_ANVIL_PLACE" : "ANVIL_LAND");
+    private static final Sound UI_BUTTON_CLICK = Sound.valueOf(Internals.isAtLeast(Internals.v1_9_R1) ? "UI_BUTTON_CLICK" : "CLICK");
 
     private String title;
     private boolean allowStealing;
@@ -325,9 +329,9 @@ public class PageGUI {
         }
 
         if (clicked.getType() == Material.BARRIER) {
-            ((Player) human).playSound(human.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
+            ((Player) human).playSound(human.getLocation(), BLOCK_ANVIL_PLACE, 1, 1);
         } else if (clicked != null && !clicked.equals(PLACEHOLDER)) {
-            ((Player) human).playSound(human.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+            ((Player) human).playSound(human.getLocation(), UI_BUTTON_CLICK, 1, 1);
         }
     }
 
