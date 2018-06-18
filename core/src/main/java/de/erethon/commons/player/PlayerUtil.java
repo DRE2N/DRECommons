@@ -12,6 +12,7 @@
  */
 package de.erethon.commons.player;
 
+import de.erethon.commons.compatibility.Internals;
 import de.erethon.commons.misc.ReflectionUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
@@ -60,7 +61,7 @@ public class PlayerUtil {
             return false;
         }
     }
-    
+
     /**
      * Forces the player to leave his vehicle before teleportation
      *
@@ -72,6 +73,12 @@ public class PlayerUtil {
     public static void secureTeleport(Player player, Location location) {
         if (player.isInsideVehicle()) {
             player.leaveVehicle();
+        }
+
+        if (Internals.isAtLeast(Internals.v1_11_R1)) {
+            player.getPassengers().forEach(e -> player.removePassenger(e));
+        } else {
+            player.setPassenger(null);
         }
 
         player.teleport(location);
