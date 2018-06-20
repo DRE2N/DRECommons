@@ -13,7 +13,7 @@
 package de.erethon.commons.player;
 
 import de.erethon.commons.compatibility.Internals;
-import de.erethon.commons.misc.ReflectionUtil;
+import static de.erethon.commons.misc.ReflectionUtil.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 import org.bukkit.Bukkit;
@@ -85,6 +85,21 @@ public class PlayerUtil {
     }
 
     /**
+     * Respawns the player. Fails if the player died in the same tick
+     *
+     * @param player
+     * the player to respawn
+     */
+    public static void respawn(Player player) {
+        if (player.getHealth() <= 0 && player.isOnline()) {
+            try {
+                PLAYER_LIST_MOVE_TO_WORLD.invoke(PLAYER_LIST_INSTANCE, CRAFT_PLAYER_GET_HANDLE.invoke(player), 0, false);
+            } catch (NullPointerException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+            }
+        }
+    }
+
+    /**
      * @param player
      * the player to check
      * @return
@@ -92,7 +107,7 @@ public class PlayerUtil {
      */
     public static int getPing(Player player) {
         try {
-            return ReflectionUtil.ENTITYPLAYER_PING.getInt(ReflectionUtil.CRAFTPLAYER_GET_HANDLE.invoke(player));
+            return ENTITY_PLAYER_PING.getInt(CRAFT_PLAYER_GET_HANDLE.invoke(player));
         } catch (NullPointerException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
             return -1;
         }
