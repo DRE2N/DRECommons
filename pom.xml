@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.erethon</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>4.2.1</version>
+    <version>4.2.2</version>
     <packaging>pom</packaging>
     <name>DRECommons</name>
     <url>https://dre2n.github.io</url>
@@ -15,6 +15,7 @@
         <module>core</module>
         <module>abstract</module>
         <!--<module>glowstone</module>-->
+        <module>craftbukkit_1_13_R1</module>
         <module>craftbukkit_1_12_R1</module>
         <module>craftbukkit_1_11_R1</module>
         <module>craftbukkit_1_10_R1</module>
@@ -28,7 +29,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <version>1.13-pre7-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
