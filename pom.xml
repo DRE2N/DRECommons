@@ -46,10 +46,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.inventivetalent.update</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.0.1</version>
-            <type>jar</type>
+            <groupId>org.inventivetalent.spiget-update</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.4.0</version>
         </dependency>
     </dependencies>
     <repositories>

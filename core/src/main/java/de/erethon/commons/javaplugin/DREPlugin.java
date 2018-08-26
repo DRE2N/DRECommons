@@ -15,10 +15,10 @@ package de.erethon.commons.javaplugin;
 import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.command.DRECommandCache;
 import de.erethon.commons.compatibility.CompatibilityHandler;
+import de.erethon.commons.config.CommonConfig;
 import de.erethon.commons.config.MessageConfig;
 import de.erethon.commons.gui.PageGUICache;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -27,7 +27,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.inventivetalent.update.spigot.SpigotUpdater;
+import org.inventivetalent.update.spiget.SpigetUpdate;
+import org.inventivetalent.update.spiget.UpdateCallback;
+import org.inventivetalent.update.spiget.comparator.VersionComparator;
 
 /**
  * The custom JavaPlugin class.
@@ -66,11 +68,20 @@ public abstract class DREPlugin extends JavaPlugin {
             metrics = new Metrics(this);
         }
 
-        if (settings.isSpigotMCResource()) {
-            try {
-                new SpigotUpdater(this, settings.getSpigotMCResourceId());
-            } catch (IOException exception) {
-            }
+        if (settings.isSpigotMCResource() && CommonConfig.getInstance().isUpdaterEnabled()) {
+            SpigetUpdate updater = new SpigetUpdate(this, settings.getSpigotMCResourceId());
+            updater.setVersionComparator(VersionComparator.SEM_VER);
+            updater.checkForUpdate(new UpdateCallback() {
+                @Override
+                public void updateAvailable(String newVersion, String downloadUrl, boolean hasDirectDownload) {
+                    MessageUtil.log(DREPlugin.this, "A new version of " + getName() + " is available (" + newVersion + "). Download it here: " + downloadUrl);
+                }
+
+                @Override
+                public void upToDate() {
+                    MessageUtil.log(DREPlugin.this, "The plugin is up to date.");
+                }
+            });
         }
 
         loadPageGUICache();
