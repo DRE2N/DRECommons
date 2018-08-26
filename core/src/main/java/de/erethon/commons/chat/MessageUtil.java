@@ -32,6 +32,12 @@ public class MessageUtil {
         switch (CompatibilityHandler.getInstance().getInternals()) {
             /*case GLOWSTONE:
                 internals = new Glowstone();*/
+            case NEW:
+                internals = new New();
+                break;
+            case v1_13_R2:
+                internals = new v1_13_R2();
+                break;
             case v1_13_R1:
                 internals = new v1_13_R1();
                 break;

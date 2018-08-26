@@ -12,9 +12,8 @@
  */
 package de.erethon.commons.player;
 
+import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Internals;
-import static de.erethon.commons.misc.ReflectionUtil.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,6 +24,50 @@ import org.bukkit.entity.Player;
  * @author Frank Baumann, Daniel Saukel
  */
 public class PlayerUtil {
+
+    static InternalsProvider internals;
+
+    static {
+        switch (CompatibilityHandler.getInstance().getInternals()) {
+            /*case GLOWSTONE:
+                internals = new Glowstone();*/
+            case NEW:
+                internals = new New();
+                break;
+            case v1_13_R2:
+                internals = new v1_13_R2();
+                break;
+            case v1_13_R1:
+                internals = new v1_13_R1();
+                break;
+            case v1_12_R1:
+                internals = new v1_12_R1();
+                break;
+            case v1_11_R1:
+                internals = new v1_11_R1();
+                break;
+            case v1_10_R1:
+                internals = new v1_10_R1();
+                break;
+            case v1_9_R2:
+                internals = new v1_9_R2();
+                break;
+            case v1_9_R1:
+                internals = new v1_9_R1();
+                break;
+            case v1_8_R3:
+                internals = new v1_8_R3();
+                break;
+            case v1_8_R2:
+                internals = new v1_8_R2();
+                break;
+            case v1_8_R1:
+                internals = new v1_8_R1();
+                break;
+            default:
+                internals = new InternalsProvider(CompatibilityHandler.getInstance().isSpigot());
+        }
+    }
 
     /**
      * @param name
@@ -92,10 +135,7 @@ public class PlayerUtil {
      */
     public static void respawn(Player player) {
         if (player.getHealth() <= 0 && player.isOnline()) {
-            try {
-                PLAYER_LIST_MOVE_TO_WORLD.invoke(PLAYER_LIST_INSTANCE, CRAFT_PLAYER_GET_HANDLE.invoke(player), 0, false);
-            } catch (NullPointerException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-            }
+            internals.respawn(player);
         }
     }
 
@@ -106,11 +146,7 @@ public class PlayerUtil {
      * the player's ping
      */
     public static int getPing(Player player) {
-        try {
-            return ENTITY_PLAYER_PING.getInt(CRAFT_PLAYER_GET_HANDLE.invoke(player));
-        } catch (NullPointerException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
-            return -1;
-        }
+        return internals.getPing(player);
     }
 
 }

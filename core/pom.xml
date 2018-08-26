@@ -8,7 +8,7 @@
     <parent>
         <groupId>de.erethon</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>4.3</version>
+        <version>4.4</version>
     </parent>
     <build>
         <directory>../target</directory>
@@ -49,7 +49,6 @@
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.update</include>
                                     <include>de.erethon:commons-*</include>
-                                    <include>de.erethon:asyncworldloader</include>
                                     <include>de.erethon:compatibility</include>
                                     <include>de.erethon:itemstacklib</include>
                                 </includes>
@@ -85,6 +84,13 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>-->
+        <dependency>
+            <groupId>de.erethon</groupId>
+            <artifactId>commons-craftbukkit_1_13_R2</artifactId>
+            <version>${project.parent.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>de.erethon</groupId>
             <artifactId>commons-craftbukkit_1_13_R1</artifactId>

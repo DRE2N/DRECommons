@@ -66,9 +66,27 @@ public class ReflectionUtil {
 
     public static Class ENTITY_PLAYER;
     public static Field ENTITY_PLAYER_PING;
+    public static Field ENTITY_PLAYER_PLAYER_CONNECTION;
 
     public static Class CRAFT_PLAYER;
     public static Method CRAFT_PLAYER_GET_HANDLE;
+
+    public static Class PLAYER_CONNECTION;
+    public static Method PLAYER_CONNECTION_SEND_PACKET;
+
+    /* CHAT */
+    public static Class I_CHAT_BASE_COMPONENT;
+
+    public static Class CHAT_MESSAGE_TYPE;
+    public static Field CHAT_MESSAGE_TYPE_CHAT;
+    public static Field CHAT_MESSAGE_TYPE_GAME_INFO;
+    public static Field CHAT_MESSAGE_TYPE_SYSTEM;
+
+    public static Class CHAT_SERIALIZER;
+    public static Method CHAT_SERIALIZER_A;
+
+    public static Class PACKET_PLAY_OUT_CHAT;
+    public static Constructor PACKET_PLAY_OUT_CHAT_CONSTRUCTOR;
 
     static {
         try {
@@ -97,6 +115,7 @@ public class ReflectionUtil {
 
             ENTITY_PLAYER = Class.forName(NET_MINECRAFT_SERVER + ".EntityPlayer");
             ENTITY_PLAYER_PING = ENTITY_PLAYER.getField("ping");
+            ENTITY_PLAYER_PLAYER_CONNECTION = ENTITY_PLAYER.getField("playerConnection");
 
             CRAFT_PLAYER = Class.forName(ORG_BUKKIT_CRAFTBUKKIT + ".entity.CraftPlayer");
             CRAFT_PLAYER_GET_HANDLE = CRAFT_PLAYER.getMethod("getHandle");
@@ -104,6 +123,22 @@ public class ReflectionUtil {
             PLAYER_LIST = Class.forName(NET_MINECRAFT_SERVER + ".PlayerList");
             PLAYER_LIST_INSTANCE = MINECRAFT_SERVER.getMethod("getPlayerList").invoke(MINECRAFT_SERVER_INSTANCE);
             PLAYER_LIST_MOVE_TO_WORLD = PLAYER_LIST.getMethod("moveToWorld", ENTITY_PLAYER, int.class, boolean.class);
+
+            PLAYER_CONNECTION = Class.forName(NET_MINECRAFT_SERVER + ".PlayerConnection");
+            PLAYER_CONNECTION_SEND_PACKET = PLAYER_CONNECTION.getMethod("sendPacket", Class.forName(NET_MINECRAFT_SERVER + ".Packet"));
+
+            I_CHAT_BASE_COMPONENT = Class.forName(NET_MINECRAFT_SERVER + ".IChatBaseComponent");
+
+            CHAT_MESSAGE_TYPE = Class.forName(NET_MINECRAFT_SERVER + ".ChatMessageType");
+            CHAT_MESSAGE_TYPE_CHAT = CHAT_MESSAGE_TYPE.getField("CHAT");
+            CHAT_MESSAGE_TYPE_GAME_INFO = CHAT_MESSAGE_TYPE.getField("GAME_INFO");
+            CHAT_MESSAGE_TYPE_SYSTEM = CHAT_MESSAGE_TYPE.getField("SYSTEM");
+
+            CHAT_SERIALIZER = Class.forName(NET_MINECRAFT_SERVER + ".ChatSerializer");
+            CHAT_SERIALIZER_A = CHAT_SERIALIZER.getMethod("a", String.class);
+
+            PACKET_PLAY_OUT_CHAT = Class.forName(NET_MINECRAFT_SERVER + ".PacketPlayOutChat");
+            PACKET_PLAY_OUT_CHAT_CONSTRUCTOR = PACKET_PLAY_OUT_CHAT.getConstructor(I_CHAT_BASE_COMPONENT, CHAT_MESSAGE_TYPE);
 
         } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException exception) {
