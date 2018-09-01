@@ -86,7 +86,7 @@ public class DREPluginSettings {
      * if this plugin requires the PaperSpigot API
      */
     public boolean requiresPaper() {
-        return spigot;
+        return paper;
     }
 
     /**
