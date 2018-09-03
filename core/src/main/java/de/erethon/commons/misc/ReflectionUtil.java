@@ -59,6 +59,12 @@ public class ReflectionUtil {
     public static Class NBT_TAG_STRING;
     public static Constructor NBT_TAG_STRING_CONSTRUCTOR;
 
+    /* WORLD */
+    public static Class DIMENSION_MANAGER;
+    public static Object DIMENSION_MANAGER_OVERWORLD;
+    public static Object DIMENSION_MANAGER_NETHER;
+    public static Object DIMENSION_MANAGER_THE_END;
+
     /* PLAYER */
     public static Class PLAYER_LIST;
     public static Object PLAYER_LIST_INSTANCE;
@@ -120,9 +126,14 @@ public class ReflectionUtil {
             CRAFT_PLAYER = Class.forName(ORG_BUKKIT_CRAFTBUKKIT + ".entity.CraftPlayer");
             CRAFT_PLAYER_GET_HANDLE = CRAFT_PLAYER.getMethod("getHandle");
 
+            DIMENSION_MANAGER = Class.forName(NET_MINECRAFT_SERVER + ".DimensionManager");
+            DIMENSION_MANAGER_NETHER = DIMENSION_MANAGER.getField("NETHER").get(null);
+            DIMENSION_MANAGER_OVERWORLD = DIMENSION_MANAGER.getField("OVERWORLD").get(null);
+            DIMENSION_MANAGER_THE_END = DIMENSION_MANAGER.getField("THE_END").get(null);
+
             PLAYER_LIST = Class.forName(NET_MINECRAFT_SERVER + ".PlayerList");
             PLAYER_LIST_INSTANCE = MINECRAFT_SERVER.getMethod("getPlayerList").invoke(MINECRAFT_SERVER_INSTANCE);
-            PLAYER_LIST_MOVE_TO_WORLD = PLAYER_LIST.getMethod("moveToWorld", ENTITY_PLAYER, int.class, boolean.class);
+            PLAYER_LIST_MOVE_TO_WORLD = PLAYER_LIST.getMethod("moveToWorld", ENTITY_PLAYER, DIMENSION_MANAGER, boolean.class);
 
             PLAYER_CONNECTION = Class.forName(NET_MINECRAFT_SERVER + ".PlayerConnection");
             PLAYER_CONNECTION_SEND_PACKET = PLAYER_CONNECTION.getMethod("sendPacket", Class.forName(NET_MINECRAFT_SERVER + ".Packet"));
@@ -134,7 +145,7 @@ public class ReflectionUtil {
             CHAT_MESSAGE_TYPE_GAME_INFO = CHAT_MESSAGE_TYPE.getField("GAME_INFO");
             CHAT_MESSAGE_TYPE_SYSTEM = CHAT_MESSAGE_TYPE.getField("SYSTEM");
 
-            CHAT_SERIALIZER = Class.forName(NET_MINECRAFT_SERVER + ".ChatSerializer");
+            CHAT_SERIALIZER = Class.forName(I_CHAT_BASE_COMPONENT.getName() + ".ChatSerializer");
             CHAT_SERIALIZER_A = CHAT_SERIALIZER.getMethod("a", String.class);
 
             PACKET_PLAY_OUT_CHAT = Class.forName(NET_MINECRAFT_SERVER + ".PacketPlayOutChat");

@@ -24,7 +24,7 @@ class New extends InternalsProvider {
     @Override
     void respawn(Player player) {
         try {
-            PLAYER_LIST_MOVE_TO_WORLD.invoke(PLAYER_LIST_INSTANCE, CRAFT_PLAYER_GET_HANDLE.invoke(player), 0, false);
+            PLAYER_LIST_MOVE_TO_WORLD.invoke(PLAYER_LIST_INSTANCE, CRAFT_PLAYER_GET_HANDLE.invoke(player), DIMENSION_MANAGER_OVERWORLD, false);
         } catch (NullPointerException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
             exception.printStackTrace();
         }
