@@ -4,11 +4,10 @@
     <artifactId>commons-craftbukkit_1_8_R3</artifactId>
     <version>${project.parent.version}</version>
     <packaging>jar</packaging>
-    <name>commons-craftbukkit_1_8_R3</name>
     <parent>
         <groupId>de.erethon</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>4.4.1</version>
+        <version>5.0</version>
     </parent>
     <build>
         <plugins>
@@ -31,9 +30,8 @@
         </dependency>
         <dependency>
             <groupId>de.erethon</groupId>
-            <artifactId>commons-abstract</artifactId>
+            <artifactId>commons-core</artifactId>
             <version>${project.parent.version}</version>
-            <type>jar</type>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -12,13 +12,13 @@
  */
 package de.erethon.commons.chat;
 
+import net.md_5.bungee.api.ChatMessageType;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
-import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -28,10 +28,12 @@ import org.bukkit.entity.Player;
 class v1_8_R3 extends InternalsProvider {
 
     @Override
-    void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
-        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
-        title = ChatColor.translateAlternateColorCodes('&', title);
+    Object buildPacketPlayOutChat(ChatMessageType type, String message) {
+        return new PacketPlayOutChat(ChatSerializer.a(message), getNMSCMT(type));
+    }
 
+    @Override
+    void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         IChatBaseComponent subtitleComponent = ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
         IChatBaseComponent titleComponent = ChatSerializer.a("{\"text\": \"" + title + "\"}");
 
@@ -43,15 +45,6 @@ class v1_8_R3 extends InternalsProvider {
         connection.sendPacket(subtitlePacket);
         connection.sendPacket(titlePacket);
         connection.sendPacket(timesPacket);
-    }
-
-    @Override
-    void sendActionBarMessage(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        IChatBaseComponent messageComponent = ChatSerializer.a("{\"text\": \"" + message + "\"}");
-        PacketPlayOutChat barPacket = new PacketPlayOutChat(messageComponent, (byte) 2);
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(barPacket);
     }
 
 }

@@ -12,14 +12,9 @@
  */
 package de.erethon.commons.chat;
 
-import net.minecraft.server.v1_13_R1.ChatMessageType;
-import net.minecraft.server.v1_13_R1.IChatBaseComponent;
+import net.md_5.bungee.api.ChatMessageType;
 import net.minecraft.server.v1_13_R1.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_13_R1.PacketPlayOutChat;
-import net.minecraft.server.v1_13_R1.PlayerConnection;
-import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 
 /**
  * @author Daniel Saukel
@@ -27,12 +22,8 @@ import org.bukkit.entity.Player;
 class v1_13_R1 extends InternalsProvider {
 
     @Override
-    void sendActionBarMessage(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        IChatBaseComponent messageComponent = ChatSerializer.a("{\"text\": \"" + message + "\"}");
-        PacketPlayOutChat barPacket = new PacketPlayOutChat(messageComponent, ChatMessageType.GAME_INFO);
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(barPacket);
+    Object buildPacketPlayOutChat(ChatMessageType type, String message) {
+        return new PacketPlayOutChat(ChatSerializer.a(message), net.minecraft.server.v1_13_R1.ChatMessageType.a(getNMSCMT(type)));
     }
 
 }

@@ -13,6 +13,7 @@
 package de.erethon.commons.player;
 
 import net.minecraft.server.v1_13_R2.DimensionManager;
+import net.minecraft.server.v1_13_R2.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
@@ -31,6 +32,14 @@ class v1_13_R2 extends InternalsProvider {
     @Override
     int getPing(Player player) {
         return ((CraftPlayer) player).getHandle().ping;
+    }
+
+    @Override
+    void sendPacket(Player player, Object packet) {
+        if (!(packet instanceof Packet)) {
+            return;
+        }
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet) packet);
     }
 
 }

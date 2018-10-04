@@ -12,25 +12,30 @@
  */
 package de.erethon.commons.chat;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.entity.Player;
 
 /**
  * @author Daniel Saukel
  */
-class Glowstone extends InternalsProvider {
+class InternalsProvider {
 
-    @Override
+    Object buildPacketPlayOutChat(ChatMessageType type, String message) {
+        return null;
+    }
+
     void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
-        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
-        title = ChatColor.translateAlternateColorCodes('&', title);
         player.sendTitle(title, subtitle, fadeIn, show, fadeOut);
     }
 
-    @Override
-    void sendActionBarMessage(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        player.sendActionBar(message);
+    protected byte getNMSCMT(ChatMessageType type) {
+        if (type == ChatMessageType.ACTION_BAR) {
+            return 2;
+        } else if (type == ChatMessageType.SYSTEM) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }

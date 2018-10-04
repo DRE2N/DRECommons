@@ -1,8 +1,0 @@
-name: DRECommons
-main: de.erethon.commons.javaplugin.DREPlugin
-version: ${project.version}
-authors: [Daniel Saukel, Frank Baumann, Milan Albrecht]
-description: ${project.description}
-website: ${project.url}
-softdepend: [Vault]
-api-version: 1.13

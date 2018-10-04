@@ -12,10 +12,12 @@
  */
 package de.erethon.commons.player;
 
+import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Internals;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -28,52 +30,21 @@ public class PlayerUtil {
     static InternalsProvider internals;
 
     static {
-        switch (CompatibilityHandler.getInstance().getInternals()) {
-            /*case GLOWSTONE:
-                internals = new Glowstone();*/
-            case NEW:
-                internals = new New();
-                break;
-            case v1_13_R2:
-                internals = new v1_13_R2();
-                break;
-            case v1_13_R1:
-                internals = new v1_13_R1();
-                break;
-            case v1_12_R1:
-                internals = new v1_12_R1();
-                break;
-            case v1_11_R1:
-                internals = new v1_11_R1();
-                break;
-            case v1_10_R1:
-                internals = new v1_10_R1();
-                break;
-            case v1_9_R2:
-                internals = new v1_9_R2();
-                break;
-            case v1_9_R1:
-                internals = new v1_9_R1();
-                break;
-            case v1_8_R3:
-                internals = new v1_8_R3();
-                break;
-            case v1_8_R2:
-                internals = new v1_8_R2();
-                break;
-            case v1_8_R1:
-                internals = new v1_8_R1();
-                break;
-            default:
-                internals = new InternalsProvider(CompatibilityHandler.getInstance().isSpigot());
+        String packageName = PlayerUtil.class.getPackage().getName();
+        String internalsName = CompatibilityHandler.getInstance().getInternals().toString();
+        try {
+            internals = (InternalsProvider) Class.forName(packageName + "." + internalsName).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException exception) {
+            internals = new InternalsProvider();
+            MessageUtil.log(ChatColor.DARK_RED + "PlayerUtil could not find a valid implementation for " + internalsName + ".");
         }
     }
 
     /**
-     * @param name
-     * a player's name
-     * @return
-     * the player's UUID
+     * Returns the unique ID of the player that has the name
+     *
+     * @param name a player's name
+     * @return the player's UUID
      */
     public static UUID getUniqueIdFromName(String name) {
         OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(name);
@@ -81,10 +52,10 @@ public class PlayerUtil {
     }
 
     /**
-     * @param uuid
-     * the player's UUID as a String
-     * @return
-     * the player's name
+     * Returns the name of the player that has the unique ID
+     *
+     * @param uuid the player's UUID as a String
+     * @return the player's name
      */
     public static String getNameFromUniqueId(String uuid) {
         OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuid));
@@ -92,10 +63,10 @@ public class PlayerUtil {
     }
 
     /**
-     * @param string
-     * a UUID as a String
-     * @return
-     * if the String can be converted to a UUID
+     * Returns if the String can be converted to a UUID
+     *
+     * @param string a UUID as a String
+     * @return if the String can be converted to a UUID
      */
     public static boolean isValidUUID(String string) {
         if (string.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
@@ -108,10 +79,8 @@ public class PlayerUtil {
     /**
      * Forces the player to leave his vehicle before teleportation
      *
-     * @param player
-     * the player to teleport
-     * @param location
-     * the target location
+     * @param player   the player to teleport
+     * @param location the target location
      */
     public static void secureTeleport(Player player, Location location) {
         if (player.isInsideVehicle()) {
@@ -130,8 +99,7 @@ public class PlayerUtil {
     /**
      * Respawns the player. Fails if the player died in the same tick
      *
-     * @param player
-     * the player to respawn
+     * @param player the player to respawn
      */
     public static void respawn(Player player) {
         if (player.getHealth() <= 0 && player.isOnline()) {
@@ -140,13 +108,23 @@ public class PlayerUtil {
     }
 
     /**
-     * @param player
-     * the player to check
-     * @return
-     * the player's ping
+     * Returns the player's ping
+     *
+     * @param player the player to check
+     * @return the player's ping
      */
     public static int getPing(Player player) {
         return internals.getPing(player);
+    }
+
+    /**
+     * Sends a packet to the player
+     *
+     * @param player the player
+     * @param packet an NMS packet
+     */
+    public static void sendPacket(Player player, Object packet) {
+        internals.sendPacket(player, packet);
     }
 
 }

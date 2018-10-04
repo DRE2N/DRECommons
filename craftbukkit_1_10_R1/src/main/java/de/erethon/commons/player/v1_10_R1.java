@@ -12,6 +12,7 @@
  */
 package de.erethon.commons.player;
 
+import net.minecraft.server.v1_10_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
@@ -30,6 +31,14 @@ class v1_10_R1 extends InternalsProvider {
     @Override
     int getPing(Player player) {
         return ((CraftPlayer) player).getHandle().ping;
+    }
+
+    @Override
+    void sendPacket(Player player, Object packet) {
+        if (!(packet instanceof Packet)) {
+            return;
+        }
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet) packet);
     }
 
 }

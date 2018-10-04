@@ -32,8 +32,7 @@ import org.inventivetalent.update.spiget.UpdateCallback;
 import org.inventivetalent.update.spiget.comparator.VersionComparator;
 
 /**
- * The custom JavaPlugin class.
- * It provides simplified registration of and access to features of Vault, Metrics and DRECommons.
+ * The custom JavaPlugin class. It provides simplified registration of and access to features of Vault, Metrics and DRECommons.
  *
  * @author Daniel Saukel
  */
@@ -89,11 +88,10 @@ public abstract class DREPlugin extends JavaPlugin {
         MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
         MessageUtil.log("&fInternals: [" + (settings.getInternals().contains(compat.getInternals()) ? "&a" : "&4") + compat.getInternals() + "&f]");
         MessageUtil.log("&fSpigot API: [" + (!settings.requiresSpigot() || compat.isSpigot() ? "&a" : "&4") + compat.isSpigot() + "&f]");
-        MessageUtil.log("&fPaperSpigot API: [" + (!settings.requiresPaper() || compat.isPaper() ? "&a" : "&4") + compat.isPaper() + "&f]");
-        MessageUtil.log("&fUUIDs: [" + (!settings.requiresUUID() || compat.getVersion().useUUIDs() ? "&a" : "&4") + compat.getVersion().useUUIDs() + "&f]");
+        MessageUtil.log("&fPaper API: [" + (!settings.requiresPaper() || compat.isPaper() ? "&a" : "&4") + compat.isPaper() + "&f]");
         MessageUtil.log("&fEconomy: [" + (!settings.requiresVaultEconomy() || economyProvider != null ? "&a" : "&4") + (economyProvider != null) + "&f]");
         MessageUtil.log("&fPermissions: [" + (!settings.requiresVaultPermissions() || permissionProvider != null ? "&a" : "&4") + (permissionProvider != null) + "&f]");
-        MessageUtil.log("&fMetrics: [&e" + (metrics != null) + "&f]");
+        MessageUtil.log("&fMetrics: [&e" + (metrics != null ? "https://bstats.org/plugin/bukkit/" + getName() : "false") + "&f]");
         MessageUtil.log("&fSpigotMC ID: [&e" + (settings.isSpigotMCResource() ? settings.getSpigotMCResourceId() : "none") + "&f]");
         MessageUtil.log("&f[&9###############################&f]");
     }
@@ -165,8 +163,7 @@ public abstract class DREPlugin extends JavaPlugin {
     }
 
     /**
-     * @param group
-     * the group to be checked
+     * @param group the group to be checked
      */
     public boolean isGroupEnabled(String group) {
         for (String anyGroup : permissionProvider.getGroups()) {
@@ -179,40 +176,35 @@ public abstract class DREPlugin extends JavaPlugin {
     }
 
     /**
-     * @return
-     * the Metrics instance
+     * @return the Metrics instance
      */
     public Metrics getMetrics() {
         return metrics;
     }
 
     /**
-     * @return
-     * the loaded instance of MessageConfig
+     * @return the loaded instance of MessageConfig
      */
     public MessageConfig getMessageConfig() {
         return messageConfig;
     }
 
     /**
-     * @return
-     * the CommandCache of the plugin
+     * @return the CommandCache of the plugin
      */
     public DRECommandCache getCommandCache() {
         return commands;
     }
 
     /**
-     * @param commands
-     * the CommandCache to set
+     * @param commands the CommandCache to set
      */
     public void setCommandCache(DRECommandCache commands) {
         this.commands = commands;
     }
 
     /**
-     * @return
-     * the loaded instance of PageGUICache
+     * @return the loaded instance of PageGUICache
      */
     public PageGUICache getPageGUICache() {
         return pageGUIs;

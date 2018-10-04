@@ -12,6 +12,7 @@
  */
 package de.erethon.commons.player;
 
+import de.erethon.commons.compatibility.CompatibilityHandler;
 import org.bukkit.entity.Player;
 
 /**
@@ -19,23 +20,17 @@ import org.bukkit.entity.Player;
  */
 class InternalsProvider {
 
-    boolean spigot;
-
-    InternalsProvider() {
-    }
-
-    InternalsProvider(boolean isSpigot) {
-        spigot = isSpigot;
-    }
-
     void respawn(Player player) {
-        if (spigot) {
+        if (CompatibilityHandler.getInstance().isSpigot()) {
             player.spigot().respawn();
         }
     }
 
     int getPing(Player player) {
         return -1;
+    }
+
+    void sendPacket(Player player, Object object) {
     }
 
 }
