@@ -12,6 +12,7 @@
  */
 package de.erethon.commons.chat;
 
+import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.player.PlayerUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -31,7 +32,14 @@ public class MessageUtil {
     static InternalsProvider internals;
 
     static {
-        internals = new InternalsProvider();
+        String packageName = MessageUtil.class.getPackage().getName();
+        String internalsName = CompatibilityHandler.getInstance().getInternals().toString();
+        try {
+            internals = (InternalsProvider) Class.forName(packageName + "." + internalsName).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException exception) {
+            internals = new InternalsProvider();
+            MessageUtil.log(ChatColor.DARK_RED + "MessageUtil could not find a valid implementation for " + internalsName + ".");
+        }
     }
 
     /**
