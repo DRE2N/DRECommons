@@ -21,8 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Contains some useful NMS / OBC fields, methods and classes.
- * These fields target the latest Minecraft version DRECommons supports.
+ * Contains some useful NMS / OBC fields, methods and classes. These fields target the latest Minecraft version DRECommons supports.
  *
  * @author Daniel Saukel
  */
@@ -41,6 +40,7 @@ public class ReflectionUtil {
     /* ITEM STACK */
     public static Class ITEM_STACK;
     public static Method ITEM_STACK_GET_TAG;
+    public static Method ITEMSTACK_GET_OR_CREATE_TAG;
     public static Method ITEM_STACK_SET_TAG;
 
     public static Class CRAFT_ITEM_STACK;
@@ -51,7 +51,21 @@ public class ReflectionUtil {
     public static Class NBT_BASE;
 
     public static Class NBT_TAG_COMPOUND;
+    public static Method NBT_TAG_COMPOUND_GET_BOOLEAN;
+    public static Method NBT_TAG_COMPOUND_GET_BYTE;
+    public static Method NBT_TAG_COMPOUND_GET_COMPOUND;
+    public static Method NBT_TAG_COMPOUND_GET_DOUBLE;
+    public static Method NBT_TAG_COMPOUND_GET_LIST;
+    public static Method NBT_TAG_COMPOUND_GET_STRING;
+    public static Method NBT_TAG_COMPOUND_HAS_KEY;
+    public static Method NBT_TAG_COMPOUND_HAS_KEY_OF_TYPE;
+    public static Method NBT_TAG_COMPOUND_REMOVE;
     public static Method NBT_TAG_COMPOUND_SET;
+    public static Method NBT_TAG_COMPOUND_SET_BOOLEAN;
+    public static Method NBT_TAG_COMPOUND_SET_BYTE;
+    public static Method NBT_TAG_COMPOUND_SET_DOUBLE;
+    public static Method NBT_TAG_COMPOUND_SET_INT;
+    public static Method NBT_TAG_COMPOUND_SET_STRING;
 
     public static Class NBT_TAG_LIST;
     public static Method NBT_TAG_LIST_ADD;
@@ -103,7 +117,21 @@ public class ReflectionUtil {
             NBT_BASE = Class.forName(NET_MINECRAFT_SERVER + ".NBTBase");
 
             NBT_TAG_COMPOUND = Class.forName(NET_MINECRAFT_SERVER + ".NBTTagCompound");
-            NBT_TAG_COMPOUND_SET = NBT_TAG_COMPOUND.getMethod("set", String.class, NBT_BASE);
+            NBT_TAG_COMPOUND_GET_BOOLEAN = NBT_TAG_COMPOUND.getDeclaredMethod("getBoolean", String.class);
+            NBT_TAG_COMPOUND_GET_BYTE = NBT_TAG_COMPOUND.getDeclaredMethod("getByte", String.class);
+            NBT_TAG_COMPOUND_GET_COMPOUND = NBT_TAG_COMPOUND.getDeclaredMethod("getCompound", String.class);
+            NBT_TAG_COMPOUND_GET_DOUBLE = NBT_TAG_COMPOUND.getDeclaredMethod("getDouble", String.class);
+            NBT_TAG_COMPOUND_GET_LIST = NBT_TAG_COMPOUND.getDeclaredMethod("getList", String.class, int.class);
+            NBT_TAG_COMPOUND_GET_STRING = NBT_TAG_COMPOUND.getDeclaredMethod("getString", String.class);
+            NBT_TAG_COMPOUND_HAS_KEY = NBT_TAG_COMPOUND.getDeclaredMethod("hasKey", String.class);
+            NBT_TAG_COMPOUND_HAS_KEY_OF_TYPE = NBT_TAG_COMPOUND.getDeclaredMethod("hasKeyOfType", String.class, int.class);
+            NBT_TAG_COMPOUND_REMOVE = NBT_TAG_COMPOUND.getDeclaredMethod("remove", String.class);
+            NBT_TAG_COMPOUND_SET = NBT_TAG_COMPOUND.getDeclaredMethod("set", String.class, NBT_BASE);
+            NBT_TAG_COMPOUND_SET_BOOLEAN = NBT_TAG_COMPOUND.getDeclaredMethod("setBoolean", String.class, boolean.class);
+            NBT_TAG_COMPOUND_SET_BYTE = NBT_TAG_COMPOUND.getDeclaredMethod("setByte", String.class, byte.class);
+            NBT_TAG_COMPOUND_SET_DOUBLE = NBT_TAG_COMPOUND.getDeclaredMethod("setDouble", String.class, double.class);
+            NBT_TAG_COMPOUND_SET_INT = NBT_TAG_COMPOUND.getDeclaredMethod("setInt", String.class, int.class);
+            NBT_TAG_COMPOUND_SET_STRING = NBT_TAG_COMPOUND.getDeclaredMethod("setString", String.class, String.class);
 
             NBT_TAG_LIST = Class.forName(NET_MINECRAFT_SERVER + ".NBTTagList");
             NBT_TAG_LIST_ADD = NBT_TAG_LIST.getMethod("add", NBT_BASE);
@@ -113,6 +141,7 @@ public class ReflectionUtil {
 
             ITEM_STACK = Class.forName(NET_MINECRAFT_SERVER + ".ItemStack");
             ITEM_STACK_GET_TAG = ITEM_STACK.getMethod("getTag");
+            ITEMSTACK_GET_OR_CREATE_TAG = ITEM_STACK.getDeclaredMethod("getOrCreateTag");
             ITEM_STACK_SET_TAG = ITEM_STACK.getMethod("setTag", NBT_TAG_COMPOUND);
 
             CRAFT_ITEM_STACK = Class.forName(ORG_BUKKIT_CRAFTBUKKIT + ".inventory.CraftItemStack");
@@ -145,7 +174,7 @@ public class ReflectionUtil {
             CHAT_MESSAGE_TYPE_GAME_INFO = CHAT_MESSAGE_TYPE.getField("GAME_INFO");
             CHAT_MESSAGE_TYPE_SYSTEM = CHAT_MESSAGE_TYPE.getField("SYSTEM");
 
-            CHAT_SERIALIZER = Class.forName(I_CHAT_BASE_COMPONENT.getName() + ".ChatSerializer");
+            CHAT_SERIALIZER = Class.forName(I_CHAT_BASE_COMPONENT.getName() + "$ChatSerializer");
             CHAT_SERIALIZER_A = CHAT_SERIALIZER.getMethod("a", String.class);
 
             PACKET_PLAY_OUT_CHAT = Class.forName(NET_MINECRAFT_SERVER + ".PacketPlayOutChat");
@@ -154,6 +183,42 @@ public class ReflectionUtil {
         } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException exception) {
             exception.printStackTrace();
+        }
+    }
+
+    public static Object invoke(Method method, Object instance, Object... args) {
+        try {
+            return method.invoke(instance, args);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object newInstance(Class clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (IllegalAccessException | InstantiationException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object newInstance(Constructor ctor, Object... args) {
+        try {
+            return ctor.newInstance(args);
+        } catch (IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object getValue(Field field, Object instance) {
+        try {
+            return field.get(instance);
+        } catch (IllegalArgumentException | IllegalAccessException exception) {
+            exception.printStackTrace();
+            return null;
         }
     }
 
