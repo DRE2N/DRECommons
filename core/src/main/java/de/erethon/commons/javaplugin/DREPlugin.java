@@ -47,6 +47,7 @@ public abstract class DREPlugin extends JavaPlugin {
 
     private Economy economyProvider;
     private Permission permissionProvider;
+    private boolean placeholderAPI;
 
     private Metrics metrics;
 
@@ -62,6 +63,7 @@ public abstract class DREPlugin extends JavaPlugin {
 
         loadEconomyProvider();
         loadPermissionProvider();
+        placeholderAPI = manager.isPluginEnabled("PlaceholderAPI");
 
         if (settings.usesMetrics()) {
             metrics = new Metrics(this);
@@ -173,6 +175,13 @@ public abstract class DREPlugin extends JavaPlugin {
         }
 
         return false;
+    }
+
+    /**
+     * @return true if PlaceholderAPI is enabled
+     */
+    public boolean isPlaceholderAPIEnabled() {
+        return placeholderAPI;
     }
 
     /**
