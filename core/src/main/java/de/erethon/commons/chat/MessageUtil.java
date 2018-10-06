@@ -72,7 +72,7 @@ public class MessageUtil {
     }
 
     /**
-     * Broadcasts BaseComponents to all players. Supports color codes.
+     * Broadcasts BaseComponents to all players.
      *
      * @param message the message components
      */
@@ -90,7 +90,7 @@ public class MessageUtil {
     }
 
     /**
-     * Broadcasts a perfectly centered BaseComponent message to all players. Supports color codes.
+     * Broadcasts a perfectly centered BaseComponent message to all players.
      *
      * @param message the message components
      */
@@ -141,17 +141,17 @@ public class MessageUtil {
     }
 
     /**
-     * Broadcasts an action bar message. Supports color code.
+     * Broadcasts an action bar message. Supports color codes.
      *
      * @param message the message String
      */
     public static void broadcastActionBarMessage(String message) {
-        BaseComponent[] comps = TextComponent.fromLegacyText(message);
+        BaseComponent[] comps = new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', message))};
         Bukkit.getOnlinePlayers().forEach(p -> sendMessage(p, ChatMessageType.ACTION_BAR, comps));
     }
 
     /**
-     * Broadcasts an action bar message. Supports color code.
+     * Broadcasts an action bar message.
      *
      * @param message the message components
      */
@@ -189,7 +189,7 @@ public class MessageUtil {
     }
 
     /**
-     * Sends a BaseComponent message to a specific player (or another CommandSender). Supports color codes.
+     * Sends a BaseComponent message to a specific player (or another CommandSender).
      *
      * @param sender  the sender
      * @param message the message String
@@ -209,7 +209,7 @@ public class MessageUtil {
     }
 
     /**
-     * Sends a perfectly centered BaseComponent message to a specific player (or another CommandSender). Supports color codes.
+     * Sends a perfectly centered BaseComponent message to a specific player (or another CommandSender).
      *
      * @param sender  the sender
      * @param message the message components
@@ -266,17 +266,18 @@ public class MessageUtil {
     }
 
     /**
-     * Sends an action bar message. Supports color code.
+     * Sends an action bar message. Supports color codes.
      *
      * @param player  the player who will receive the message
      * @param message the message String
      */
     public static void sendActionBarMessage(Player player, String message) {
-        sendMessage(player, ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+        BaseComponent[] comps = new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', message))};
+        sendMessage(player, ChatMessageType.ACTION_BAR, comps);
     }
 
     /**
-     * Sends an action bar message. Supports color code.
+     * Sends an action bar message.
      *
      * @param player  the player who will receive the message
      * @param message the message components

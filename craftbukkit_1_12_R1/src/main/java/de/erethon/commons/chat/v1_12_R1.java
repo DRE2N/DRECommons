@@ -23,7 +23,7 @@ class v1_12_R1 extends InternalsProvider {
 
     @Override
     Object buildPacketPlayOutChat(ChatMessageType type, String message) {
-        return new PacketPlayOutChat(ChatSerializer.a(message), net.minecraft.server.v1_12_R1.ChatMessageType.a(getNMSCMT(type)));
+        return new PacketPlayOutChat(ChatSerializer.a(message), net.minecraft.server.v1_12_R1.ChatMessageType.a((byte) type.ordinal()));
     }
 
 }

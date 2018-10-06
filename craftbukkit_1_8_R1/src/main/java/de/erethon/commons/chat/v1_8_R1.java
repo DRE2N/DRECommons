@@ -29,7 +29,7 @@ class v1_8_R1 extends InternalsProvider {
 
     @Override
     Object buildPacketPlayOutChat(ChatMessageType type, String message) {
-        return new PacketPlayOutChat(ChatSerializer.a(message), getNMSCMT(type));
+        return new PacketPlayOutChat(ChatSerializer.a(message), (byte) type.ordinal());
     }
 
     @Override

@@ -28,14 +28,4 @@ class InternalsProvider {
         player.sendTitle(title, subtitle, fadeIn, show, fadeOut);
     }
 
-    protected byte getNMSCMT(ChatMessageType type) {
-        if (type == ChatMessageType.ACTION_BAR) {
-            return 2;
-        } else if (type == ChatMessageType.SYSTEM) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
 }
