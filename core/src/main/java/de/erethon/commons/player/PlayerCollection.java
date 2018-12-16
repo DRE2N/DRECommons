@@ -15,9 +15,11 @@ package de.erethon.commons.player;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Spliterator;
 import java.util.UUID;
+import java.util.function.Consumer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -25,9 +27,9 @@ import org.bukkit.entity.Player;
 /**
  * @author Daniel Saukel
  */
-public class PlayerCollection {
+public class PlayerCollection implements Iterable<UUID> {
 
-    private Set<UUID> uuids = new HashSet<>();
+    private Collection<UUID> uuids = new HashSet<>();
 
     /**
      * Creates an empty PlayerCollection
@@ -36,8 +38,7 @@ public class PlayerCollection {
     }
 
     /**
-     * @param players
-     * a collection of Player, OfflinePlayer, UUID, String (player names), String (uuids) and PlayerWrapper objects
+     * @param players a collection of Player, OfflinePlayer, UUID, String (player names), String (uuids) and PlayerWrapper objects
      */
     public PlayerCollection(Collection players) {
         for (Object player : players) {
@@ -58,21 +59,18 @@ public class PlayerCollection {
     }
 
     /**
-     * @return
-     * a collection of UUIDs
+     * @return a collection of UUIDs
      */
     public Collection<UUID> getUniqueIds() {
-        return uuids;
+        return new ArrayList<>(uuids);
     }
 
     /**
-     * @param filter
-     * players to exclude
-     * @return
-     * a collection of UUIDs
+     * @param filter players to exclude
+     * @return a collection of UUIDs
      */
     public Collection<UUID> getUniqueIds(PlayerCollection filter) {
-        Set<UUID> filtered = new HashSet<>();
+        Collection<UUID> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             if (!filter.contains(uuid)) {
                 filtered.add(uuid);
@@ -82,11 +80,10 @@ public class PlayerCollection {
     }
 
     /**
-     * @return
-     * a collection of player name Strings
+     * @return a collection of player name Strings
      */
     public Collection<String> getNames() {
-        Set<String> filtered = new HashSet<>();
+        Collection<String> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             filtered.add(Bukkit.getOfflinePlayer(uuid).getName());
         }
@@ -94,13 +91,11 @@ public class PlayerCollection {
     }
 
     /**
-     * @param filter
-     * players to exclude
-     * @return
-     * a collection of player name Strings
+     * @param filter players to exclude
+     * @return a collection of player name Strings
      */
     public Collection<String> getNames(PlayerCollection filter) {
-        Set<String> filtered = new HashSet<>();
+        Collection<String> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             String name = Bukkit.getOfflinePlayer(uuid).getName();
             if (!filter.contains(uuid)) {
@@ -111,11 +106,10 @@ public class PlayerCollection {
     }
 
     /**
-     * @return
-     * a collection of OnlinePlayers
+     * @return a collection of OnlinePlayers
      */
     public Collection<Player> getOnlinePlayers() {
-        Set<Player> filtered = new HashSet<>();
+        Collection<Player> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
@@ -126,13 +120,11 @@ public class PlayerCollection {
     }
 
     /**
-     * @param filter
-     * players to exclude
-     * @return
-     * a collection of OnlinePlayers
+     * @param filter players to exclude
+     * @return a collection of OnlinePlayers
      */
     public Collection<Player> getOnlinePlayers(PlayerCollection filter) {
-        Set<Player> filtered = new HashSet<>();
+        Collection<Player> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null && !filter.contains(player)) {
@@ -143,11 +135,10 @@ public class PlayerCollection {
     }
 
     /**
-     * @return
-     * a collection of OfflinePlayers
+     * @return a collection of OfflinePlayers
      */
     public Collection<OfflinePlayer> getOfflinePlayers() {
-        Set<OfflinePlayer> filtered = new HashSet<>();
+        Collection<OfflinePlayer> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             filtered.add(Bukkit.getOfflinePlayer(uuid));
         }
@@ -155,13 +146,11 @@ public class PlayerCollection {
     }
 
     /**
-     * @param filter
-     * players to exclude
-     * @return
-     * a collection of OfflinePlayers
+     * @param filter players to exclude
+     * @return a collection of OfflinePlayers
      */
     public Collection<OfflinePlayer> getOfflinePlayers(PlayerCollection filter) {
-        Set<OfflinePlayer> filtered = new HashSet<>();
+        Collection<OfflinePlayer> filtered = new ArrayList<>();
         for (UUID uuid : uuids) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             if (player != null && !filter.contains(player)) {
@@ -172,8 +161,8 @@ public class PlayerCollection {
     }
 
     /**
-     * @return
-     * if the collection contains the player
+     * @param player the player
+     * @return if the collection contains the player
      */
     public boolean contains(Object player) {
         if (player instanceof Collection) {
@@ -231,6 +220,12 @@ public class PlayerCollection {
         uuids.addAll(players.uuids);
     }
 
+    public void addAll(Object[] players) {
+        for (Object player : players) {
+            add(player);
+        }
+    }
+
     public boolean remove(Object player) {
         if (player instanceof OfflinePlayer) {
             return uuids.remove(((OfflinePlayer) player).getUniqueId());
@@ -259,6 +254,12 @@ public class PlayerCollection {
         uuids.removeAll(players.uuids);
     }
 
+    public void removeAll(Object[] players) {
+        for (Object player : players) {
+            remove(player);
+        }
+    }
+
     public void clear() {
         uuids.clear();
     }
@@ -267,9 +268,23 @@ public class PlayerCollection {
         return uuids.size();
     }
 
+    @Override
+    public Iterator<UUID> iterator() {
+        return uuids.iterator();
+    }
+
+    @Override
+    public Spliterator<UUID> spliterator() {
+        return uuids.spliterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super UUID> action) {
+        uuids.forEach(action);
+    }
+
     /**
-     * @return
-     * a List of Strings that can easily be used in a config
+     * @return a List of Strings that can easily be used in a config
      */
     public List<String> serialize() {
         List<String> filtered = new ArrayList<>();

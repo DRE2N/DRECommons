@@ -21,21 +21,24 @@ import org.bukkit.entity.Player;
 public interface PlayerWrapper {
 
     /**
-     * @return
-     * the Bukkit player
+     * Returns the Bukkit Player object.
+     *
+     * @return the Bukkit Player object
      */
-    public Player getPlayer();
+    Player getPlayer();
 
     /**
-     * @return
-     * the player's name
+     * Returns the player's name
+     *
+     * @return the player's name
      */
-    public String getName();
+    String getName();
 
     /**
-     * @return
-     * the player's unique ID
+     * Returns the player's unique ID
+     *
+     * @return the player's unique ID
      */
-    public UUID getUniqueId();
+    UUID getUniqueId();
 
 }

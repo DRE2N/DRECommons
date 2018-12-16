@@ -19,7 +19,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
@@ -47,8 +46,7 @@ public class PlayerUtil {
      * @return the player's UUID
      */
     public static UUID getUniqueIdFromName(String name) {
-        OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(name);
-        return player.getUniqueId();
+        return Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
     }
 
     /**
@@ -58,8 +56,7 @@ public class PlayerUtil {
      * @return the player's name
      */
     public static String getNameFromUniqueId(String uuid) {
-        OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuid));
-        return player.getName();
+        return Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuid)).getName();
     }
 
     /**
@@ -69,11 +66,7 @@ public class PlayerUtil {
      * @return if the String can be converted to a UUID
      */
     public static boolean isValidUUID(String string) {
-        if (string.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
-            return true;
-        } else {
-            return false;
-        }
+        return string.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
     }
 
     /**

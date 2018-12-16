@@ -29,19 +29,19 @@ public interface Message {
      * @return
      * the identifier
      */
-    public String getIdentifier();
+    String getIdentifier();
 
     /**
      * @return
      * the unformatted message
      */
-    public String getRaw();
+    String getRaw();
 
     /**
      * @return
      * the formatted message
      */
-    public default String getMessage() {
+    default String getMessage() {
         return ChatColor.translateAlternateColorCodes('&', getRaw());
     }
 
@@ -49,7 +49,7 @@ public interface Message {
      * @param args
      * String to replace possible variables in the message
      */
-    public default String getMessage(String... args) {
+    default String getMessage(String... args) {
         return getMessage(this, args);
     }
 
@@ -57,13 +57,13 @@ public interface Message {
      * @param message
      * the message to set
      */
-    public void setMessage(String message);
+    void setMessage(String message);
 
     /* Actions */
     /**
      * Sends the message to the console.
      */
-    public default void debug() {
+    default void debug() {
         MessageUtil.log(DREPlugin.getInstance(), getMessage());
     }
 
@@ -76,7 +76,7 @@ public interface Message {
      * @return
      * the message String to send
      */
-    public static String getMessage(Message message, String... args) {
+    static String getMessage(Message message, String... args) {
         String output = message.getMessage();
 
         int i = 0;
