@@ -25,10 +25,7 @@ public enum CommonMessage implements Message {
     CMD_DOES_NOT_EXIST("cmd.doesNotExist", "&cThis command does not exist."),
     CMD_NO_CONSOLE_COMMAND("cmd.noPlayerCommand", "&cThis command may not be executed by the console."),
     CMD_NO_PERMISSION("cmd.noPermission", "&cYou do not have permission to use this command."),
-    CMD_NO_PLAYER_COMMAND("cmd.noPlayerCommand", "&cThis command may not be executed by a player."),
-    GUI_BACK("gui.back", "&6&lBACK"),
-    GUI_NEXT_PAGE("gui.nextPage", "&6&lNEXT PAGE"),
-    GUI_PREVIOUS_PAGE("gui.previousPage", "&6&lPREVIOUS PAGE");
+    CMD_NO_PLAYER_COMMAND("cmd.noPlayerCommand", "&cThis command may not be executed by a player.");
 
     private String identifier;
     private String message;

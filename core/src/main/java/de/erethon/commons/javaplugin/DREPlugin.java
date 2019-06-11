@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -17,13 +17,11 @@ import de.erethon.commons.command.DRECommandCache;
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.config.CommonConfig;
 import de.erethon.commons.config.MessageConfig;
-import de.erethon.commons.gui.PageGUICache;
 import java.io.File;
 import java.lang.reflect.Field;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,7 +51,6 @@ public abstract class DREPlugin extends JavaPlugin {
 
     protected MessageConfig messageConfig;
     private DRECommandCache commands;
-    private PageGUICache pageGUIs;
 
     @Override
     public void onEnable() {
@@ -84,8 +81,6 @@ public abstract class DREPlugin extends JavaPlugin {
                 }
             });
         }
-
-        loadPageGUICache();
 
         MessageUtil.log("&f[&9##########&f[&6" + getName() + "&f]&9##########&f]");
         MessageUtil.log("&fInternals: [" + (settings.getInternals().contains(compat.getInternals()) ? "&a" : "&4") + compat.getInternals() + "&f]");
@@ -165,19 +160,6 @@ public abstract class DREPlugin extends JavaPlugin {
     }
 
     /**
-     * @param group the group to be checked
-     */
-    public boolean isGroupEnabled(String group) {
-        for (String anyGroup : permissionProvider.getGroups()) {
-            if (anyGroup.equalsIgnoreCase(group)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * @return true if PlaceholderAPI is enabled
      */
     public boolean isPlaceholderAPIEnabled() {
@@ -210,24 +192,6 @@ public abstract class DREPlugin extends JavaPlugin {
      */
     public void setCommandCache(DRECommandCache commands) {
         this.commands = commands;
-    }
-
-    /**
-     * @return the loaded instance of PageGUICache
-     */
-    public PageGUICache getPageGUICache() {
-        return pageGUIs;
-    }
-
-    /**
-     * load / reload a new instance of PageGUICache
-     */
-    public void loadPageGUICache() {
-        if (pageGUIs != null) {
-            HandlerList.unregisterAll(pageGUIs);
-        }
-        pageGUIs = new PageGUICache();
-        manager.registerEvents(pageGUIs, this);
     }
 
     protected void setDataFolder(File dataFolder) {
