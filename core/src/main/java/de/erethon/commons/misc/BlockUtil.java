@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -12,6 +12,7 @@
  */
 package de.erethon.commons.misc;
 
+import de.erethon.commons.compatibility.Version;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.block.Block;
@@ -25,29 +26,27 @@ import org.bukkit.material.MaterialData;
 public class BlockUtil {
 
     /**
-     * @param block
-     * the block to check
-     * @return
-     * the attached block
+     * @param block the block to check
+     * @return the attached block
      */
     public static Block getAttachedBlock(Block block) {
-        MaterialData meta = block.getState().getData();
-        BlockFace blockFace = BlockFace.DOWN;
+        if (!Version.isAtLeast(Version.MC1_13)) {
+            return Bukkit1_13.getAttachedBlock(block);
 
-        if (meta instanceof Attachable) {
-            blockFace = ((Attachable) meta).getAttachedFace();
+        } else {
+            MaterialData meta = block.getState().getData();
+            BlockFace blockFace = BlockFace.DOWN;
+            if (meta instanceof Attachable) {
+                blockFace = ((Attachable) meta).getAttachedFace();
+            }
+            return block.getRelative(blockFace);
         }
-
-        return block.getRelative(blockFace);
     }
 
     /**
-     * @param block1
-     * the first edge block
-     * @param block2
-     * the second edge block
-     * @return
-     * a Set of all blocks between block1 and block2
+     * @param block1 the first edge block
+     * @param block2 the second edge block
+     * @return a Set of all blocks between block1 and block2
      */
     public static Set<Block> getBlocksBetween(Block block1, Block block2) {
         Set<Block> blocks = new HashSet<>();

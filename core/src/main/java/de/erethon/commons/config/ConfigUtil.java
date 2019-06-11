@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -22,26 +22,19 @@ import org.bukkit.configuration.ConfigurationSection;
 public class ConfigUtil {
 
     /**
-     * @param config
-     * the ConfigurationSection
-     * @param path
-     * the path
-     * @return
-     * a Map<String, Object> at this path or an empty one
+     * @param config the ConfigurationSection
+     * @param path   the path
+     * @return a Map<String, Object> at this path or an empty one
      */
     public static Map<String, Object> getMap(ConfigurationSection config, String path) {
         return getMap(config, path, false);
     }
 
     /**
-     * @param config
-     * the ConfigurationSection
-     * @param path
-     * the path
-     * @param deep
-     * deep values
-     * @return
-     * a Map<String, Object> at this path or an empty one
+     * @param config the ConfigurationSection
+     * @param path   the path
+     * @param deep   deep values
+     * @return a Map<String, Object> at this path or an empty one
      */
     public static Map<String, Object> getMap(ConfigurationSection config, String path, boolean deep) {
         ConfigurationSection section = config.getConfigurationSection(path);

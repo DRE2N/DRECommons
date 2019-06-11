@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -19,29 +19,17 @@ public class NumberUtil {
 
     /* Integer */
     /**
-     * @param string
-     * the String to parse
-     * @return
-     * the number as an int
+     * @param string the String to parse
+     * @return the number as an int
      */
     public static int parseInt(String string) {
-        int i;
-        try {
-            i = Integer.parseInt(string);
-        } catch (NumberFormatException exception) {
-            i = 0;
-        }
-
-        return i;
+        return parseInt(string, 0);
     }
 
     /**
-     * @param string
-     * the String to parse
-     * @param defaultReturn
-     * the value which will be returned if the String is not parsable
-     * @return
-     * the number as an int
+     * @param string        the String to parse
+     * @param defaultReturn the value which will be returned if the String is not parsable
+     * @return the number as an int
      */
     public static int parseInt(String string, int defaultReturn) {
         int i;
@@ -50,35 +38,22 @@ public class NumberUtil {
         } catch (NumberFormatException exception) {
             i = defaultReturn;
         }
-
         return i;
     }
 
     /* Double */
     /**
-     * @param string
-     * the String to parse
-     * @return
-     * the number as a double
+     * @param string the String to parse
+     * @return the number as a double
      */
     public static double parseDouble(String string) {
-        double d;
-        try {
-            d = Double.parseDouble(string);
-        } catch (NumberFormatException exception) {
-            d = 0;
-        }
-
-        return d;
+        return parseDouble(string, 0d);
     }
 
     /**
-     * @param string
-     * the String to parse
-     * @param defaultReturn
-     * the value which will be returned if the String is not parsable
-     * @return
-     * the number as a double
+     * @param string        the String to parse
+     * @param defaultReturn the value which will be returned if the String is not parsable
+     * @return the number as a double
      */
     public static double parseDouble(String string, double defaultReturn) {
         double d;
@@ -87,7 +62,6 @@ public class NumberUtil {
         } catch (NumberFormatException exception) {
             d = defaultReturn;
         }
-
         return d;
     }
 

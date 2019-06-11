@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -17,7 +17,7 @@ import de.erethon.commons.javaplugin.DREPlugin;
 import org.bukkit.ChatColor;
 
 /**
- * An enum that implements Message needs this static methods, too:
+ * An enum that implements Message needs these static methods, too:
  * public static Message getByIdentifier(String identifier) - returns the message that matchs the config identifier
  * public static FileConfiguration toConfig() - lists all values in a FileConfiguration
  *
@@ -26,36 +26,42 @@ import org.bukkit.ChatColor;
 public interface Message {
 
     /**
-     * @return
-     * the identifier
+     * @return the identifier
      */
     String getIdentifier();
 
     /**
-     * @return
-     * the unformatted message
+     * @return the unformatted message
      */
     String getRaw();
 
     /**
-     * @return
-     * the formatted message
+     * @return the formatted message
      */
     default String getMessage() {
         return ChatColor.translateAlternateColorCodes('&', getRaw());
     }
 
     /**
-     * @param args
-     * String to replace possible variables in the message
+     * @param args Strings to replace possible variables in the message
+     * @return the message String
      */
     default String getMessage(String... args) {
-        return getMessage(this, args);
+        String output = getMessage();
+        int i = 0;
+        for (String arg : args) {
+            i++;
+            if (arg != null) {
+                output = output.replace("&v" + i, arg);
+            } else {
+                output = output.replace("&v" + i, "null");
+            }
+        }
+        return output;
     }
 
     /**
-     * @param message
-     * the message to set
+     * @param message the message to set
      */
     void setMessage(String message);
 
@@ -65,33 +71,6 @@ public interface Message {
      */
     default void debug() {
         MessageUtil.log(DREPlugin.getInstance(), getMessage());
-    }
-
-    /* Statics */
-    /**
-     * @param message
-     * the matching enum value from the Message implementation
-     * @param args
-     * the args to replace &v[i]
-     * @return
-     * the message String to send
-     */
-    static String getMessage(Message message, String... args) {
-        String output = message.getMessage();
-
-        int i = 0;
-        for (String arg : args) {
-            i++;
-
-            if (arg != null) {
-                output = output.replace("&v" + i, arg);
-
-            } else {
-                output = output.replace("&v" + i, "null");
-            }
-        }
-
-        return output;
     }
 
 }

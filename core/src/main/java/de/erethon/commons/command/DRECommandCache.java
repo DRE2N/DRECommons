@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -56,8 +56,8 @@ public class DRECommandCache {
     }
 
     /**
-     * @param command
-     * usually the first command argument
+     * @param commandName usually the first command argument
+     * @return the command with the given name
      */
     public DRECommand getCommand(String commandName) {
         for (DRECommand command : commands) {
@@ -84,24 +84,21 @@ public class DRECommandCache {
     }
 
     /**
-     * @param command
-     * the command to add
+     * @param command the command to add
      */
     public void addCommand(DRECommand command) {
         commands.add(command);
     }
 
     /**
-     * @param command
-     * the command to remove
+     * @param command the command to remove
      */
     public void removeCommand(DRECommand command) {
         commands.remove(command);
     }
 
     /**
-     * @param plugin
-     * the plugin that registers the command.
+     * @param plugin the plugin that registers the command.
      */
     public void register(JavaPlugin plugin) {
         plugin.getCommand(label).setExecutor(executor);

@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,36 +24,29 @@ import java.util.List;
 public class FileUtil {
 
     /**
-     * @param folder
-     * the folder to check
-     * @return
-     * a List of Files inside the folder and its subfolders
+     * @param folder the folder to check
+     * @return a List of Files inside the folder and its subfolders
      */
     public static List<File> getFilesForFolder(File folder) {
         List<File> files = new ArrayList<>();
+        if (!folder.isDirectory()) {
+            throw new IllegalArgumentException("File \"" + folder.getName() + "\" is not a directory");
+        }
         for (File file : folder.listFiles()) {
             if (file.isDirectory()) {
-                List<File> childFolderFiles;
-                childFolderFiles = getFilesForFolder(file);
-                files.addAll(childFolderFiles);
-                
+                files.addAll(getFilesForFolder(file));
             } else {
                 files.add(file);
             }
         }
-        
         return files;
     }
 
     /**
      * Copies a file or directory
      *
-     * @param inFile
-     * the File to copy
-     * @param outFile
-     * the target path
-     * @return
-     * if the file has been copied correctly
+     * @param inFile  the File to copy
+     * @param outFile the target path
      */
     public static void copy(File inFile, File outFile) {
         if (inFile.isDirectory()) {
@@ -65,40 +57,33 @@ public class FileUtil {
     }
 
     /**
-     * @param inFile
-     * the File to copy
-     * @param outFile
-     * the target path
-     * @return
-     * if the file has been copied correctly
+     * @param inFile  the File to copy
+     * @param outFile the target path
+     * @return if the file has been copied correctly
      */
     public static boolean copyFile(File inFile, File outFile) {
         return org.bukkit.util.FileUtil.copy(inFile, outFile);
     }
 
     /**
-     * @param inDir
-     * the directory to copy
-     * @param outFile
-     * the target path
-     * @return
-     * if the directory has been copied correctly
+     * @param inDir   the directory to copy
+     * @param outDir  the target path
+     * @param exclude files to exclude
      */
     public static void copyDir(File inDir, File outDir, String... exclude) {
-        Collection<String> e = Arrays.asList(exclude);
         if (!outDir.exists()) {
             outDir.mkdir();
         }
         for (String p : inDir.list()) {
-            if (!e.contains(p)) {
+            if (!Arrays.asList(exclude).contains(p)) {
                 copy(new File(inDir, p), new File(outDir, p));
             }
         }
     }
 
     /**
-     * @param dir
-     * the directory to remove
+     * @param dir the directory to remove
+     * @return if the directory has been removed correctly
      */
     public static boolean removeDir(File dir) {
         if (dir.isDirectory()) {
@@ -112,20 +97,16 @@ public class FileUtil {
     }
 
     /**
-     * @param path
-     * a file path
-     * @return
-     * the File
+     * @param path a file path
+     * @return the File
      */
     public static File createIfNotExisting(String path) {
         return createIfNotExisting(new File(path));
     }
 
     /**
-     * @param file
-     * a file
-     * @return
-     * the File
+     * @param file a file
+     * @return the File
      */
     public static File createIfNotExisting(File file) {
         if (!file.exists()) {
@@ -137,5 +118,5 @@ public class FileUtil {
         }
         return file;
     }
-    
+
 }

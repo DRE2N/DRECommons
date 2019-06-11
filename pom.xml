@@ -16,6 +16,7 @@
     </properties>
     <modules>
         <module>core</module>
+        <module>craftbukkit_1_14_R1</module>
         <module>craftbukkit_1_13_R2</module>
         <module>craftbukkit_1_13_R1</module>
         <module>craftbukkit_1_12_R1</module>
@@ -31,6 +32,10 @@
     </modules>
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.14.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>

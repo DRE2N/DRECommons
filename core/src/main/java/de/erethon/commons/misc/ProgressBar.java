@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -51,16 +51,14 @@ public class ProgressBar extends BukkitRunnable {
     }
 
     /**
-     * @param player
-     * the player to add
+     * @param player the player to add
      */
     public void addPlayer(Player player) {
         players.add(player.getUniqueId());
     }
 
     /**
-     * @param player
-     * the player to remove
+     * @param player the player to remove
      */
     public void removePlayer(Player player) {
         players.remove(player.getUniqueId());
@@ -97,7 +95,11 @@ public class ProgressBar extends BukkitRunnable {
     }
 
     /**
-     * Send the progress bar to a player
+     * Send the progress bar to a player.
+     *
+     * @param player  the player to send the bar to
+     * @param seconds the seconds until the progress bar is finished
+     * @return the started task
      */
     public static BukkitTask sendProgressBar(Player player, int seconds) {
         return new ProgressBar(player, seconds).runTaskTimer(DREPlugin.getInstance(), 0L, 20L);
@@ -105,6 +107,10 @@ public class ProgressBar extends BukkitRunnable {
 
     /**
      * Send the progress bar to multiple players
+     *
+     * @param players the players to send the bar to
+     * @param seconds the seconds until the progress bar is finished
+     * @return the started task
      */
     public static BukkitTask sendProgressBar(Set<Player> players, int seconds) {
         return new ProgressBar(players, seconds).runTaskTimer(DREPlugin.getInstance(), 0L, 20L);

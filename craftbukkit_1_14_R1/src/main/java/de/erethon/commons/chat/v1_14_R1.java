@@ -13,17 +13,17 @@
 package de.erethon.commons.chat;
 
 import net.md_5.bungee.api.ChatMessageType;
-import net.minecraft.server.v1_11_R1.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_14_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_14_R1.PacketPlayOutChat;
 
 /**
  * @author Daniel Saukel
  */
-class v1_11_R1 extends InternalsProvider {
+class v1_14_R1 extends InternalsProvider {
 
     @Override
     Object buildPacketPlayOutChat(ChatMessageType type, String message) {
-        return new PacketPlayOutChat(ChatSerializer.a(message), (byte) type.ordinal());
+        return new PacketPlayOutChat(ChatSerializer.a(message), net.minecraft.server.v1_14_R1.ChatMessageType.a((byte) type.ordinal()));
     }
 
 }

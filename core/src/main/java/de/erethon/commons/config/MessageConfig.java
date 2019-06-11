@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -33,10 +33,8 @@ public class MessageConfig {
     private FileConfiguration config;
 
     /**
-     * @param messageProvider
-     * the enum that implements Message
-     * @param file
-     * the file to save the messages to
+     * @param messageProvider the enum that implements Message
+     * @param file            the file to save the messages to
      */
     public MessageConfig(Class<? extends Message> messageProvider, File file) {
         fetchMethods(messageProvider);

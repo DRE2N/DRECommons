@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2018 by Daniel Saukel
+ * Written from 2015-2019 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -129,24 +129,21 @@ public enum DefaultFontInfo {
     }
 
     /**
-     * @return
-     * the char
+     * @return the char
      */
     public char getCharacter() {
         return character;
     }
 
     /**
-     * @return
-     * the amount of pixels
+     * @return the amount of pixels
      */
     public int getLength() {
         return length;
     }
 
     /**
-     * @return
-     * the amount of pixels if the symbol is printed out boldly
+     * @return the amount of pixels if the symbol is printed out boldly
      */
     public int getBoldLength() {
         if (this == DefaultFontInfo.SPACE) {
@@ -159,10 +156,8 @@ public enum DefaultFontInfo {
     private final static int CENTER_PX = 154;
 
     /**
-     * @param c
-     * the char
-     * @return
-     * the pixel length of the char
+     * @param c the char
+     * @return the pixel length of the char
      */
     public static DefaultFontInfo getDefaultFontInfo(char c) {
         for (DefaultFontInfo dFI : DefaultFontInfo.values()) {

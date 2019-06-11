@@ -12,20 +12,21 @@
  */
 package de.erethon.commons.player;
 
-import net.minecraft.server.v1_9_R1.Packet;
+import net.minecraft.server.v1_14_R1.DimensionManager;
+import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_9_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 /**
  * @author Daniel Saukel
  */
-class v1_9_R1 extends InternalsProvider {
+class v1_14_R1 extends InternalsProvider {
 
     @Override
     void respawn(Player player) {
-        ((CraftServer) Bukkit.getServer()).getServer().getPlayerList().moveToWorld(((CraftPlayer) player).getHandle(), 0, false);
+        ((CraftServer) Bukkit.getServer()).getServer().getPlayerList().moveToWorld(((CraftPlayer) player).getHandle(), DimensionManager.OVERWORLD, false);
     }
 
     @Override
