@@ -160,6 +160,20 @@ public abstract class DREPlugin extends JavaPlugin {
     }
 
     /**
+     * @param group the group to be checked
+     * @return if the group exists
+     */
+    public boolean isGroupEnabled(String group) {
+        for (String anyGroup : permissionProvider.getGroups()) {
+            if (anyGroup.equalsIgnoreCase(group)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return true if PlaceholderAPI is enabled
      */
     public boolean isPlaceholderAPIEnabled() {
