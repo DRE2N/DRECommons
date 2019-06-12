@@ -16,6 +16,7 @@ import de.erethon.commons.compatibility.Internals;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.inventivetalent.update.spiget.comparator.VersionComparator;
 
 /**
  * @author Daniel Saukel
@@ -40,6 +41,7 @@ public class DREPluginSettings {
         private boolean metrics = false;
         private int resourceId = -1;
         private Set<Internals> internals = Internals.INDEPENDENT;
+        private VersionComparator versionComparator = VersionComparator.SEM_VER;
 
         Builder() {
         }
@@ -84,8 +86,13 @@ public class DREPluginSettings {
             return this;
         }
 
+        public Builder versionComparator(VersionComparator versionComparator) {
+            this.versionComparator = versionComparator;
+            return this;
+        }
+
         public DREPluginSettings build() {
-            return new DREPluginSettings(spigot, paper, economy, permissions, metrics, resourceId, internals);
+            return new DREPluginSettings(spigot, paper, economy, permissions, metrics, resourceId, internals, versionComparator);
         }
 
     }
@@ -97,8 +104,10 @@ public class DREPluginSettings {
     private boolean metrics;
     private int resourceId = -1;
     private Set<Internals> internals;
+    private VersionComparator versionComparator;
 
-    public DREPluginSettings(boolean spigot, boolean paper, boolean economy, boolean permissions, boolean metrics, int resourceId, Set<Internals> internals) {
+    public DREPluginSettings(boolean spigot, boolean paper, boolean economy, boolean permissions, boolean metrics, int resourceId, Set<Internals> internals,
+            VersionComparator versionComparator) {
         this.spigot = spigot;
         this.paper = paper;
         this.economy = economy;
@@ -106,6 +115,7 @@ public class DREPluginSettings {
         this.metrics = metrics;
         this.internals = internals;
         this.resourceId = resourceId;
+        this.versionComparator = versionComparator;
     }
 
     /**
@@ -162,6 +172,13 @@ public class DREPluginSettings {
      */
     public Set<Internals> getInternals() {
         return internals;
+    }
+
+    /**
+     * @return the SpigetUpdate version comparator
+     */
+    public VersionComparator getVersionComparator() {
+        return versionComparator;
     }
 
 }

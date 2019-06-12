@@ -27,7 +27,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
-import org.inventivetalent.update.spiget.comparator.VersionComparator;
 
 /**
  * The custom JavaPlugin class. It provides simplified registration of and access to features of Vault, Metrics and DRECommons.
@@ -68,7 +67,7 @@ public abstract class DREPlugin extends JavaPlugin {
 
         if (settings.isSpigotMCResource() && CommonConfig.getInstance().isUpdaterEnabled()) {
             SpigetUpdate updater = new SpigetUpdate(this, settings.getSpigotMCResourceId());
-            updater.setVersionComparator(VersionComparator.SEM_VER);
+            updater.setVersionComparator(settings.getVersionComparator());
             updater.checkForUpdate(new UpdateCallback() {
                 @Override
                 public void updateAvailable(String newVersion, String downloadUrl, boolean hasDirectDownload) {
