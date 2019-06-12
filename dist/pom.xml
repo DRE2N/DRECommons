@@ -28,6 +28,16 @@
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.spiget-update</include>
                                 </includes>
+                                <relocations>
+                                    <relocation>
+                                        <pattern>org.bstats.bukkit</pattern>
+                                        <shadedPattern>de.erethon.commons.bstats</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.inventivetalent.update.spiget</pattern>
+                                        <shadedPattern>de.erethon.commons.spiget</shadedPattern>
+                                    </relocation>
+                                </relocations>
                             </artifactSet>
                         </configuration>
                     </execution>
