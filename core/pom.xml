@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>de.erethon.commons</groupId>
-            <artifactId>commons-compatibility</artifactId>
+            <artifactId>compatibility</artifactId>
             <version>1.5.1</version>
             <scope>compile</scope>
         </dependency>
