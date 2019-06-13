@@ -24,7 +24,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>de.erethon.commons:commons-*</include>
+                                    <include>de.erethon.commons:*</include>
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.spiget-update</include>
                                 </includes>
