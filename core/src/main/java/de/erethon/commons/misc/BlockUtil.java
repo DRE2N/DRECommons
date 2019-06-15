@@ -122,7 +122,7 @@ public class BlockUtil {
      * @return the attached block
      */
     public static Block getAttachedBlock(Block block) {
-        if (!Version.isAtLeast(Version.MC1_13)) {
+        if (Version.isAtLeast(Version.MC1_13)) {
             return Bukkit1_13.getAttachedBlock(block);
 
         } else {
