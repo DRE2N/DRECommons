@@ -103,7 +103,7 @@ public class BlockUtil {
      * @param letters the letters, not case-sensitive
      * @return the corresponding yaw value
      */
-    public static int lettersToYaw(String letters) {
+    public static Integer lettersToYaw(String letters) {
         return LETTERS_TO_YAW.get(letters.toUpperCase());
     }
 
@@ -113,7 +113,7 @@ public class BlockUtil {
      * @param face the BlockFace
      * @return the corresponding yaw value
      */
-    public static int blockFaceToYaw(BlockFace face) {
+    public static Integer blockFaceToYaw(BlockFace face) {
         return BLOCK_FACE_TO_YAW.get(face);
     }
 
