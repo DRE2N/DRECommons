@@ -14,70 +14,39 @@ package de.erethon.commons.config;
 
 import de.erethon.commons.javaplugin.DREPlugin;
 import java.io.File;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
+ * Messages used by this library.
+ *
  * @author Daniel Saukel
  */
 public enum CommonMessage implements Message {
 
-    CMD_DOES_NOT_EXIST("cmd.doesNotExist", "&cThis command does not exist."),
-    CMD_NO_CONSOLE_COMMAND("cmd.noPlayerCommand", "&cThis command may not be executed by the console."),
-    CMD_NO_PERMISSION("cmd.noPermission", "&cYou do not have permission to use this command."),
-    CMD_NO_PLAYER_COMMAND("cmd.noPlayerCommand", "&cThis command may not be executed by a player.");
+    CMD_DOES_NOT_EXIST("cmd.doesNotExist"),
+    CMD_NO_CONSOLE_COMMAND("cmd.noPlayerCommand"),
+    CMD_NO_PERMISSION("cmd.noPermission"),
+    CMD_NO_PLAYER_COMMAND("cmd.noPlayerCommand");
 
-    private String identifier;
-    private String message;
-
-    CommonMessage(String identifier, String message) {
-        this.identifier = identifier;
-        this.message = message;
-    }
+    private static MessageHandler messageHandler;
 
     static {
-        new MessageConfig(CommonMessage.class, new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml"));
+        messageHandler = new MessageHandler(new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml"));
     }
 
-    /* Getters and setters */
-    @Override
-    public String getIdentifier() {
-        return identifier;
-    }
+    private String path;
 
-    @Override
-    public String getRaw() {
-        return message;
+    CommonMessage(String path) {
+        this.path = path;
     }
 
     @Override
-    public void setMessage(String message) {
-        this.message = message;
+    public String getPath() {
+        return path;
     }
 
-    /* Statics */
-    /**
-     * @param identifier the identifier to set
-     * @return the message with the given identifier
-     */
-    public static Message getByIdentifier(String identifier) {
-        for (Message message : values()) {
-            if (message.getIdentifier().equals(identifier)) {
-                return message;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return a FileConfiguration containing all messages
-     */
-    public static FileConfiguration toConfig() {
-        FileConfiguration config = new YamlConfiguration();
-        for (CommonMessage message : values()) {
-            config.set(message.getIdentifier(), message.message);
-        }
-        return config;
+    @Override
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
     }
 
 }

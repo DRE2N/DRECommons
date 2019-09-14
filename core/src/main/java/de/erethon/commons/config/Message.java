@@ -14,58 +14,49 @@ package de.erethon.commons.config;
 
 import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.javaplugin.DREPlugin;
-import org.bukkit.ChatColor;
 
 /**
- * An enum that implements Message needs these static methods, too:
- * public static Message getByIdentifier(String identifier) - returns the message that matchs the config identifier
- * public static FileConfiguration toConfig() - lists all values in a FileConfiguration
- *
  * @author Daniel Saukel
  */
 public interface Message {
 
     /**
-     * @return the identifier
+     * Returns the configuration path where the message is loaded from.
+     *
+     * @return the configuration path where the message is loaded from
      */
-    String getIdentifier();
+    String getPath();
 
     /**
-     * @return the unformatted message
+     * The MessageHandler loaded by the plugin.
+     *
+     * @return the MessageHandler loaded by the plugin.
      */
-    String getRaw();
+    MessageHandler getMessageHandler();
 
     /**
-     * @return the formatted message
+     * Returns the formatted message String.
+     *
+     * @return the formatted message String;
+     *         null, if the path is null;
+     *         a placeholder, if the configuration is erroneous.
      */
     default String getMessage() {
-        return ChatColor.translateAlternateColorCodes('&', getRaw());
+        return getMessageHandler().getMessage(this);
     }
 
     /**
+     * Returns the formatted message String.
+     *
      * @param args Strings to replace possible variables in the message
-     * @return the message String
+     * @return the formatted message String;
+     *         null, if the path is null;
+     *         a placeholder, if the configuration is erroneous.
      */
     default String getMessage(String... args) {
-        String output = getMessage();
-        int i = 0;
-        for (String arg : args) {
-            i++;
-            if (arg != null) {
-                output = output.replace("&v" + i, arg);
-            } else {
-                output = output.replace("&v" + i, "null");
-            }
-        }
-        return output;
+        return getMessageHandler().getMessage(this, args);
     }
 
-    /**
-     * @param message the message to set
-     */
-    void setMessage(String message);
-
-    /* Actions */
     /**
      * Sends the message to the console.
      */

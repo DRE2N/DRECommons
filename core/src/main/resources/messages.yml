@@ -1,0 +1,5 @@
+cmd:
+  doesNotExist: "&cThis command does not exist."
+  noConsoleCommand: "&cThis command may not be executed by the console."
+  noPermission: "&cYou do not have permission to use this command."
+  noPlayerCommand: "&cThis command may not be executed by a player."

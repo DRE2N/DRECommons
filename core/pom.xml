@@ -9,11 +9,23 @@
         <artifactId>commons-parent</artifactId>
         <version>6.1</version>
     </parent>
+    <build>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/</directory>
+                <includes>
+                    <include>plugin.yml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
     <dependencies>
         <dependency>
             <groupId>de.erethon.commons</groupId>
             <artifactId>compatibility</artifactId>
-            <version>1.5.1</version>
+            <version>1.5.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

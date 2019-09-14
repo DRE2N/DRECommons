@@ -16,7 +16,7 @@ import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.command.DRECommandCache;
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.config.CommonConfig;
-import de.erethon.commons.config.MessageConfig;
+import de.erethon.commons.config.MessageHandler;
 import java.io.File;
 import java.lang.reflect.Field;
 import net.milkbowl.vault.economy.Economy;
@@ -48,7 +48,7 @@ public abstract class DREPlugin extends JavaPlugin {
 
     private Metrics metrics;
 
-    protected MessageConfig messageConfig;
+    protected MessageHandler messageHandler;
     private DRECommandCache commands;
 
     @Override
@@ -187,10 +187,10 @@ public abstract class DREPlugin extends JavaPlugin {
     }
 
     /**
-     * @return the loaded instance of MessageConfig
+     * @return the loaded instance of MessageHandler
      */
-    public MessageConfig getMessageConfig() {
-        return messageConfig;
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
     }
 
     /**
