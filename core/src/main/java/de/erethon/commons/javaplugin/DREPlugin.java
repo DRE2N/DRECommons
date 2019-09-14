@@ -190,6 +190,12 @@ public abstract class DREPlugin extends JavaPlugin {
      * @return the loaded instance of MessageHandler
      */
     public MessageHandler getMessageHandler() {
+        if (messageHandler == null) {
+            attemptToSaveResource("languages/english.yml", false);
+            attemptToSaveResource("languages/french.yml", false);
+            attemptToSaveResource("languages/german.yml", false);
+            messageHandler = new MessageHandler(new File(getDataFolder(), "languages"));
+        }
         return messageHandler;
     }
 
@@ -205,6 +211,23 @@ public abstract class DREPlugin extends JavaPlugin {
      */
     public void setCommandCache(DRECommandCache commands) {
         this.commands = commands;
+    }
+
+    /**
+     * Attempts to save a resource.
+     * See {@link org.bukkit.plugin.Plugin#saveResource(java.lang.String, boolean)}. This does not throw an exception.
+     *
+     * @param resource the path to the resource to save
+     * @param replace  if the resource shall be replaced
+     * @return if saving the resource was successful
+     */
+    public boolean attemptToSaveResource(String resource, boolean replace) {
+        try {
+            saveResource(resource, replace);
+            return true;
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
     }
 
     protected void setDataFolder(File dataFolder) {

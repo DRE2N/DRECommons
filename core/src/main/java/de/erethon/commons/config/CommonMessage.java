@@ -12,8 +12,10 @@
  */
 package de.erethon.commons.config;
 
+import com.google.common.io.Files;
 import de.erethon.commons.javaplugin.DREPlugin;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Messages used by this library.
@@ -30,7 +32,16 @@ public enum CommonMessage implements Message {
     private static MessageHandler messageHandler;
 
     static {
-        messageHandler = new MessageHandler(new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml"));
+        File dest = new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml");
+        if (!dest.exists()) {
+            DREPlugin.getInstance().saveResource("messages.yml", false);
+            try {
+                Files.move(new File(DREPlugin.getInstance().getDataFolder(), "messages.yml"), dest);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        messageHandler = new MessageHandler(dest);
     }
 
     private String path;
