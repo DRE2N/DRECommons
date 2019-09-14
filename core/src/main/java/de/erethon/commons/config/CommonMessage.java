@@ -25,7 +25,7 @@ import java.io.IOException;
 public enum CommonMessage implements Message {
 
     CMD_DOES_NOT_EXIST("cmd.doesNotExist"),
-    CMD_NO_CONSOLE_COMMAND("cmd.noPlayerCommand"),
+    CMD_NO_CONSOLE_COMMAND("cmd.noConsoleCommand"),
     CMD_NO_PERMISSION("cmd.noPermission"),
     CMD_NO_PLAYER_COMMAND("cmd.noPlayerCommand");
 
@@ -34,6 +34,7 @@ public enum CommonMessage implements Message {
     static {
         File dest = new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml");
         if (!dest.exists()) {
+            dest.getParentFile().mkdir();
             DREPlugin.getInstance().saveResource("messages.yml", false);
             try {
                 Files.move(new File(DREPlugin.getInstance().getDataFolder(), "messages.yml"), dest);
@@ -42,6 +43,7 @@ public enum CommonMessage implements Message {
             }
         }
         messageHandler = new MessageHandler(dest);
+        messageHandler.setDefaultLanguage("messages");
     }
 
     private String path;
