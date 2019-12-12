@@ -134,8 +134,10 @@ public class MessageHandler {
      */
     public String getMessage(String language, Message message, String... args) {
         String output = getMessage(language, message);
-        for (int i = 1; i < args.length; i++) {
-            output = output.replace("&v" + i, args[i] != null ? args[i] : null);
+        int i = 0;
+        while (i < args.length) {
+            String replace = args[i];
+            output = output.replace("&v" + ++i, replace != null ? replace : null);
         }
         return output;
     }
