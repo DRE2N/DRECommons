@@ -24,6 +24,7 @@ import org.bukkit.Bukkit;
  */
 public enum Internals {
 
+    v1_15_R1(true),
     v1_14_R1(true),
     v1_13_R2(true),
     v1_13_R1(true),
@@ -148,6 +149,8 @@ public enum Internals {
                 andHigher.add(Internals.v1_13_R2);
             case v1_14_R1:
                 andHigher.add(Internals.v1_14_R1);
+            case v1_15_R1:
+                andHigher.add(Internals.v1_15_R1);
             default:
                 andHigher.add(NEW);
         }

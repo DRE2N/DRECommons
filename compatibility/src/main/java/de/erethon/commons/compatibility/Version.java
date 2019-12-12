@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
  */
 public enum Version {
 
+    MC1_15(true, true, true, v1_15_R1),
     MC1_14_4(true, true, true, v1_14_R1),
     MC1_14_3(true, true, true, v1_14_R1),
     MC1_14_2(true, true, true, v1_14_R1),
@@ -289,6 +290,8 @@ public enum Version {
                 andHigher.add(Version.MC1_14_3);
             case MC1_14_4:
                 andHigher.add(Version.MC1_14_4);
+            case MC1_15:
+                andHigher.add(Version.MC1_15);
             default:
                 andHigher.add(NEW);
         }
