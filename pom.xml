@@ -41,13 +41,13 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.2</version>
+            <version>1.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.inventivetalent.spiget-update</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -63,12 +63,16 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+            <id>inventivetalent-repo</id>
+            <url>https://repo.inventivetalent.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>bstats-repo</id>
-            <url>http://repo.bstats.org/content/repositories/releases/</url>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+        </repository>
+        <repository>
+            <id>codemc</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
         <repository>
             <id>dre-repo</id>
