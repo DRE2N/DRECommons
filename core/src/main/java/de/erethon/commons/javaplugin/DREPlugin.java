@@ -191,12 +191,19 @@ public abstract class DREPlugin extends JavaPlugin {
      */
     public MessageHandler getMessageHandler() {
         if (messageHandler == null) {
-            attemptToSaveResource("languages/english.yml", false);
-            attemptToSaveResource("languages/french.yml", false);
-            attemptToSaveResource("languages/german.yml", false);
-            messageHandler = new MessageHandler(new File(getDataFolder(), "languages"));
+            reloadMessageHandler();
         }
         return messageHandler;
+    }
+
+    /**
+     * Reloads the language files.
+     */
+    public void reloadMessageHandler() {
+        attemptToSaveResource("languages/english.yml", false);
+        attemptToSaveResource("languages/french.yml", false);
+        attemptToSaveResource("languages/german.yml", false);
+        messageHandler = new MessageHandler(new File(getDataFolder(), "languages"));
     }
 
     /**
