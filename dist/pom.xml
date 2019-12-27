@@ -54,7 +54,7 @@
         <dependency>
             <groupId>de.erethon.commons</groupId>
             <artifactId>compatibility</artifactId>
-            <version>1.5.3</version>
+            <version>${moduleVersion.compatibility}</version>
         </dependency>
         <dependency>
             <groupId>de.erethon.commons</groupId>
