@@ -32,7 +32,9 @@ public interface Message {
      *
      * @return the MessageHandler loaded by the plugin.
      */
-    MessageHandler getMessageHandler();
+    default MessageHandler getMessageHandler() {
+        return DREPlugin.getInstance().getMessageHandler();
+    }
 
     /**
      * Returns the formatted message String.

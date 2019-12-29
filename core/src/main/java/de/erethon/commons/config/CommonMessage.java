@@ -16,6 +16,7 @@ import com.google.common.io.Files;
 import de.erethon.commons.javaplugin.DREPlugin;
 import java.io.File;
 import java.io.IOException;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Messages used by this library.
@@ -32,12 +33,13 @@ public enum CommonMessage implements Message {
     private static MessageHandler messageHandler;
 
     static {
-        File dest = new File(DREPlugin.getInstance().getDataFolder().getParent() + "/commons", "messages.yml");
+        Plugin plugin = DREPlugin.getInstance();
+        File dest = new File(plugin.getDataFolder().getParent() + "/commons", "messages.yml");
         if (!dest.exists()) {
             dest.getParentFile().mkdir();
-            DREPlugin.getInstance().saveResource("messages.yml", false);
+            plugin.saveResource("messages.yml", false);
             try {
-                Files.move(new File(DREPlugin.getInstance().getDataFolder(), "messages.yml"), dest);
+                Files.move(new File(plugin.getDataFolder(), "messages.yml"), dest);
             } catch (IOException exception) {
                 exception.printStackTrace();
             }

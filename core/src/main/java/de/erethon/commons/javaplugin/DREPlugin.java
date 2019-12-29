@@ -200,10 +200,12 @@ public abstract class DREPlugin extends JavaPlugin {
      * Reloads the language files.
      */
     public void reloadMessageHandler() {
+        File languages = new File(getDataFolder(), "languages");
+        languages.mkdirs();
         attemptToSaveResource("languages/english.yml", false);
         attemptToSaveResource("languages/french.yml", false);
         attemptToSaveResource("languages/german.yml", false);
-        messageHandler = new MessageHandler(new File(getDataFolder(), "languages"));
+        messageHandler = new MessageHandler(languages);
     }
 
     /**
