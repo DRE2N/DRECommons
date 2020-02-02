@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2019 by Daniel Saukel
+ * Written from 2015-2020 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -24,6 +24,12 @@ import org.bukkit.Bukkit;
  */
 public enum Internals {
 
+    /**
+     * Represents upcoming CraftBukkit versions.
+     * <br>
+     * toString() returns the actual internals version instead of "NEW"
+     */
+    NEW(true),
     v1_15_R1(true),
     v1_14_R1(true),
     v1_13_R2(true),
@@ -52,18 +58,9 @@ public enum Internals {
      */
     OUTDATED(true),
     /**
-     * Represents upcoming CraftBukkit versions.<br>
-     * toString() returns the actual internals version instead of "NEW"
+     * Represents an implementation other than CraftBukkit.
      */
-    NEW(true),
-    /**
-     * Represents an unknown implementation
-     */
-    UNKNOWN(false),
-    /**
-     * Represents the Glowstone server
-     */
-    GLOWSTONE(false);
+    UNKNOWN(false);
 
     private boolean craftBukkitInternals;
 
@@ -103,58 +100,10 @@ public enum Internals {
      */
     public static Set<Internals> andHigher(Internals internals) {
         Set<Internals> andHigher = new HashSet<>();
-
-        switch (internals) {
-            case v1_4_R1:
-                andHigher.add(Internals.v1_4_R1);
-            case v1_5_R1:
-                andHigher.add(Internals.v1_5_R2);
-            case v1_5_R2:
-                andHigher.add(Internals.v1_5_R2);
-            case v1_5_R3:
-                andHigher.add(Internals.v1_5_R3);
-            case v1_6_R1:
-                andHigher.add(Internals.v1_6_R1);
-            case v1_6_R2:
-                andHigher.add(Internals.v1_6_R2);
-            case v1_6_R3:
-                andHigher.add(Internals.v1_6_R3);
-            case v1_7_R1:
-                andHigher.add(Internals.v1_7_R1);
-            case v1_7_R2:
-                andHigher.add(Internals.v1_7_R2);
-            case v1_7_R3:
-                andHigher.add(Internals.v1_7_R3);
-            case v1_7_R4:
-                andHigher.add(Internals.v1_7_R4);
-            case v1_8_R1:
-                andHigher.add(Internals.v1_8_R1);
-            case v1_8_R2:
-                andHigher.add(Internals.v1_8_R2);
-            case v1_8_R3:
-                andHigher.add(Internals.v1_8_R3);
-            case v1_9_R1:
-                andHigher.add(Internals.v1_9_R1);
-            case v1_9_R2:
-                andHigher.add(Internals.v1_9_R2);
-            case v1_10_R1:
-                andHigher.add(Internals.v1_10_R1);
-            case v1_11_R1:
-                andHigher.add(Internals.v1_11_R1);
-            case v1_12_R1:
-                andHigher.add(Internals.v1_12_R1);
-            case v1_13_R1:
-                andHigher.add(Internals.v1_13_R1);
-            case v1_13_R2:
-                andHigher.add(Internals.v1_13_R2);
-            case v1_14_R1:
-                andHigher.add(Internals.v1_14_R1);
-            case v1_15_R1:
-                andHigher.add(Internals.v1_15_R1);
-            default:
-                andHigher.add(NEW);
+        Internals[] values = values();
+        for (int i = 0; i <= internals.ordinal(); i++) {
+            andHigher.add(values[i]);
         }
-
         return andHigher;
     }
 

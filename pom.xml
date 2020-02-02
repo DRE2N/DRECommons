@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.erethon.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>6.1</version>
+    <version>6.1.1</version>
     <packaging>pom</packaging>
     <name>DRECommons</name>
     <url>https://dre2n.github.io</url>
@@ -10,7 +10,7 @@
     <properties>
         <buildNo></buildNo>
         <skipTests>true</skipTests>
-        <moduleVersion.compatibility>1.5.4</moduleVersion.compatibility>
+        <moduleVersion.compatibility>1.5.5</moduleVersion.compatibility>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.1-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

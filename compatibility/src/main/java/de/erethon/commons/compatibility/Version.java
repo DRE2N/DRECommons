@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2019 by Daniel Saukel
+ * Written from 2015-2020 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -25,6 +25,13 @@ import org.bukkit.Bukkit;
  */
 public enum Version {
 
+    /**
+     * Represents upcoming versions.
+     * <p>
+     * getCraftBukkitInternals() might return a known package version or NEW.
+     */
+    NEW(true, true, true, Internals.NEW),
+    MC1_15_2(true, true, true, v1_15_R1),
     MC1_15_1(true, true, true, v1_15_R1),
     MC1_15(true, true, true, v1_15_R1),
     MC1_14_4(true, true, true, v1_14_R1),
@@ -74,12 +81,7 @@ public enum Version {
     MC1_4_6(false, false, false, OUTDATED),
     MC1_4_5(false, false, false, OUTDATED),
     MC1_4_4(false, false, false, OUTDATED),
-    MC1_4_2(false, false, false, OUTDATED),
-    /**
-     * Represents upcoming versions.<p>
-     * getCraftBukkitInternals() might return a known package version or NEW.
-     */
-    NEW(true, true, true, Internals.NEW);
+    MC1_4_2(false, false, false, OUTDATED);
 
     private boolean uuids;
     private boolean newMobNames;
@@ -193,112 +195,10 @@ public enum Version {
      */
     public static Set<Version> andHigher(Version version) {
         Set<Version> andHigher = new HashSet<>();
-
-        switch (version) {
-            case MC1_4_2:
-                andHigher.add(Version.MC1_4_2);
-            case MC1_4_4:
-                andHigher.add(Version.MC1_4_4);
-            case MC1_4_5:
-                andHigher.add(Version.MC1_4_5);
-            case MC1_4_6:
-                andHigher.add(Version.MC1_4_6);
-            case MC1_4_7:
-                andHigher.add(Version.MC1_4_7);
-            case MC1_5:
-                andHigher.add(Version.MC1_5);
-            case MC1_5_1:
-                andHigher.add(Version.MC1_5_1);
-            case MC1_5_2:
-                andHigher.add(Version.MC1_5_2);
-            case MC1_6_1:
-                andHigher.add(Version.MC1_6_1);
-            case MC1_6_2:
-                andHigher.add(Version.MC1_6_2);
-            case MC1_6_4:
-                andHigher.add(Version.MC1_6_4);
-            case MC1_7_2:
-                andHigher.add(Version.MC1_7_2);
-            case MC1_7_4:
-                andHigher.add(Version.MC1_7_4);
-            case MC1_7_5:
-                andHigher.add(Version.MC1_7_5);
-            case MC1_7_6:
-                andHigher.add(Version.MC1_7_6);
-            case MC1_7_7:
-                andHigher.add(Version.MC1_7_7);
-            case MC1_7_8:
-                andHigher.add(Version.MC1_7_8);
-            case MC1_7_9:
-                andHigher.add(Version.MC1_7_9);
-            case MC1_7_10:
-                andHigher.add(Version.MC1_7_10);
-            case MC1_8:
-                andHigher.add(Version.MC1_8);
-            case MC1_8_1:
-                andHigher.add(Version.MC1_8_1);
-            case MC1_8_3:
-                andHigher.add(Version.MC1_8_3);
-            case MC1_8_4:
-                andHigher.add(Version.MC1_8_4);
-            case MC1_8_5:
-                andHigher.add(Version.MC1_8_5);
-            case MC1_8_6:
-                andHigher.add(Version.MC1_8_6);
-            case MC1_8_7:
-                andHigher.add(Version.MC1_8_7);
-            case MC1_8_8:
-                andHigher.add(Version.MC1_8_8);
-            case MC1_8_9:
-                andHigher.add(Version.MC1_8_9);
-            case MC1_9:
-                andHigher.add(Version.MC1_9);
-            case MC1_9_2:
-                andHigher.add(Version.MC1_9_2);
-            case MC1_9_4:
-                andHigher.add(Version.MC1_9_4);
-            case MC1_10:
-                andHigher.add(Version.MC1_10);
-            case MC1_10_1:
-                andHigher.add(Version.MC1_10_1);
-            case MC1_10_2:
-                andHigher.add(Version.MC1_10_2);
-            case MC1_11:
-                andHigher.add(Version.MC1_11);
-            case MC1_11_1:
-                andHigher.add(Version.MC1_11_1);
-            case MC1_11_2:
-                andHigher.add(Version.MC1_11_2);
-            case MC1_12:
-                andHigher.add(Version.MC1_12);
-            case MC1_12_1:
-                andHigher.add(Version.MC1_12_1);
-            case MC1_12_2:
-                andHigher.add(Version.MC1_12_2);
-            case MC1_13:
-                andHigher.add(Version.MC1_13);
-            case MC1_13_1:
-                andHigher.add(Version.MC1_13_1);
-            case MC1_13_2:
-                andHigher.add(Version.MC1_13_2);
-            case MC1_14:
-                andHigher.add(Version.MC1_14);
-            case MC1_14_1:
-                andHigher.add(Version.MC1_14_1);
-            case MC1_14_2:
-                andHigher.add(Version.MC1_14_2);
-            case MC1_14_3:
-                andHigher.add(Version.MC1_14_3);
-            case MC1_14_4:
-                andHigher.add(Version.MC1_14_4);
-            case MC1_15:
-                andHigher.add(Version.MC1_15);
-            case MC1_15_1:
-                andHigher.add(Version.MC1_15_1);
-            default:
-                andHigher.add(NEW);
+        Version[] values = values();
+        for (int i = 0; i <= version.ordinal(); i++) {
+            andHigher.add(values[i]);
         }
-
         return andHigher;
     }
 
