@@ -18,10 +18,15 @@ import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.config.CommonConfig;
 import de.erethon.commons.config.MessageHandler;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -224,18 +229,48 @@ public abstract class DREPlugin extends JavaPlugin {
 
     /**
      * Attempts to save a resource.
+     * <p>
      * See {@link org.bukkit.plugin.Plugin#saveResource(java.lang.String, boolean)}. This does not throw an exception.
+     * <p>
+     * Updates the file if it lacks configuration paths the resource has.
      *
      * @param resource the path to the resource to save
      * @param replace  if the resource shall be replaced
-     * @return if saving the resource was successful
+     * @return if the resource was saved or updated
      */
     public boolean attemptToSaveResource(String resource, boolean replace) {
-        try {
-            saveResource(resource, replace);
-            return true;
-        } catch (IllegalArgumentException exception) {
-            return false;
+        File file = new File(getDataFolder(), resource);
+        if (replace || !file.exists()) {
+            try {
+                saveResource(resource, replace);
+                return true;
+            } catch (IllegalArgumentException exception) {
+                return false;
+            }
+
+        } else {
+            boolean updated = false;
+            InputStream is = getResource(resource);
+            if (is == null) {
+                return false;
+            }
+            YamlConfiguration resourceCfg = YamlConfiguration.loadConfiguration(new InputStreamReader(is, Charset.forName("UTF-8")));
+            YamlConfiguration fileCfg = YamlConfiguration.loadConfiguration(file);
+            for (String key : resourceCfg.getKeys(true)) {
+                if (!fileCfg.contains(key)) {
+                    fileCfg.set(key, resourceCfg.get(key));
+                    updated = true;
+                }
+            }
+            if (updated) {
+                try {
+                    fileCfg.save(file);
+                } catch (IOException exception) {
+                    MessageUtil.log(this, "&4File \"" + resource + "\" could not be updated.");
+                    exception.printStackTrace();
+                }
+            }
+            return updated;
         }
     }
 
