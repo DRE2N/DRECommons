@@ -78,7 +78,8 @@ public class MessageHandler {
             return path;
         }
         try {
-            return config.getString(path);
+            String message = config.getString(path);
+            return message != null ? message : path;
         } catch (Exception exception) {
             return "{erroneous config at " + path + "}";
         }
