@@ -16,6 +16,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -70,6 +71,15 @@ public class Registry<K, E> implements Iterable<E> {
             }
         }
         return checked;
+    }
+
+    /**
+     * Returns all elements.
+     *
+     * @return all elements
+     */
+    public Collection<E> getAll() {
+        return new HashSet<>(elements.values());
     }
 
     /**
@@ -137,6 +147,15 @@ public class Registry<K, E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return elements.values().iterator();
+    }
+
+    /**
+     * Returns the amount of elements.
+     *
+     * @return the amount of elements
+     */
+    public int size() {
+        return elements.size();
     }
 
 }
