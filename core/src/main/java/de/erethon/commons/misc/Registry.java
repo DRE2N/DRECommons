@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -128,6 +130,15 @@ public class Registry<K, E> implements Iterable<E> {
      */
     public void remove(E element) {
         elements.values().remove(element);
+    }
+
+    /**
+     * Returns the Set of entries in the Registry.
+     *
+     * @return the Set of entries in the Registry
+     */
+    public Set<Entry<K, E>> entrySet() {
+        return elements.entrySet();
     }
 
     /**
