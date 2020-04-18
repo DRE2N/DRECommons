@@ -13,19 +13,19 @@
 package de.erethon.commons.misc;
 
 import de.erethon.commons.chat.MessageUtil;
-import de.erethon.commons.javaplugin.DREPlugin;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
- * An action bar based progress bar.
+ * A boss bar based progress bar.
  *
  * @author Daniel Saukel
  */
@@ -33,9 +33,9 @@ public class ProgressBar extends BukkitRunnable {
 
     public static final String BAR = "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588";
 
-    protected Set<UUID> players = new HashSet<>();
-    protected int seconds;
-    protected int secondsLeft;
+    private List<UUID> players = new ArrayList<>();
+    private int seconds;
+    private int secondsLeft;
 
     public ProgressBar(Collection<Player> players, int seconds) {
         for (Player player : players) {
@@ -78,43 +78,27 @@ public class ProgressBar extends BukkitRunnable {
         }
 
         if (secondsLeft == 0) {
+            onFinish();
             cancel();
         } else {
             secondsLeft--;
         }
     }
 
-    /* Statics */
-    public static String getBar(int tenths) {
-        StringBuilder bar = new StringBuilder(BAR);
-        bar.insert(tenths, ChatColor.DARK_RED.toString());
-        return ChatColor.GREEN.toString() + bar.toString();
-    }
-
-    public static String getBar(double percentage) {
-        return getBar((int) Math.round(percentage) / 10);
+    /**
+     * Method to override to set actions when no seconds are left.
+     */
+    public void onFinish() {
     }
 
     /**
-     * Send the progress bar to a player.
+     * Sends the progress bar to a player
      *
-     * @param player  the player to send the bar to
-     * @param seconds the seconds until the progress bar is finished
-     * @return the started task
+     * @param plugin the plugin instance
+     * @return the scheduled BukkitTask
      */
-    public static BukkitTask sendProgressBar(Player player, int seconds) {
-        return new ProgressBar(player, seconds).runTaskTimer(DREPlugin.getInstance(), 0L, 20L);
-    }
-
-    /**
-     * Send the progress bar to multiple players
-     *
-     * @param players the players to send the bar to
-     * @param seconds the seconds until the progress bar is finished
-     * @return the started task
-     */
-    public static BukkitTask sendProgressBar(Set<Player> players, int seconds) {
-        return new ProgressBar(players, seconds).runTaskTimer(DREPlugin.getInstance(), 0L, 20L);
+    public BukkitTask send(Plugin plugin) {
+        return runTaskTimer(plugin, 0L, 20L);
     }
 
 }
