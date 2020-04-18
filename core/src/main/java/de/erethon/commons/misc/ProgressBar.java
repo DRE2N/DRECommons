@@ -14,6 +14,7 @@ package de.erethon.commons.misc;
 
 import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.javaplugin.DREPlugin;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class ProgressBar extends BukkitRunnable {
     protected int seconds;
     protected int secondsLeft;
 
-    public ProgressBar(Set<Player> players, int seconds) {
+    public ProgressBar(Collection<Player> players, int seconds) {
         for (Player player : players) {
             this.players.add(player.getUniqueId());
         }
