@@ -13,7 +13,7 @@
 package de.erethon.commons.chat;
 
 import de.erethon.commons.compatibility.CompatibilityHandler;
-import de.erethon.commons.player.PlayerUtil;
+import de.erethon.commons.compatibility.Internals;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -29,16 +29,20 @@ import org.bukkit.plugin.Plugin;
  */
 public class MessageUtil {
 
+    private static boolean is1_9 = Internals.isAtLeast(Internals.v1_9_R1);
+    private static boolean is1_11 = Internals.isAtLeast(Internals.v1_11_R1);
+
     static InternalsProvider internals;
 
     static {
-        String packageName = MessageUtil.class.getPackage().getName();
-        String internalsName = CompatibilityHandler.getInstance().getInternals().toString();
-        try {
-            internals = (InternalsProvider) Class.forName(packageName + "." + internalsName).newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException exception) {
-            internals = new InternalsProvider();
-            MessageUtil.log(ChatColor.DARK_RED + "MessageUtil could not find a valid implementation for " + internalsName + ".");
+        if (!is1_11) {
+            String packageName = MessageUtil.class.getPackage().getName();
+            String internalsName = CompatibilityHandler.getInstance().getInternals().toString();
+            try {
+                internals = (InternalsProvider) Class.forName(packageName + "." + internalsName).newInstance();
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException exception) {
+                MessageUtil.log(ChatColor.DARK_RED + "MessageUtil could not find a valid implementation for " + internalsName + ".");
+            }
         }
     }
 
@@ -77,7 +81,7 @@ public class MessageUtil {
      * @param message the message components
      */
     public static void broadcastMessage(BaseComponent... message) {
-        Bukkit.getOnlinePlayers().forEach(p -> sendMessage(p, ChatMessageType.CHAT, message));
+        Bukkit.getOnlinePlayers().forEach(p -> sendMessage(p, message));
     }
 
     /**
@@ -147,7 +151,7 @@ public class MessageUtil {
      */
     public static void broadcastActionBarMessage(String message) {
         BaseComponent[] comps = new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', message))};
-        Bukkit.getOnlinePlayers().forEach(p -> sendMessage(p, ChatMessageType.ACTION_BAR, comps));
+        broadcastActionBarMessage(comps);
     }
 
     /**
@@ -156,7 +160,7 @@ public class MessageUtil {
      * @param message the message components
      */
     public static void broadcastActionBarMessage(BaseComponent[] message) {
-        Bukkit.getOnlinePlayers().forEach(p -> sendMessage(p, ChatMessageType.ACTION_BAR, message));
+        Bukkit.getOnlinePlayers().forEach(p -> sendActionBarMessage(p, message));
     }
 
     /**
@@ -195,7 +199,11 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void sendMessage(CommandSender sender, BaseComponent... message) {
-        sendMessage(sender, ChatMessageType.CHAT, message);
+        if (sender instanceof Player) {
+            ((Player) sender).spigot().sendMessage(message);
+        } else {
+            sender.sendMessage(BaseComponent.toPlainText(message));
+        }
     }
 
     /**
@@ -215,7 +223,7 @@ public class MessageUtil {
      * @param message the message components
      */
     public static void sendCenteredMessage(CommandSender sender, BaseComponent... message) {
-        sendMessage(sender, ChatMessageType.CHAT, DefaultFontInfo.center(message));
+        sendMessage(sender, DefaultFontInfo.center(message));
     }
 
     /**
@@ -241,7 +249,11 @@ public class MessageUtil {
     public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
         title = ChatColor.translateAlternateColorCodes('&', title);
-        internals.sendTitleMessage(player, title, subtitle, fadeIn, show, fadeOut);
+        if (is1_11) {
+            player.sendTitle(title, subtitle, fadeIn, show, fadeOut);
+        } else {
+            internals.sendTitle(player, title, subtitle, fadeIn, show, fadeOut);
+        }
     }
 
     /**
@@ -273,7 +285,7 @@ public class MessageUtil {
      */
     public static void sendActionBarMessage(Player player, String message) {
         BaseComponent[] comps = new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', message))};
-        sendMessage(player, ChatMessageType.ACTION_BAR, comps);
+        sendActionBarMessage(player, comps);
     }
 
     /**
@@ -283,7 +295,11 @@ public class MessageUtil {
      * @param message the message components
      */
     public static void sendActionBarMessage(Player player, BaseComponent[] message) {
-        sendMessage(player, ChatMessageType.ACTION_BAR, message);
+        if (is1_9) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
+        } else {
+            internals.sendActionBar(player, ComponentSerializer.toString(message));
+        }
     }
 
     /**
@@ -302,14 +318,6 @@ public class MessageUtil {
         sendCenteredMessage(player, color + fat[2]);
         sendCenteredMessage(player, color + fat[3]);
         sendCenteredMessage(player, color + fat[4]);
-    }
-
-    private static void sendMessage(CommandSender sender, ChatMessageType type, BaseComponent[] message) {
-        if (sender instanceof Player) {
-            PlayerUtil.sendPacket((Player) sender, internals.buildPacketPlayOutChat(type, ComponentSerializer.toString(message)));
-        } else {
-            sender.sendMessage(TextComponent.toLegacyText(message));
-        }
     }
 
 }

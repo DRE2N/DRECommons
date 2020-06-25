@@ -12,7 +12,6 @@
  */
 package de.erethon.commons.chat;
 
-import net.md_5.bungee.api.ChatMessageType;
 import net.minecraft.server.v1_8_R1.ChatSerializer;
 import net.minecraft.server.v1_8_R1.EnumTitleAction;
 import net.minecraft.server.v1_8_R1.IChatBaseComponent;
@@ -28,12 +27,12 @@ import org.bukkit.entity.Player;
 class v1_8_R1 extends InternalsProvider {
 
     @Override
-    Object buildPacketPlayOutChat(ChatMessageType type, String message) {
-        return new PacketPlayOutChat(ChatSerializer.a(message), (byte) type.ordinal());
+    void sendActionBar(Player player, String message) {
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutChat(ChatSerializer.a(message), (byte) 2));
     }
 
     @Override
-    void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
+    void sendTitle(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
         IChatBaseComponent subtitleComponent = ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
         IChatBaseComponent titleComponent = ChatSerializer.a("{\"text\": \"" + title + "\"}");
 

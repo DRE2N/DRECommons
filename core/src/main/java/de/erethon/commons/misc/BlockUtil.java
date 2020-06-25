@@ -32,6 +32,8 @@ public class BlockUtil {
     private static final Map<String, Integer> LETTERS_TO_YAW = new HashMap<>();
     private static final Map<BlockFace, Integer> BLOCK_FACE_TO_YAW = new HashMap<>();
 
+    private static boolean is1_13 = Version.isAtLeast(Version.MC1_13);
+
     static {
         LETTERS_TO_BLOCK_FACE.put("E", EAST);
         LETTERS_TO_BLOCK_FACE.put("ENE", EAST_NORTH_EAST);
@@ -122,7 +124,7 @@ public class BlockUtil {
      * @return the attached block
      */
     public static Block getAttachedBlock(Block block) {
-        if (Version.isAtLeast(Version.MC1_13)) {
+        if (is1_13) {
             return Bukkit1_13.getAttachedBlock(block);
 
         } else {

@@ -12,32 +12,13 @@
  */
 package de.erethon.commons.player;
 
-import de.erethon.commons.chat.MessageUtil;
-import de.erethon.commons.compatibility.CompatibilityHandler;
-import de.erethon.commons.compatibility.Internals;
 import java.util.UUID;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 /**
- * @author Frank Baumann, Daniel Saukel
+ * @author Daniel Saukel
  */
 public class PlayerUtil {
-
-    static InternalsProvider internals;
-
-    static {
-        String packageName = PlayerUtil.class.getPackage().getName();
-        String internalsName = CompatibilityHandler.getInstance().getInternals().toString();
-        try {
-            internals = (InternalsProvider) Class.forName(packageName + "." + internalsName).newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException exception) {
-            internals = new InternalsProvider();
-            MessageUtil.log(ChatColor.DARK_RED + "PlayerUtil could not find a valid implementation for " + internalsName + ".");
-        }
-    }
 
     /**
      * Returns the unique ID of the player that has the name
@@ -67,57 +48,6 @@ public class PlayerUtil {
      */
     public static boolean isValidUUID(String string) {
         return string.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
-    }
-
-    /**
-     * Forces the player to leave his vehicle before teleportation
-     *
-     * @param player   the player to teleport
-     * @param location the target location
-     */
-    public static void secureTeleport(Player player, Location location) {
-        if (player.isInsideVehicle()) {
-            player.leaveVehicle();
-        }
-
-        if (Internals.isAtLeast(Internals.v1_11_R1)) {
-            player.getPassengers().forEach(e -> player.removePassenger(e));
-        } else {
-            player.setPassenger(null);
-        }
-
-        player.teleport(location);
-    }
-
-    /**
-     * Respawns the player. Fails if the player died in the same tick
-     *
-     * @param player the player to respawn
-     */
-    public static void respawn(Player player) {
-        if (player.getHealth() <= 0 && player.isOnline()) {
-            internals.respawn(player);
-        }
-    }
-
-    /**
-     * Returns the player's ping
-     *
-     * @param player the player to check
-     * @return the player's ping
-     */
-    public static int getPing(Player player) {
-        return internals.getPing(player);
-    }
-
-    /**
-     * Sends a packet to the player
-     *
-     * @param player the player
-     * @param packet an NMS packet
-     */
-    public static void sendPacket(Player player, Object packet) {
-        internals.sendPacket(player, packet);
     }
 
 }

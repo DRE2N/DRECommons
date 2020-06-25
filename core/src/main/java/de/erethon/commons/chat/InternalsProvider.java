@@ -12,20 +12,16 @@
  */
 package de.erethon.commons.chat;
 
-import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.entity.Player;
 
 /**
  * @author Daniel Saukel
  */
-class InternalsProvider {
+abstract class InternalsProvider {
 
-    Object buildPacketPlayOutChat(ChatMessageType type, String message) {
-        return null;
+    void sendActionBar(Player player, String message) {
     }
 
-    void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
-        player.sendTitle(title, subtitle, fadeIn, show, fadeOut);
-    }
+    abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut);
 
 }

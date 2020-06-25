@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.erethon.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>6.1.4</version>
+    <version>6.2</version>
     <packaging>pom</packaging>
     <name>DRECommons</name>
     <url>https://dre2n.github.io</url>
@@ -10,19 +10,13 @@
     <properties>
         <buildNo></buildNo>
         <skipTests>true</skipTests>
-        <moduleVersion.compatibility>1.5.5</moduleVersion.compatibility>
+        <moduleVersion.compatibility>1.5.6</moduleVersion.compatibility>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <modules>
         <module>core</module>
-        <module>craftbukkit_1_15_R1</module>
-        <module>craftbukkit_1_14_R1</module>
-        <module>craftbukkit_1_13_R2</module>
-        <module>craftbukkit_1_13_R1</module>
-        <module>craftbukkit_1_12_R1</module>
-        <module>craftbukkit_1_11_R1</module>
         <module>craftbukkit_1_10_R1</module>
         <module>craftbukkit_1_9_R2</module>
         <module>craftbukkit_1_9_R1</module>
@@ -33,12 +27,6 @@
         <module>dist</module>
     </modules>
     <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
