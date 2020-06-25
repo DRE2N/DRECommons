@@ -27,6 +27,7 @@
                                     <include>de.erethon.commons:*</include>
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.spiget-update</include>
+                                    <include>me.minidigger:minimessage-bungee</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -38,6 +39,10 @@
                                     <pattern>org.inventivetalent.update.spiget</pattern>
                                     <shadedPattern>de.erethon.commons.spiget</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>me.minidigger.minimessage</pattern>
+                                    <shadedPattern>de.erethon.commons.minimessage</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -45,7 +50,37 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
+    <dependencies>        
+        <dependency>
+            <groupId>de.erethon.commons</groupId>
+            <artifactId>commons-craftbukkit_1_10_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.erethon.commons</groupId>
+            <artifactId>commons-craftbukkit_1_9_R2</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.erethon.commons</groupId>
+            <artifactId>commons-craftbukkit_1_9_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.erethon.commons</groupId>
+            <artifactId>commons-craftbukkit_1_8_R3</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.erethon.commons</groupId>
+            <artifactId>commons-craftbukkit_1_8_R2</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.erethon.commons</groupId>
+            <artifactId>commons-craftbukkit_1_8_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>de.erethon.commons</groupId>
             <artifactId>commons-core</artifactId>

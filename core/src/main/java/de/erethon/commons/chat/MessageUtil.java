@@ -14,6 +14,8 @@ package de.erethon.commons.chat;
 
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Internals;
+import de.erethon.commons.javaplugin.DREPlugin;
+import me.minidigger.minimessage.bungee.MiniMessageParser;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -31,6 +33,7 @@ public class MessageUtil {
 
     private static boolean is1_9 = Internals.isAtLeast(Internals.v1_9_R1);
     private static boolean is1_11 = Internals.isAtLeast(Internals.v1_11_R1);
+    private static boolean is1_16 = Internals.isAtLeast(Internals.v1_16_R1);
 
     static InternalsProvider internals;
 
@@ -52,7 +55,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void log(String message) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        log(DREPlugin.getInstance(), message);
     }
 
     /**
@@ -71,8 +74,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void broadcastMessage(String message) {
-        String toSend = ChatColor.translateAlternateColorCodes('&', message);
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(toSend));
+        broadcastMessage(parse(message));
     }
 
     /**
@@ -150,8 +152,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void broadcastActionBarMessage(String message) {
-        BaseComponent[] comps = new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', message))};
-        broadcastActionBarMessage(comps);
+        broadcastActionBarMessage(message);
     }
 
     /**
@@ -189,7 +190,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        sendMessage(sender, parse(message));
     }
 
     /**
@@ -247,8 +248,8 @@ public class MessageUtil {
      * @param fadeOut  the time in ticks it takes for the message to disappear
      */
     public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int show, int fadeOut) {
-        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
-        title = ChatColor.translateAlternateColorCodes('&', title);
+        title = TextComponent.toLegacyText(parse(title));
+        subtitle = TextComponent.toLegacyText(parse(subtitle));
         if (is1_11) {
             player.sendTitle(title, subtitle, fadeIn, show, fadeOut);
         } else {
@@ -284,8 +285,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void sendActionBarMessage(Player player, String message) {
-        BaseComponent[] comps = new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', message))};
-        sendActionBarMessage(player, comps);
+        sendActionBarMessage(player, parse(message));
     }
 
     /**
@@ -318,6 +318,19 @@ public class MessageUtil {
         sendCenteredMessage(player, color + fat[2]);
         sendCenteredMessage(player, color + fat[3]);
         sendCenteredMessage(player, color + fat[4]);
+    }
+
+    /**
+     * Parses the string.
+     * <p>
+     * Translates color codes and in 1.16+ MiniMessage tags.
+     *
+     * @param string the String to parse
+     * @return the parsed BaseComponents
+     */
+    public static BaseComponent[] parse(String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        return is1_16 ? MiniMessageParser.parseFormat(string) : TextComponent.fromLegacyText(string);
     }
 
 }
