@@ -16,12 +16,12 @@ import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Internals;
 import de.erethon.commons.javaplugin.DREPlugin;
 import me.minidigger.minimessage.bungee.MiniMessageParser;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -92,7 +92,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void broadcastCenteredMessage(String message) {
-        broadcastMessage(DefaultFontInfo.center(message));
+        broadcastCenteredMessage(parse(message));
     }
 
     /**
@@ -214,7 +214,7 @@ public class MessageUtil {
      * @param message the message String
      */
     public static void sendCenteredMessage(CommandSender sender, String message) {
-        sender.sendMessage(DefaultFontInfo.center(message));
+        sendCenteredMessage(sender, parse(message));
     }
 
     /**
