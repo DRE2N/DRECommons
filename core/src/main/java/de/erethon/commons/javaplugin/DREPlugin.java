@@ -67,7 +67,7 @@ public abstract class DREPlugin extends JavaPlugin {
         placeholderAPI = manager.isPluginEnabled("PlaceholderAPI");
 
         if (settings.usesMetrics()) {
-            metrics = new Metrics(this);
+            metrics = new Metrics(this, settings.getSpigotMCResourceId());
         }
 
         if (settings.isSpigotMCResource() && CommonConfig.getInstance().isUpdaterEnabled()) {
