@@ -30,6 +30,7 @@ public enum Internals {
      * toString() returns the actual internals version instead of "NEW"
      */
     NEW(true),
+    v1_16_R2(true),
     v1_16_R1(true),
     v1_15_R1(true),
     v1_14_R1(true),
