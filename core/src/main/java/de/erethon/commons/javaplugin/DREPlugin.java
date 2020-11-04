@@ -67,7 +67,7 @@ public abstract class DREPlugin extends JavaPlugin {
         placeholderAPI = manager.isPluginEnabled("PlaceholderAPI");
 
         if (settings.usesMetrics()) {
-            metrics = new Metrics(this, settings.getSpigotMCResourceId());
+            metrics = new Metrics(this, settings.getBStatsResourceId());
         }
 
         if (settings.isSpigotMCResource() && CommonConfig.getInstance().isUpdaterEnabled()) {
@@ -91,7 +91,7 @@ public abstract class DREPlugin extends JavaPlugin {
         MessageUtil.log("&fPaper API: [" + (!settings.requiresPaper() || compat.isPaper() ? "&a" : "&4") + compat.isPaper() + "&f]");
         MessageUtil.log("&fEconomy: [" + (!settings.requiresVaultEconomy() || economyProvider != null ? "&a" : "&4") + (economyProvider != null) + "&f]");
         MessageUtil.log("&fPermissions: [" + (!settings.requiresVaultPermissions() || permissionProvider != null ? "&a" : "&4") + (permissionProvider != null) + "&f]");
-        MessageUtil.log("&fMetrics: [&e" + (metrics != null ? "https://bstats.org/plugin/bukkit/" + getName() : "false") + "&f]");
+        MessageUtil.log("&fMetrics: [&e" + (metrics != null ? "https://bstats.org/plugin/bukkit/" + getName() + "/" + settings.getBStatsResourceId() : "false") + "&f]");
         MessageUtil.log("&fSpigotMC ID: [&e" + (settings.isSpigotMCResource() ? settings.getSpigotMCResourceId() : "none") + "&f]");
         MessageUtil.log("&f[&9###############################&f]");
     }

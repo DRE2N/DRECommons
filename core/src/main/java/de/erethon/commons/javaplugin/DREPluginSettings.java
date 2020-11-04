@@ -39,7 +39,8 @@ public class DREPluginSettings {
         private boolean economy = false;
         private boolean permissions = false;
         private boolean metrics = false;
-        private int resourceId = -1;
+        private int spigotMCResourceId = -1;
+        private int bStatsResourceId = -1;
         private Set<Internals> internals = Internals.INDEPENDENT;
         private VersionComparator versionComparator = VersionComparator.SEM_VER;
 
@@ -71,8 +72,13 @@ public class DREPluginSettings {
             return this;
         }
 
-        public Builder spigotMCResourceId(int resourceId) {
-            this.resourceId = resourceId;
+        public Builder spigotMCResourceId(int spigotMCResourceId) {
+            this.spigotMCResourceId = spigotMCResourceId;
+            return this;
+        }
+
+        public Builder bStatsResourceId(int bStatsResourceId) {
+            this.bStatsResourceId = bStatsResourceId;
             return this;
         }
 
@@ -92,7 +98,7 @@ public class DREPluginSettings {
         }
 
         public DREPluginSettings build() {
-            return new DREPluginSettings(spigot, paper, economy, permissions, metrics, resourceId, internals, versionComparator);
+            return new DREPluginSettings(spigot, paper, economy, permissions, metrics, spigotMCResourceId, bStatsResourceId, internals, versionComparator);
         }
 
     }
@@ -102,19 +108,21 @@ public class DREPluginSettings {
     private boolean economy;
     private boolean permissions;
     private boolean metrics;
-    private int resourceId = -1;
+    private int spigotMCResourceId = -1;
+    private int bStatsResourceId = -1;
     private Set<Internals> internals;
     private VersionComparator versionComparator;
 
-    public DREPluginSettings(boolean spigot, boolean paper, boolean economy, boolean permissions, boolean metrics, int resourceId, Set<Internals> internals,
-            VersionComparator versionComparator) {
+    public DREPluginSettings(boolean spigot, boolean paper, boolean economy, boolean permissions, boolean metrics, int spigotMCResourceId, int bStatsResourceId,
+            Set<Internals> internals, VersionComparator versionComparator) {
         this.spigot = spigot;
         this.paper = paper;
         this.economy = economy;
         this.permissions = permissions;
         this.metrics = metrics;
         this.internals = internals;
-        this.resourceId = resourceId;
+        this.spigotMCResourceId = spigotMCResourceId;
+        this.bStatsResourceId = bStatsResourceId;
         this.versionComparator = versionComparator;
     }
 
@@ -157,14 +165,21 @@ public class DREPluginSettings {
      * @return if there is a resource thread at SpigotMC.org
      */
     public boolean isSpigotMCResource() {
-        return resourceId != -1;
+        return spigotMCResourceId != -1;
     }
 
     /**
      * @return the SpigotMC.org resource ID or -1 if there is no thread
      */
     public int getSpigotMCResourceId() {
-        return resourceId;
+        return spigotMCResourceId;
+    }
+
+    /**
+     * @return the bStats.org resource ID or -1 if the plugin does not send data
+     */
+    public int getBStatsResourceId() {
+        return bStatsResourceId;
     }
 
     /**
