@@ -15,7 +15,8 @@ package de.erethon.commons.chat;
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Internals;
 import de.erethon.commons.javaplugin.DREPlugin;
-import me.minidigger.minimessage.bungee.MiniMessageParser;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -330,7 +331,9 @@ public class MessageUtil {
      */
     public static BaseComponent[] parse(String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        return is1_16 ? MiniMessageParser.parseFormat(string) : TextComponent.fromLegacyText(string);
+        // This is necessary until we do a full update to adventure-text
+        return is1_16 ? BungeeComponentSerializer.get().serialize(MiniMessage.get().parse(string)) : TextComponent.fromLegacyText(string);
+
     }
 
 }
