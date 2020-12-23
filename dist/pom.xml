@@ -28,6 +28,7 @@
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.spiget-update</include>
                                     <include>me.minidigger:minimessage-bungee</include>
+                                    <include>net.kyori:*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -42,6 +43,10 @@
                                 <relocation>
                                     <pattern>me.minidigger.minimessage</pattern>
                                     <shadedPattern>de.erethon.commons.minimessage</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.kyori.adventure.*</pattern>
+                                    <shadedPattern>de.erethon.commons.adventure.*</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
