@@ -20,7 +20,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.material.Attachable;
 import org.bukkit.material.MaterialData;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -197,7 +196,6 @@ public class BlockUtil {
      * This class stores an Location paired with an BlockFace.
      * See usage down below.
      *
-     * @see BlockUtil#getSignAttachedTo(Block)
      * @see BlockUtil#getSignsAttachedTo(Block)
      * @see BlockUtil#signAttachedTo(Block)
      */
@@ -217,40 +215,6 @@ public class BlockUtil {
         public BlockFace getFace() {
             return face;
         }
-    }
-
-    /**
-     * Returns the attached sign if found, null otherwise.
-     *
-     * @param block the block to check
-     * @return the attached sign if found, null otherwise
-     * @deprecated this method is not reliable if more than one sign is attached to the block.
-     * It will only return one of the attached signs, randomly picked and not specifically chosen.
-     */
-    @Nullable
-    @Deprecated
-    public static Sign getSignAttachedTo(Block block) {
-        Location location = block.getLocation();
-        List<LocationNode> locations = Arrays.asList(
-                new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
-                new LocationNode(location.clone().add(0, 0, 1), NORTH), // z +1
-                new LocationNode(location.clone().subtract(1, 0, 0), WEST), // x -1
-                new LocationNode(location.clone().subtract(0, 0, 1), SOUTH) // z -1
-        );
-        Location locUp = location.clone().add(0, 1, 0);
-        if (isSign(locUp.getBlock())) {
-            return (Sign) locUp.getBlock().getState();
-        }
-        for (LocationNode node : locations) {
-            Block attached = node.getLoc().getBlock();
-            if (isWallSign(attached)) {
-                WallSign wallSign = (WallSign) attached.getBlockData();
-                if (wallSign.getFacing().getOppositeFace().equals(node.getFace())) {
-                    return (Sign) attached.getState();
-                }
-            }
-        }
-        return null;
     }
 
     /**
