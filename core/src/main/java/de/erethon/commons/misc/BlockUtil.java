@@ -13,15 +13,18 @@
 package de.erethon.commons.misc;
 
 import de.erethon.commons.compatibility.Version;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import static org.bukkit.block.BlockFace.*;
+import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.material.Attachable;
 import org.bukkit.material.MaterialData;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+
+import static org.bukkit.block.BlockFace.*;
 
 /**
  * @author Daniel Saukel
@@ -32,7 +35,7 @@ public class BlockUtil {
     private static final Map<String, Integer> LETTERS_TO_YAW = new HashMap<>();
     private static final Map<BlockFace, Integer> BLOCK_FACE_TO_YAW = new HashMap<>();
 
-    private static boolean is1_13 = Version.isAtLeast(Version.MC1_13);
+    private static final boolean is1_13 = Version.isAtLeast(Version.MC1_13);
 
     static {
         LETTERS_TO_BLOCK_FACE.put("E", EAST);
@@ -145,14 +148,14 @@ public class BlockUtil {
     public static Set<Block> getBlocksBetween(Block block1, Block block2) {
         Set<Block> blocks = new HashSet<>();
 
-        int topBlockX = (block1.getX() < block2.getX() ? block2.getX() : block1.getX());
-        int bottomBlockX = (block1.getX() > block2.getX() ? block2.getX() : block1.getX());
+        int topBlockX = Math.max(block1.getX(), block2.getX());
+        int bottomBlockX = Math.min(block1.getX(), block2.getX());
 
-        int topBlockY = (block1.getY() < block2.getY() ? block2.getY() : block1.getY());
-        int bottomBlockY = (block1.getY() > block2.getY() ? block2.getY() : block1.getY());
+        int topBlockY = Math.max(block1.getY(), block2.getY());
+        int bottomBlockY = Math.min(block1.getY(), block2.getY());
 
-        int topBlockZ = (block1.getZ() < block2.getZ() ? block2.getZ() : block1.getZ());
-        int bottomBlockZ = (block1.getZ() > block2.getZ() ? block2.getZ() : block1.getZ());
+        int topBlockZ = Math.max(block1.getZ(), block2.getZ());
+        int bottomBlockZ = Math.min(block1.getZ(), block2.getZ());
 
         for (int x = bottomBlockX; x <= topBlockX; x++) {
             for (int z = bottomBlockZ; z <= topBlockZ; z++) {
@@ -166,4 +169,147 @@ public class BlockUtil {
         return blocks;
     }
 
+    /**
+     * @param block the block to check
+     * @return true if the block is an Sign or WallSign, false otherwise
+     */
+    public static boolean isSignOrWallSign(Block block) {
+        return isSign(block) | isWallSign(block);
+    }
+
+    /**
+     * @param block the block to check
+     * @return true if the block is an Sign, false otherwise
+     */
+    public static boolean isSign(Block block) {
+        return block.getState() instanceof Sign;
+    }
+
+    /**
+     * @param block the block to check
+     * @return true if the block is an WallSign, false otherwise
+     */
+    public static boolean isWallSign(Block block) {
+        return block.getBlockData() instanceof WallSign;
+    }
+
+    /**
+     * This class stores an Location paired with an BlockFace.
+     * See usage down below.
+     *
+     * @see BlockUtil#getSignAttachedTo(Block)
+     * @see BlockUtil#getSignsAttachedTo(Block)
+     * @see BlockUtil#signAttachedTo(Block)
+     */
+    private static class LocationNode {
+        private final Location loc;
+        private final BlockFace face;
+
+        public LocationNode(Location loc, BlockFace face) {
+            this.loc = loc;
+            this.face = face;
+        }
+
+        public Location getLoc() {
+            return loc;
+        }
+
+        public BlockFace getFace() {
+            return face;
+        }
+    }
+
+    /**
+     * Returns the attached sign if found, null otherwise.
+     *
+     * @param block the block to check
+     * @return the attached sign if found, null otherwise
+     * @deprecated this method is not reliable if more than one sign is attached to the block.
+     * It will only return one of the attached signs, randomly picked and not specifically chosen.
+     */
+    @Nullable
+    @Deprecated
+    public static Sign getSignAttachedTo(Block block) {
+        Location location = block.getLocation();
+        List<LocationNode> locations = Arrays.asList(
+                new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
+                new LocationNode(location.clone().add(0, 0, 1), NORTH), // z +1
+                new LocationNode(location.clone().subtract(1, 0, 0), WEST), // x -1
+                new LocationNode(location.clone().subtract(0, 0, 1), SOUTH) // z -1
+        );
+        Location locUp = location.clone().add(0, 1, 0);
+        if (isSign(locUp.getBlock())) {
+            return (Sign) locUp.getBlock().getState();
+        }
+        for (LocationNode node : locations) {
+            Block attached = node.getLoc().getBlock();
+            if (isWallSign(attached)) {
+                WallSign wallSign = (WallSign) attached.getBlockData();
+                if (wallSign.getFacing().getOppositeFace().equals(node.getFace())) {
+                    return (Sign) attached.getState();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns an {@link Set} of signs which are attached to the block.
+     * If no signs are found, this will return an empty Set.
+     *
+     * @param block the block to check
+     * @return an Set of to the block attached signs
+     */
+    public static Set<Sign> getSignsAttachedTo(Block block) {
+        Set<Sign> signs = new HashSet<>();
+        Location location = block.getLocation();
+        List<LocationNode> locations = Arrays.asList(
+                new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
+                new LocationNode(location.clone().add(0, 0, 1), NORTH), // z +1
+                new LocationNode(location.clone().subtract(1, 0, 0), WEST), // x -1
+                new LocationNode(location.clone().subtract(0, 0, 1), SOUTH) // z -1
+        );
+        Location locUp = location.clone().add(0, 1, 0);
+        if (isSign(locUp.getBlock())) {
+            signs.add((Sign) locUp.getBlock().getState());
+        }
+        for (LocationNode node : locations) {
+            Block attached = node.getLoc().getBlock();
+            if (isWallSign(attached)) {
+                WallSign wallSign = (WallSign) attached.getBlockData();
+                if (wallSign.getFacing().getOppositeFace().equals(node.getFace())) {
+                    signs.add((Sign) attached.getState());
+                }
+            }
+        }
+        return signs;
+    }
+
+    /**
+     * @param block the block to check
+     * @return true if an sign is attached to the block, false otherwise
+     */
+    public static boolean signAttachedTo(Block block) {
+        Location location = block.getLocation();
+        List<LocationNode> locations = Arrays.asList(
+                new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
+                new LocationNode(location.clone().add(0, 0, 1), NORTH), // z +1
+                new LocationNode(location.clone().subtract(1, 0, 0), WEST), // x -1
+                new LocationNode(location.clone().subtract(0, 0, 1), SOUTH) // z -1
+        );
+        Location locUp = location.clone().add(0, 1, 0);
+        if (isSign(locUp.getBlock())) {
+            return true;
+        }
+        for (LocationNode node : locations) {
+            Block b = node.getLoc().getBlock();
+            if (isWallSign(b)) {
+                WallSign wallSign = (WallSign) b.getBlockData();
+                if (wallSign.getFacing().getOppositeFace().equals(node.getFace())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
