@@ -206,6 +206,7 @@ public class BlockUtil {
     /**
      * Returns an {@link Set} of signs which are attached to the block.
      * If no signs are found, this will return an empty Set.
+     * This method will ignore attached WallSigns till 1.13 or higher, due to compatibility issues.
      *
      * @param block the block to check
      * @return an Set of to the block attached signs
@@ -227,6 +228,9 @@ public class BlockUtil {
                 signs.add((Sign) locUp.getBlock().getState());
             }
         }
+        if (!is1_13) {
+            return signs;
+        }
         for (int i = 0; i < locations.length; i++) {
             Block attached = locations[i].getBlock();
             if (isWallSign(attached)) {
@@ -240,6 +244,9 @@ public class BlockUtil {
     }
 
     /**
+     * Returns true if an Sign is attached to the block, false otherwise.
+     * This method will ignore attached WallSigns till 1.13 or higher, due to compatibility issues.
+     *
      * @param block the block to check
      * @return true if an sign is attached to the block, false otherwise
      */
@@ -258,6 +265,9 @@ public class BlockUtil {
             if (!isWallSign(locUp.getBlock())) {
                 return true;
             }
+        }
+        if (!is1_13) {
+            return false;
         }
         for (int i = 0; i < locations.length; i++) {
             Block b = locations[i].getBlock();
