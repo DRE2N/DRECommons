@@ -181,7 +181,10 @@ public class BlockUtil {
      * @return true if the block is an Sign, false otherwise
      */
     public static boolean isSign(Block block) {
-        return block.getState() instanceof Sign;
+        if (is1_13) {
+            return block.getState() instanceof Sign;
+        }
+        return block.getType().name().contains("SIGN") && !block.getType().name().contains("WALL");
     }
 
     /**
@@ -189,7 +192,10 @@ public class BlockUtil {
      * @return true if the block is an WallSign, false otherwise
      */
     public static boolean isWallSign(Block block) {
-        return block.getBlockData() instanceof WallSign;
+        if (is1_13) {
+            return block.getBlockData() instanceof WallSign;
+        }
+        return block.getType().name().equalsIgnoreCase("WALL_SIGN");
     }
 
     /**
@@ -197,7 +203,7 @@ public class BlockUtil {
      * See usage down below.
      *
      * @see BlockUtil#getSignsAttachedTo(Block)
-     * @see BlockUtil#signAttachedTo(Block)
+     * @see BlockUtil#isSignAttachedTo(Block)
      */
     private static class LocationNode {
         private final Location loc;
@@ -253,7 +259,7 @@ public class BlockUtil {
      * @param block the block to check
      * @return true if an sign is attached to the block, false otherwise
      */
-    public static boolean signAttachedTo(Block block) {
+    public static boolean isSignAttachedTo(Block block) {
         Location location = block.getLocation();
         List<LocationNode> locations = Arrays.asList(
                 new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
