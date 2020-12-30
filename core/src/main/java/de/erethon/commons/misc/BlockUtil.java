@@ -204,31 +204,6 @@ public class BlockUtil {
     }
 
     /**
-     * This class stores an Location paired with an BlockFace.
-     * See usage down below.
-     *
-     * @see BlockUtil#getSignsAttachedTo(Block)
-     * @see BlockUtil#isSignAttachedTo(Block)
-     */
-    private static class LocationNode {
-        private final Location loc;
-        private final BlockFace face;
-
-        public LocationNode(Location loc, BlockFace face) {
-            this.loc = loc;
-            this.face = face;
-        }
-
-        public Location getLoc() {
-            return loc;
-        }
-
-        public BlockFace getFace() {
-            return face;
-        }
-    }
-
-    /**
      * Returns an {@link Set} of signs which are attached to the block.
      * If no signs are found, this will return an empty Set.
      *
@@ -238,21 +213,25 @@ public class BlockUtil {
     public static Set<Sign> getSignsAttachedTo(Block block) {
         Set<Sign> signs = new HashSet<>();
         Location location = block.getLocation();
-        List<LocationNode> locations = Arrays.asList(
-                new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
-                new LocationNode(location.clone().add(0, 0, 1), NORTH), // z +1
-                new LocationNode(location.clone().subtract(1, 0, 0), WEST), // x -1
-                new LocationNode(location.clone().subtract(0, 0, 1), SOUTH) // z -1
-        );
+        Location[] locations = new Location[]{
+                location.clone().add(1, 0, 0),
+                location.clone().add(0, 0, 1),
+                location.clone().subtract(1, 0, 0),
+                location.clone().subtract(0, 0, 1)
+        };
+        BlockFace[] faces = new BlockFace[]{WEST, NORTH, EAST, SOUTH};
+
         Location locUp = location.clone().add(0, 1, 0);
         if (isSign(locUp.getBlock())) {
-            signs.add((Sign) locUp.getBlock().getState());
+            if (!isWallSign(locUp.getBlock())) {
+                signs.add((Sign) locUp.getBlock().getState());
+            }
         }
-        for (LocationNode node : locations) {
-            Block attached = node.getLoc().getBlock();
+        for (int i = 0; i < locations.length; i++) {
+            Block attached = locations[i].getBlock();
             if (isWallSign(attached)) {
                 WallSign wallSign = (WallSign) attached.getBlockData();
-                if (wallSign.getFacing().getOppositeFace().equals(node.getFace())) {
+                if (wallSign.getFacing().getOppositeFace().equals(faces[i])) {
                     signs.add((Sign) attached.getState());
                 }
             }
@@ -266,21 +245,25 @@ public class BlockUtil {
      */
     public static boolean isSignAttachedTo(Block block) {
         Location location = block.getLocation();
-        List<LocationNode> locations = Arrays.asList(
-                new LocationNode(location.clone().add(1, 0, 0), EAST), // x +1
-                new LocationNode(location.clone().add(0, 0, 1), NORTH), // z +1
-                new LocationNode(location.clone().subtract(1, 0, 0), WEST), // x -1
-                new LocationNode(location.clone().subtract(0, 0, 1), SOUTH) // z -1
-        );
+        Location[] locations = new Location[]{
+                location.clone().add(1, 0, 0),
+                location.clone().add(0, 0, 1),
+                location.clone().subtract(1, 0, 0),
+                location.clone().subtract(0, 0, 1)
+        };
+        BlockFace[] faces = new BlockFace[]{WEST, NORTH, EAST, SOUTH};
+
         Location locUp = location.clone().add(0, 1, 0);
         if (isSign(locUp.getBlock())) {
-            return true;
+            if (!isWallSign(locUp.getBlock())) {
+                return true;
+            }
         }
-        for (LocationNode node : locations) {
-            Block b = node.getLoc().getBlock();
+        for (int i = 0; i < locations.length; i++) {
+            Block b = locations[i].getBlock();
             if (isWallSign(b)) {
                 WallSign wallSign = (WallSign) b.getBlockData();
-                if (wallSign.getFacing().getOppositeFace().equals(node.getFace())) {
+                if (wallSign.getFacing().getOppositeFace().equals(faces[i])) {
                     return true;
                 }
             }
