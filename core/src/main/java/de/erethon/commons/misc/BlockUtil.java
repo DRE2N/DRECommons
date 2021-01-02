@@ -38,7 +38,6 @@ public class BlockUtil {
     private static final Map<BlockFace, Integer> BLOCK_FACE_TO_YAW = new HashMap<>();
 
     private static final boolean is1_13 = Version.isAtLeast(Version.MC1_13);
-    private static final boolean is1_14 = Version.isAtLeast(Version.MC1_14);
 
     static {
         LETTERS_TO_BLOCK_FACE.put("E", EAST);
