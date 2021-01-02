@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * @author Daniel Saukel
@@ -26,7 +25,7 @@ import org.bukkit.entity.Player;
 public abstract class DRECommand {
 
     private String command;
-    private Set<String> aliases = new HashSet<>();
+    private final Set<String> aliases = new HashSet<>();
     private int minArgs;
     private int maxArgs;
     private String help;
@@ -39,15 +38,11 @@ public abstract class DRECommand {
     }
 
     /**
-     * @param player the player to check
-     * @return if the player has permission to use the command
+     * @param sender the sender to check
+     * @return if the sender has permission to use the command
      */
-    public boolean playerHasPermissions(Player player) {
-        if (player.hasPermission(permission) || permission == null) {
-            return true;
-        }
-
-        return false;
+    public boolean senderHasPermissions(CommandSender sender) {
+        return permission == null || permission.isEmpty() || sender.hasPermission(permission);
     }
 
     /**

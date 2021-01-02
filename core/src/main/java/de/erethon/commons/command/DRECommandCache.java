@@ -13,11 +13,18 @@
 package de.erethon.commons.command;
 
 import de.erethon.commons.javaplugin.DREPlugin;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Note that DRE2N plugins are usually designed to have just one instance of DRECommandCache.
@@ -25,11 +32,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author Daniel Saukel
  */
-public class DRECommandCache {
+public class DRECommandCache implements TabCompleter {
 
-    private String label;
-    private CommandExecutor executor;
-    private Set<DRECommand> commands = new HashSet<>();
+    private final String label;
+    private final CommandExecutor executor;
+    private final Set<DRECommand> commands;
+    private boolean tabCompletion = true;
 
     public DRECommandCache(String label, DREPlugin plugin, Set<DRECommand> commands) {
         this.label = label;
@@ -84,6 +92,20 @@ public class DRECommandCache {
     }
 
     /**
+     * @return true if TabCompletion is enabled, false otherwise
+     */
+    public boolean isTabCompletion() {
+        return tabCompletion;
+    }
+
+    /**
+     * @param tabCompletion the boolean to set
+     */
+    public void setTabCompletion(boolean tabCompletion) {
+        this.tabCompletion = tabCompletion;
+    }
+
+    /**
      * @param command the command to add
      */
     public void addCommand(DRECommand command) {
@@ -102,6 +124,27 @@ public class DRECommandCache {
      */
     public void register(JavaPlugin plugin) {
         plugin.getCommand(label).setExecutor(executor);
+        if (tabCompletion) {
+            plugin.getCommand(label).setTabCompleter(this);
+        }
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command unused1, String unused2, String[] args) {
+        List<String> cmds = new ArrayList<>();
+        for (DRECommand cmd : commands) {
+            if (cmd.senderHasPermissions(sender)) {
+                cmds.add(cmd.getCommand());
+            }
+        }
+        List<String> completes = new ArrayList<>();
+
+        if(args.length == 1) {
+            for(String string : cmds) {
+                if(string.toLowerCase().startsWith(args[0].toLowerCase())) completes.add(string);
+            }
+            return completes;
+        }
+        return null;
+    }
 }

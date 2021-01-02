@@ -56,7 +56,7 @@ public class DRECommandExecutor implements CommandExecutor {
                         return false;
 
                     } else if (command.getPermission() != null) {
-                        if (!command.playerHasPermissions(player)) {
+                        if (!command.senderHasPermissions(player)) {
                             MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PERMISSION.getMessage());
                             return false;
                         }
@@ -65,12 +65,11 @@ public class DRECommandExecutor implements CommandExecutor {
 
                 if (command.getMinArgs() <= args.length - 1 & command.getMaxArgs() >= args.length - 1 || command.getMinArgs() == -1) {
                     command.onExecute(args, sender);
-                    return true;
 
                 } else {
                     command.displayHelp(sender);
-                    return true;
                 }
+                return true;
             }
         }
 
