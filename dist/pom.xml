@@ -7,7 +7,7 @@
     <parent>
         <groupId>de.erethon.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>6.2.2</version>
+        <version>6.2.3</version>
     </parent>
     <build>
         <plugins>
@@ -27,7 +27,7 @@
                                     <include>de.erethon.commons:*</include>
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.spiget-update</include>
-                                    <include>me.minidigger:minimessage-bungee</include>
+                                    <include>net.kyori:*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -40,8 +40,8 @@
                                     <shadedPattern>de.erethon.commons.spiget</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>me.minidigger.minimessage</pattern>
-                                    <shadedPattern>de.erethon.commons.minimessage</shadedPattern>
+                                    <pattern>net.kyori.adventure.*</pattern>
+                                    <shadedPattern>de.erethon.commons.adventure.*</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
