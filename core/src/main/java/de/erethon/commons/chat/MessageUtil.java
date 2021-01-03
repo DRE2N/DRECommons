@@ -15,6 +15,8 @@ package de.erethon.commons.chat;
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Internals;
 import de.erethon.commons.javaplugin.DREPlugin;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -27,9 +29,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * @author Daniel Saukel
  */
@@ -38,6 +37,8 @@ public class MessageUtil {
     private static final boolean is1_9 = Internals.isAtLeast(Internals.v1_9_R1);
     private static final boolean is1_11 = Internals.isAtLeast(Internals.v1_11_R1);
     private static final boolean is1_16 = Internals.isAtLeast(Internals.v1_16_R1);
+
+    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     static InternalsProvider internals;
 
@@ -339,25 +340,24 @@ public class MessageUtil {
 
     }
 
-    private static final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-
     /**
-     * Colors the string
+     * Colors the string.
      * <p>
-     * Translates color codes and in 1.16+ hex color as well
+     * Translates color codes and in 1.16+ hex color as well.
      *
      * @param string the String to parse
      * @return the colored string
      */
     public static String color(String string) {
         if (is1_16) {
-            Matcher match = pattern.matcher(string);
+            Matcher match = HEX_COLOR_PATTERN.matcher(string);
             while (match.find()) {
                 String color = string.substring(match.start(), match.end());
                 string = string.replace(color, ChatColor.of(color) + "");
-                match = pattern.matcher(string);
+                match = HEX_COLOR_PATTERN.matcher(string);
             }
         }
         return ChatColor.translateAlternateColorCodes('&', string);
     }
+
 }
