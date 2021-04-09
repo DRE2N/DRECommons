@@ -13,7 +13,6 @@
 package de.erethon.commons.command;
 
 import de.erethon.commons.javaplugin.DREPlugin;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,51 +28,36 @@ import java.util.Set;
  * Note that DRE2N plugins are usually designed to have just one instance of DRECommandCache.
  * One instance of DRECommandCache represents one command and contains all of its subcommands.
  *
- * @author Daniel Saukel
+ * @author Daniel Saukel, Fyreum
  */
-public class DRECommandCache implements TabCompleter {
+public class DRECommandCache extends CommandCache implements TabCompleter {
 
     private final String label;
     private final CommandExecutor executor;
-    private final Set<DRECommand> commands;
     private boolean tabCompletion = true;
 
     public DRECommandCache(String label, DREPlugin plugin, Set<DRECommand> commands) {
+        super(commands);
         this.label = label;
         this.executor = new DRECommandExecutor(plugin);
-        this.commands = commands;
     }
 
-    public DRECommandCache(String label, DREPlugin plugin, DRECommand... command) {
+    public DRECommandCache(String label, DREPlugin plugin, DRECommand... commands) {
+        super(commands);
         this.label = label;
         this.executor = new DRECommandExecutor(plugin);
-        this.commands = new HashSet<>(Arrays.asList(command));
     }
 
     public DRECommandCache(String label, CommandExecutor executor, Set<DRECommand> commands) {
+        super(commands);
         this.label = label;
         this.executor = executor;
-        this.commands = commands;
     }
 
-    public DRECommandCache(String label, CommandExecutor executor, DRECommand... command) {
+    public DRECommandCache(String label, CommandExecutor executor, DRECommand... commands) {
+        super(commands);
         this.label = label;
         this.executor = executor;
-        this.commands = new HashSet<>(Arrays.asList(command));
-    }
-
-    /**
-     * @param commandName usually the first command argument
-     * @return the command with the given name
-     */
-    public DRECommand getCommand(String commandName) {
-        for (DRECommand command : commands) {
-            if (command.getCommand().equalsIgnoreCase(commandName) || command.getAliases().contains(commandName)) {
-                return command;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -82,13 +65,6 @@ public class DRECommandCache implements TabCompleter {
      */
     public String getLabel() {
         return label;
-    }
-
-    /**
-     * @return the commands
-     */
-    public Set<DRECommand> getCommands() {
-        return commands;
     }
 
     /**
@@ -106,20 +82,6 @@ public class DRECommandCache implements TabCompleter {
     }
 
     /**
-     * @param command the command to add
-     */
-    public void addCommand(DRECommand command) {
-        commands.add(command);
-    }
-
-    /**
-     * @param command the command to remove
-     */
-    public void removeCommand(DRECommand command) {
-        commands.remove(command);
-    }
-
-    /**
      * @param plugin the plugin that registers the command.
      */
     public void register(JavaPlugin plugin) {
@@ -131,20 +93,28 @@ public class DRECommandCache implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command unused1, String unused2, String[] args) {
-        List<String> cmds = new ArrayList<>();
-        for (DRECommand cmd : commands) {
-            if (cmd.senderHasPermissions(sender)) {
-                cmds.add(cmd.getCommand());
-            }
-        }
         List<String> completes = new ArrayList<>();
+        String cmd = args[0];
 
         if(args.length == 1) {
+            List<String> cmds = new ArrayList<>();
+            for (DRECommand command : commands) {
+                if (command.senderHasPermissions(sender)) {
+                    cmds.add(command.getCommand());
+                }
+            }
             for(String string : cmds) {
-                if(string.toLowerCase().startsWith(args[0].toLowerCase())) completes.add(string);
+                if(string.toLowerCase().startsWith(cmd.toLowerCase())) {
+                    completes.add(string);
+                }
             }
             return completes;
         }
-        return null;
+        for (DRECommand command : commands) {
+            if (command.matches(cmd)) {
+                completes.addAll(command.tabComplete(sender, Arrays.copyOfRange(args, 1, args.length)));
+            }
+        }
+        return completes;
     }
 }
