@@ -36,6 +36,9 @@ public class CommandCache {
         return this.commands;
     }
 
+    /**
+     * @param commands the commands to add
+     */
     public void addCommands(DRECommand... commands) {
         for (DRECommand command : commands) {
             addCommand(command);
