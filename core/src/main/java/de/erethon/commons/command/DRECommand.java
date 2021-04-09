@@ -82,13 +82,13 @@ public abstract class DRECommand {
     public final List<String> tabComplete(CommandSender sender, String[] args) {
         List<String> completes = new ArrayList<>();
         List<String> commandCompletes = onTabComplete(sender, args);
-        String cmd = args[0];
+        String cmd = args[1];
 
         if (commandCompletes != null) {
             completes.addAll(commandCompletes);
         }
 
-        if(args.length == 1) {
+        if(args.length == 2) {
             List<String> cmds = new ArrayList<>();
             for (DRECommand command : subCommands.getCommands()) {
                 if (command.senderHasPermissions(sender)) {
