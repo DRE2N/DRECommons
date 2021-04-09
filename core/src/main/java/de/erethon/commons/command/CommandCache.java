@@ -2,9 +2,12 @@ package de.erethon.commons.command;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
-public class CommandCache {
+public class CommandCache implements Iterable<DRECommand> {
 
     protected final Set<DRECommand> commands;
 
@@ -57,5 +60,20 @@ public class CommandCache {
      */
     public void removeCommand(DRECommand command) {
         this.commands.remove(command);
+    }
+
+    @Override
+    public Iterator<DRECommand> iterator() {
+        return commands.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super DRECommand> action) {
+        commands.forEach(action);
+    }
+
+    @Override
+    public Spliterator<DRECommand> spliterator() {
+        return commands.spliterator();
     }
 }
