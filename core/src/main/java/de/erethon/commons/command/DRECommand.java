@@ -275,6 +275,13 @@ public abstract class DRECommand {
         this.consoleCommand = consoleCommand;
     }
 
+    /**
+     * @return the sub command cache
+     */
+    public CommandCache getSubCommands() {
+        return subCommands;
+    }
+
     /* Abstracts */
     /**
      * @param args   the arguments to pass from the command
