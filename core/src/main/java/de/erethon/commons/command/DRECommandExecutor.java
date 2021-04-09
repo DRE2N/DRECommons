@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 /**
  * The default CommandExecutor for all DRECommandCache.
  *
- * @author Frank Baumann, Daniel Saukel
+ * @author Frank Baumann, Daniel Saukel, Fyreum
  */
 public class DRECommandExecutor implements CommandExecutor {
 
@@ -56,7 +56,7 @@ public class DRECommandExecutor implements CommandExecutor {
                         return false;
 
                     } else if (command.getPermission() != null) {
-                        if (!command.playerHasPermissions(player)) {
+                        if (!command.senderHasPermissions(player)) {
                             MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PERMISSION.getMessage());
                             return false;
                         }
@@ -64,24 +64,20 @@ public class DRECommandExecutor implements CommandExecutor {
                 }
 
                 if (command.getMinArgs() <= args.length - 1 & command.getMaxArgs() >= args.length - 1 || command.getMinArgs() == -1) {
-                    command.onExecute(args, sender);
-                    return true;
-
+                    command.execute(args, sender);
                 } else {
                     command.displayHelp(sender);
-                    return true;
                 }
+                return true;
             }
         }
 
         command = plugin.getCommandCache().getCommand("main");
         if (command != null) {
-            command.onExecute(args, sender);
-
+            command.execute(args, sender);
         } else {
             MessageUtil.sendMessage(sender, CommonMessage.CMD_DOES_NOT_EXIST.getMessage());
         }
-
         return true;
     }
 
