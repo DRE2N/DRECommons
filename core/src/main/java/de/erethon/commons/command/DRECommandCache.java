@@ -112,7 +112,7 @@ public class DRECommandCache extends CommandCache implements TabCompleter {
         }
         for (DRECommand command : commands) {
             if (command.matches(cmd)) {
-                completes.addAll(command.tabComplete(sender, Arrays.copyOfRange(args, 1, args.length)));
+                completes.addAll(command.tabComplete(sender, args));
             }
         }
         return completes;
