@@ -13,15 +13,20 @@
 package de.erethon.commons.misc;
 
 import de.erethon.commons.compatibility.Version;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
+import org.bukkit.material.Attachable;
+import org.bukkit.material.MaterialData;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+
 import static org.bukkit.block.BlockFace.*;
-import org.bukkit.material.Attachable;
-import org.bukkit.material.MaterialData;
 
 /**
  * @author Daniel Saukel
@@ -32,7 +37,7 @@ public class BlockUtil {
     private static final Map<String, Integer> LETTERS_TO_YAW = new HashMap<>();
     private static final Map<BlockFace, Integer> BLOCK_FACE_TO_YAW = new HashMap<>();
 
-    private static boolean is1_13 = Version.isAtLeast(Version.MC1_13);
+    private static final boolean is1_13 = Version.isAtLeast(Version.MC1_13);
 
     static {
         LETTERS_TO_BLOCK_FACE.put("E", EAST);
@@ -145,14 +150,14 @@ public class BlockUtil {
     public static Set<Block> getBlocksBetween(Block block1, Block block2) {
         Set<Block> blocks = new HashSet<>();
 
-        int topBlockX = (block1.getX() < block2.getX() ? block2.getX() : block1.getX());
-        int bottomBlockX = (block1.getX() > block2.getX() ? block2.getX() : block1.getX());
+        int topBlockX = Math.max(block1.getX(), block2.getX());
+        int bottomBlockX = Math.min(block1.getX(), block2.getX());
 
-        int topBlockY = (block1.getY() < block2.getY() ? block2.getY() : block1.getY());
-        int bottomBlockY = (block1.getY() > block2.getY() ? block2.getY() : block1.getY());
+        int topBlockY = Math.max(block1.getY(), block2.getY());
+        int bottomBlockY = Math.min(block1.getY(), block2.getY());
 
-        int topBlockZ = (block1.getZ() < block2.getZ() ? block2.getZ() : block1.getZ());
-        int bottomBlockZ = (block1.getZ() > block2.getZ() ? block2.getZ() : block1.getZ());
+        int topBlockZ = Math.max(block1.getZ(), block2.getZ());
+        int bottomBlockZ = Math.min(block1.getZ(), block2.getZ());
 
         for (int x = bottomBlockX; x <= topBlockX; x++) {
             for (int z = bottomBlockZ; z <= topBlockZ; z++) {
@@ -166,4 +171,111 @@ public class BlockUtil {
         return blocks;
     }
 
+    /**
+     * @param block the block to check
+     * @return true if the block is an Sign or WallSign, false otherwise
+     */
+    public static boolean isSignOrWallSign(Block block) {
+        return isSign(block) | isWallSign(block);
+    }
+
+    /**
+     * @param block the block to check
+     * @return true if the block is an Sign, false otherwise
+     */
+    public static boolean isSign(Block block) {
+        if (is1_13) {
+            return block.getBlockData() instanceof org.bukkit.block.data.type.Sign;
+        }
+        return block.getType().name().contains("SIGN") && !block.getType().name().contains("WALL");
+    }
+
+    /**
+     * @param block the block to check
+     * @return true if the block is an WallSign, false otherwise
+     */
+    public static boolean isWallSign(Block block) {
+        if (is1_13) {
+            return block.getBlockData() instanceof WallSign;
+        }
+        return block.getType().name().equalsIgnoreCase("WALL_SIGN");
+    }
+
+    /**
+     * Returns an {@link Set} of signs which are attached to the block.
+     * If no signs are found, this will return an empty Set.
+     * This method will ignore attached WallSigns till 1.13 or higher, due to compatibility issues.
+     *
+     * @param block the block to check
+     * @return an Set of to the block attached signs
+     */
+    public static Set<Sign> getSignsAttachedTo(Block block) {
+        Set<Sign> signs = new HashSet<>();
+        Location location = block.getLocation();
+        Location[] locations = new Location[]{
+                location.clone().add(1, 0, 0),
+                location.clone().add(0, 0, 1),
+                location.clone().subtract(1, 0, 0),
+                location.clone().subtract(0, 0, 1)
+        };
+        BlockFace[] faces = new BlockFace[]{WEST, NORTH, EAST, SOUTH};
+
+        Location locUp = location.clone().add(0, 1, 0);
+        if (isSign(locUp.getBlock())) {
+            if (!isWallSign(locUp.getBlock())) {
+                signs.add((Sign) locUp.getBlock().getState());
+            }
+        }
+        if (!is1_13) {
+            return signs;
+        }
+        for (int i = 0; i < locations.length; i++) {
+            Block attached = locations[i].getBlock();
+            if (isWallSign(attached)) {
+                WallSign wallSign = (WallSign) attached.getBlockData();
+                if (wallSign.getFacing().getOppositeFace().equals(faces[i])) {
+                    signs.add((Sign) attached.getState());
+                }
+            }
+        }
+        return signs;
+    }
+
+    /**
+     * Returns true if an Sign is attached to the block, false otherwise.
+     * This method will ignore attached WallSigns till 1.13 or higher, due to compatibility issues.
+     *
+     * @param block the block to check
+     * @return true if an sign is attached to the block, false otherwise
+     */
+    public static boolean isSignAttachedTo(Block block) {
+        Location location = block.getLocation();
+        Location[] locations = new Location[]{
+                location.clone().add(1, 0, 0),
+                location.clone().add(0, 0, 1),
+                location.clone().subtract(1, 0, 0),
+                location.clone().subtract(0, 0, 1)
+        };
+        BlockFace[] faces = new BlockFace[]{WEST, NORTH, EAST, SOUTH};
+
+        Location locUp = location.clone().add(0, 1, 0);
+        if (isSign(locUp.getBlock())) {
+            if (!isWallSign(locUp.getBlock())) {
+                return true;
+            }
+        }
+        if (!is1_13) {
+            return false;
+        }
+        for (int i = 0; i < locations.length; i++) {
+            Block b = locations[i].getBlock();
+            if (isWallSign(b)) {
+                WallSign wallSign = (WallSign) b.getBlockData();
+                if (wallSign.getFacing().getOppositeFace().equals(faces[i])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
