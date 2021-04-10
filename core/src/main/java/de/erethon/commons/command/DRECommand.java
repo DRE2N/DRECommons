@@ -163,6 +163,17 @@ public abstract class DRECommand {
 
     /* getter and setter */
 
+    protected String getFinalArg(String[] args, int start) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = start; i < args.length; i++) {
+            sb.append(args[i]);
+            if (i != args.length - 1) {
+                sb.append(" ");
+            }
+        }
+        return sb.toString();
+    }
+
     /**
      * @return the command name
      */
