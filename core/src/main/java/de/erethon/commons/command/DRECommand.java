@@ -125,37 +125,39 @@ public abstract class DRECommand {
     }
 
     public final void execute(String[] args, CommandSender sender) {
-        String[] argsCopy = Arrays.copyOfRange(args, 1, args.length);
+        if (args.length != 0) {
+            String[] argsCopy = Arrays.copyOfRange(args, 1, args.length);
 
-        if (argsCopy.length > 0) {
-            DRECommand command = this.subCommands.getCommand(argsCopy[0]);
+            if (argsCopy.length > 0) {
+                DRECommand command = this.subCommands.getCommand(argsCopy[0]);
 
-            if (command != null) {
-                if (sender instanceof ConsoleCommandSender) {
-                    if (!command.isConsoleCommand()) {
-                        MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
+                if (command != null) {
+                    if (sender instanceof ConsoleCommandSender) {
+                        if (!command.isConsoleCommand()) {
+                            MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
+                            return;
+                        }
+                    } else if (sender instanceof Player) {
+                        Player player = (Player)sender;
+                        if (!command.isPlayerCommand()) {
+                            MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PLAYER_COMMAND.getMessage());
+                            return;
+                        }
+
+                        if (!command.senderHasPermissions(player)) {
+                            MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PERMISSION.getMessage());
+                            return;
+                        }
+                    }
+
+                    if (!(command.getMinArgs() <= argsCopy.length - 1 & command.getMaxArgs() >= argsCopy.length - 1) && command.getMinArgs() != -1) {
+                        command.displayHelp(sender);
                         return;
                     }
-                } else if (sender instanceof Player) {
-                    Player player = (Player)sender;
-                    if (!command.isPlayerCommand()) {
-                        MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PLAYER_COMMAND.getMessage());
-                        return;
-                    }
 
-                    if (!command.senderHasPermissions(player)) {
-                        MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PERMISSION.getMessage());
-                        return;
-                    }
-                }
-
-                if (!(command.getMinArgs() <= argsCopy.length - 1 & command.getMaxArgs() >= argsCopy.length - 1) && command.getMinArgs() != -1) {
-                    command.displayHelp(sender);
+                    command.execute(argsCopy, sender);
                     return;
                 }
-
-                command.execute(argsCopy, sender);
-                return;
             }
         }
         onExecute(args, sender);
