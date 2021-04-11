@@ -74,7 +74,13 @@ public class DRECommandExecutor implements CommandExecutor {
 
         command = plugin.getCommandCache().getCommand("main");
         if (command != null) {
-            command.execute(args, sender);
+            String[] argsCopy = new String[args.length + 1];
+            argsCopy[0] = "main";
+
+            if (args.length != 0) {
+                System.arraycopy(args, 0, argsCopy, 1, args.length);
+            }
+            command.execute(argsCopy, sender);
         } else {
             MessageUtil.sendMessage(sender, CommonMessage.CMD_DOES_NOT_EXIST.getMessage());
         }
