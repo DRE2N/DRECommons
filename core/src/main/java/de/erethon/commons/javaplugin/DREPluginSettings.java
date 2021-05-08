@@ -36,6 +36,7 @@ public class DREPluginSettings {
 
         private boolean spigot = false;
         private boolean paper = false;
+        private boolean database = false;
         private boolean economy = false;
         private boolean permissions = false;
         private boolean metrics = false;
@@ -54,6 +55,11 @@ public class DREPluginSettings {
 
         public Builder paper(boolean paper) {
             this.paper = paper;
+            return this;
+        }
+
+        public Builder database(boolean database) {
+            this.database = database;
             return this;
         }
 
@@ -98,13 +104,14 @@ public class DREPluginSettings {
         }
 
         public DREPluginSettings build() {
-            return new DREPluginSettings(spigot, paper, economy, permissions, metrics, spigotMCResourceId, bStatsResourceId, internals, versionComparator);
+            return new DREPluginSettings(spigot, paper, database, economy, permissions, metrics, spigotMCResourceId, bStatsResourceId, internals, versionComparator);
         }
 
     }
 
     private boolean spigot;
     private boolean paper;
+    private boolean database;
     private boolean economy;
     private boolean permissions;
     private boolean metrics;
@@ -113,10 +120,11 @@ public class DREPluginSettings {
     private Set<Internals> internals;
     private VersionComparator versionComparator;
 
-    public DREPluginSettings(boolean spigot, boolean paper, boolean economy, boolean permissions, boolean metrics, int spigotMCResourceId, int bStatsResourceId,
+    private DREPluginSettings(boolean spigot, boolean paper, boolean database, boolean economy, boolean permissions, boolean metrics, int spigotMCResourceId, int bStatsResourceId,
             Set<Internals> internals, VersionComparator versionComparator) {
         this.spigot = spigot;
         this.paper = paper;
+        this.database = database;
         this.economy = economy;
         this.permissions = permissions;
         this.metrics = metrics;
@@ -138,6 +146,13 @@ public class DREPluginSettings {
      */
     public boolean requiresPaper() {
         return paper;
+    }
+
+    /**
+     * @return if this plugin uses a database
+     */
+    public boolean usesDatabase() {
+        return database;
     }
 
     /**
