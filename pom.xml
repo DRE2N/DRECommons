@@ -10,7 +10,6 @@
     <properties>
         <buildNo></buildNo>
         <skipTests>true</skipTests>
-        <moduleVersion.compatibility>1.5.6</moduleVersion.compatibility>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
