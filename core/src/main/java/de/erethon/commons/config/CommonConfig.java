@@ -20,11 +20,17 @@ import java.io.File;
  */
 public class CommonConfig extends DREConfig {
 
-    public static final int CONFIG_VERSION = 1;
+    public static final int CONFIG_VERSION = 2;
 
     private static CommonConfig instance;
 
     private boolean updaterEnabled = true;
+
+    private String host = "localhost";
+    private String port = "3306";
+    private String database = "db";
+    private String username = "user";
+    private String password = "password";
 
     public CommonConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -39,10 +45,45 @@ public class CommonConfig extends DREConfig {
         return updaterEnabled;
     }
 
+    public String getDBHost() {
+        return host;
+    }
+
+    public String getDBPort() {
+        return port;
+    }
+
+    public String getDBName() {
+        return database;
+    }
+
+    public String getDBUsername() {
+        return username;
+    }
+
+    public String getDBPassword() {
+        return password;
+    }
+
     @Override
     public void initialize() {
         if (!config.contains("updaterEnabled")) {
             config.set("updaterEnabled", updaterEnabled);
+        }
+        if (!config.contains("database.host")) {
+            config.set("database.host", host);
+        }
+        if (!config.contains("database.port")) {
+            config.set("database.port", port);
+        }
+        if (!config.contains("database.name")) {
+            config.set("database.name", database);
+        }
+        if (!config.contains("database.username")) {
+            config.set("database.username", username);
+        }
+        if (!config.contains("database.password")) {
+            config.set("database.password", password);
         }
         save();
     }
@@ -50,6 +91,11 @@ public class CommonConfig extends DREConfig {
     @Override
     public void load() {
         updaterEnabled = config.getBoolean("updaterEnabled", updaterEnabled);
+        host = config.getString("database.host", host);
+        port = config.getString("database.port", port);
+        database = config.getString("database.name", database);
+        username = config.getString("database.username", username);
+        password = config.getString("database.password", password);
     }
 
     public static CommonConfig getInstance() {

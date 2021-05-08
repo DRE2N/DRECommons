@@ -23,6 +23,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
@@ -44,6 +47,7 @@ public abstract class DREPlugin extends JavaPlugin {
 
     protected static CompatibilityHandler compat;
     protected static PluginManager manager;
+    private static Connection dbConnection;
 
     protected DREPluginSettings settings;
 
@@ -68,6 +72,10 @@ public abstract class DREPlugin extends JavaPlugin {
 
         if (settings.usesMetrics()) {
             metrics = new Metrics(this, settings.getBStatsResourceId());
+        }
+
+        if (settings.usesDatabase() && !connectDatabase()) {
+            MessageUtil.log(this, "Could not connect to database!");
         }
 
         if (settings.isSpigotMCResource() && CommonConfig.getInstance().isUpdaterEnabled()) {
@@ -107,6 +115,45 @@ public abstract class DREPlugin extends JavaPlugin {
      */
     public static DREPlugin getInstance() {
         return instance;
+    }
+
+    private static boolean connectDatabase() {
+        try {
+            if (dbConnection != null && !dbConnection.isClosed()) {
+                return true;
+            }
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException exception) {
+                return false;
+            }
+            CommonConfig cfg = CommonConfig.getInstance();
+            dbConnection = DriverManager.getConnection("jdbc:mysql://" + cfg.getDBHost() + ":" + cfg.getDBPort()
+                    + "/" + cfg.getDBName(), cfg.getDBUsername(), cfg.getDBPassword());
+            return true;
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @return if a DRE plugin is connected to a database
+     */
+    public static boolean isDatabaseConnected() {
+        return dbConnection != null;
+    }
+
+    /**
+     * @throws IllegalStateException if no connection has been made
+     * @return the database connection; not null
+     */
+    public static Connection getDatabaseConnection() {
+        if (dbConnection == null) {
+            throw new IllegalStateException("Database is not connected");
+        }
+        return dbConnection;
     }
 
     /**
