@@ -8,6 +8,6 @@
     <parent>
         <groupId>de.erethon.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>6.2.3</version>
+        <version>6.2.4</version>
     </parent>
 </project>
