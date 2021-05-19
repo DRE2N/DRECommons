@@ -1,5 +1,5 @@
 /*
- * Written from 2015-2020 by Daniel Saukel
+ * Written from 2015-2021 by Daniel Saukel
  *
  * To the extent possible under law, the author(s) have dedicated all
  * copyright and related and neighboring rights to this software
@@ -31,6 +31,7 @@ public enum Version {
      * getCraftBukkitInternals() might return a known package version or NEW.
      */
     NEW(true, true, true, Internals.NEW),
+    MC1_16_5(true, true, true, v1_16_R3),
     MC1_16_4(true, true, true, v1_16_R3),
     MC1_16_3(true, true, true, v1_16_R2),
     MC1_16_2(true, true, true, v1_16_R2),
