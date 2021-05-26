@@ -45,7 +45,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
         }
     }
 
-    private void load(Player player) {
+    private USER load(Player player) {
         USER user = getNewInstance(player);
         if (user == null) {
             throw new NullPointerException("The user instance for " + player.getName() + " is null. getNewInstance(OfflinePlayer) has to return a NotNull instance for online players");
@@ -55,6 +55,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
 
         nameToId.put(name, uuid);
         idToUser.put(uuid, user);
+        return user;
     }
 
     /**
@@ -146,7 +147,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
             user.onJoin(event);
             return;
         }
-        load(player);
+        load(player).onJoin(event);
     }
 
     @EventHandler
