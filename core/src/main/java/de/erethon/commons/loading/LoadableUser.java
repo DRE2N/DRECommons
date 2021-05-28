@@ -18,6 +18,12 @@ public interface LoadableUser {
     void updatePlayer(Player player);
 
     /**
+     * This method should save any data the user has stored.
+     * Its called when a user gets unloaded.
+     */
+    void save();
+
+    /**
      * This method is called when a player joins.
      */
     default void onJoin(PlayerJoinEvent event) {

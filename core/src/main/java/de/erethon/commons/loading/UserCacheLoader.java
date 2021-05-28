@@ -37,7 +37,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     }
 
     /**
-     * Load the user object for every player that is online.
+     * Loads the user object for every player that is online.
      */
     public void loadAll() {
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -45,10 +45,15 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
         }
     }
 
-    private USER load(Player player) {
+    /**
+     * Loads the user object for the given player and returns the loaded user.
+     *
+     * @return the loaded user
+     */
+    public USER load(Player player) {
         USER user = getNewInstance(player);
         if (user == null) {
-            throw new NullPointerException("The user instance for " + player.getName() + " is null. getNewInstance(OfflinePlayer) has to return a NotNull instance for online players");
+            throw new NullPointerException("The user instance for " + player.getName() + " is null -> getNewInstance(OfflinePlayer) has to return a NotNull instance for online players");
         }
         UUID uuid = player.getUniqueId();
         String name = player.getName();
@@ -59,11 +64,34 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     }
 
     /**
-     * Clear all loaded users before loading every online player back again.
+     * Unloads every player that is online.
+     */
+    public void unloadAll() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            unload(player);
+        }
+    }
+
+    /**
+     * Unloads the given player and call the {@link LoadableUser#save()} method and returns the unloaded user.
+     *
+     * @return the unloaded user
+     */
+    public USER unload(Player player) {
+        USER user = idToUser.get(player.getUniqueId());
+        if (user != null) {
+            user.save();
+        }
+        nameToId.remove(player.getName());
+        idToUser.remove(player.getUniqueId());
+        return user;
+    }
+
+    /**
+     * Clears all loaded users before loading every online player back again.
      */
     public void reloadAll() {
-        nameToId.clear();
-        idToUser.clear();
+        unloadAll();
         loadAll();
     }
 
@@ -154,11 +182,9 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        USER user = getByPlayer(player);
+        USER user = unload(player);
         if (user != null) {
             user.onQuit(event);
         }
-        nameToId.remove(player.getName());
-        idToUser.remove(player.getUniqueId());
     }
 }
