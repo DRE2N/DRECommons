@@ -21,7 +21,7 @@ public interface LoadableUser {
      * This method should save any data the user has stored.
      * Its called when a user gets unloaded.
      */
-    void save();
+    void saveUser();
 
     /**
      * This method is called when a player joins.

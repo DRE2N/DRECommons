@@ -73,14 +73,14 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     }
 
     /**
-     * Unloads the given player and call the {@link LoadableUser#save()} method and returns the unloaded user.
+     * Unloads the given player and call the {@link LoadableUser#saveUser()} method and returns the unloaded user.
      *
      * @return the unloaded user
      */
     public USER unload(Player player) {
         USER user = idToUser.get(player.getUniqueId());
         if (user != null) {
-            user.save();
+            user.saveUser();
         }
         nameToId.remove(player.getName());
         idToUser.remove(player.getUniqueId());
