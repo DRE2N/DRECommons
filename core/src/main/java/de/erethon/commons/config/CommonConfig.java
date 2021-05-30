@@ -26,7 +26,7 @@ public class CommonConfig extends DREConfig {
 
     private boolean updaterEnabled = true;
 
-    private String className = "com.mysql.jdbc.Driver";
+    private String className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource";
     private String host = "localhost";
     private String port = "3306";
     private String database = "db";
@@ -107,7 +107,7 @@ public class CommonConfig extends DREConfig {
     @Override
     public void load() {
         updaterEnabled = config.getBoolean("updaterEnabled", updaterEnabled);
-        className = config.getString("database.className","com.mysql.jdbc.Driver");
+        className = config.getString("database.className","com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
         host = config.getString("database.host", host);
         port = config.getString("database.port", port);
         database = config.getString("database.name", database);
