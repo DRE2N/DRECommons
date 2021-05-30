@@ -17,15 +17,7 @@ import de.erethon.commons.command.DRECommandCache;
 import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.config.CommonConfig;
 import de.erethon.commons.config.MessageHandler;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import de.erethon.commons.db.DREDatabaseProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
@@ -35,6 +27,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.Properties;
 
 /**
  * The custom JavaPlugin class. It provides simplified registration of and access to features of Vault, Metrics and DRECommons.
@@ -47,7 +47,7 @@ public abstract class DREPlugin extends JavaPlugin {
 
     protected static CompatibilityHandler compat;
     protected static PluginManager manager;
-    private static Connection dbConnection;
+    private DREDatabaseProvider databaseProvider;
 
     protected DREPluginSettings settings;
 
@@ -74,7 +74,7 @@ public abstract class DREPlugin extends JavaPlugin {
             metrics = new Metrics(this, settings.getBStatsResourceId());
         }
 
-        if (settings.usesDatabase() && !connectDatabase()) {
+        if (settings.usesDatabase()) {
             MessageUtil.log(this, "Could not connect to database!");
         }
 
@@ -117,45 +117,6 @@ public abstract class DREPlugin extends JavaPlugin {
         return instance;
     }
 
-    private static boolean connectDatabase() {
-        try {
-            if (dbConnection != null && !dbConnection.isClosed()) {
-                return true;
-            }
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException exception) {
-                return false;
-            }
-            CommonConfig cfg = CommonConfig.getInstance();
-            dbConnection = DriverManager.getConnection("jdbc:mysql://" + cfg.getDBHost() + ":" + cfg.getDBPort()
-                    + "/" + cfg.getDBName(), cfg.getDBUsername(), cfg.getDBPassword());
-            return true;
-
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * @return if a DRE plugin is connected to a database
-     */
-    public static boolean isDatabaseConnected() {
-        return dbConnection != null;
-    }
-
-    /**
-     * @throws IllegalStateException if no connection has been made
-     * @return the database connection; not null
-     */
-    public static Connection getDatabaseConnection() {
-        if (dbConnection == null) {
-            throw new IllegalStateException("Database is not connected");
-        }
-        return dbConnection;
-    }
-
     /**
      * @return the settings
      */
@@ -184,6 +145,29 @@ public abstract class DREPlugin extends JavaPlugin {
             } catch (NoClassDefFoundError error) {
             }
         }
+    }
+
+    /**
+     * Connects to the specified Database and creates a new DREDatabaseProvider
+     */
+    public void connectDatabase() {
+        CommonConfig config = CommonConfig.getInstance();
+        Properties props = new Properties();
+        props.setProperty("dataSourceClassName", config.getDBClassName());
+        props.setProperty("dataSource.serverName", config.getDBHost());
+        props.setProperty("dataSource.portNumber", config.getDBPort());
+        props.setProperty("dataSource.user", config.getDBUsername());
+        props.setProperty("dataSource.password", config.getDBPassword());
+        props.setProperty("dataSource.databaseName", config.getDBName());
+        databaseProvider = new DREDatabaseProvider();
+        databaseProvider.setupDataSource(props);
+    }
+
+    /**
+     * @return the loaded instance of the DREDatabaseProvider
+     */
+    public DREDatabaseProvider getDatabaseProvider() {
+        return databaseProvider;
     }
 
     /**

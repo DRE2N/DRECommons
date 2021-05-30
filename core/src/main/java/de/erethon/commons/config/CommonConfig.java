@@ -26,11 +26,13 @@ public class CommonConfig extends DREConfig {
 
     private boolean updaterEnabled = true;
 
+    private String className = "com.mysql.jdbc.Driver";
     private String host = "localhost";
     private String port = "3306";
     private String database = "db";
     private String username = "user";
     private String password = "password";
+    private int maxConnections = 10;
 
     public CommonConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -43,6 +45,10 @@ public class CommonConfig extends DREConfig {
 
     public boolean isUpdaterEnabled() {
         return updaterEnabled;
+    }
+
+    public String getDBClassName() {
+        return className;
     }
 
     public String getDBHost() {
@@ -65,10 +71,17 @@ public class CommonConfig extends DREConfig {
         return password;
     }
 
+    public int getMaxConnections() {
+        return maxConnections;
+    }
+
     @Override
     public void initialize() {
         if (!config.contains("updaterEnabled")) {
             config.set("updaterEnabled", updaterEnabled);
+        }
+        if (!config.contains("database.className")) {
+            config.set("database.className", className);
         }
         if (!config.contains("database.host")) {
             config.set("database.host", host);
@@ -85,17 +98,22 @@ public class CommonConfig extends DREConfig {
         if (!config.contains("database.password")) {
             config.set("database.password", password);
         }
+        if (!config.contains("database.maximumConnections")) {
+            config.set("database.maximumConnections", 10);
+        }
         save();
     }
 
     @Override
     public void load() {
         updaterEnabled = config.getBoolean("updaterEnabled", updaterEnabled);
+        className = config.getString("database.className","com.mysql.jdbc.Driver");
         host = config.getString("database.host", host);
         port = config.getString("database.port", port);
         database = config.getString("database.name", database);
         username = config.getString("database.username", username);
         password = config.getString("database.password", password);
+        maxConnections = config.getInt("database.maximumConnections", 10);
     }
 
     public static CommonConfig getInstance() {
