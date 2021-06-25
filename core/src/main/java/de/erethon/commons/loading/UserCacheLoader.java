@@ -96,6 +96,15 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     }
 
     /**
+     * Calls the {@link LoadableUser#saveUser()} method for every user in the cache.
+     */
+    public void saveAll() {
+        for (USER user : idToUser.values()) {
+            user.saveUser();
+        }
+    }
+
+    /**
      * Returns the cached user matching the name if found.
      * If no user is found it will try to create a new one.
      *
