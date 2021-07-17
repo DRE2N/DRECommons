@@ -48,6 +48,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     /**
      * Loads the user object for the given player and returns the loaded user.
      *
+     * @param player the player to load
      * @return the loaded user
      */
     public USER load(Player player) {
@@ -75,6 +76,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     /**
      * Unloads the given player and call the {@link LoadableUser#saveUser()} method and returns the unloaded user.
      *
+     * @param player the player to unload
      * @return the unloaded user
      */
     public USER unload(Player player) {
@@ -144,7 +146,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
      * @see UserCacheLoader#getNewInstance(OfflinePlayer)
      */
     public USER getByPlayer(OfflinePlayer player) {
-        USER user = getByUniqueId(player.getUniqueId());
+        USER user = idToUser.get(player.getUniqueId());
         if (user != null) {
             return user;
         }
@@ -168,6 +170,7 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
      * <br>
      * <b>Note:</b> online players should always be not null.
      *
+     * @param player the player to get the user for
      * @return a new user object if possible, else null
      */
     protected abstract USER getNewInstance(OfflinePlayer player);
@@ -191,9 +194,10 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        USER user = unload(player);
+        USER user = getByPlayer(player);
         if (user != null) {
             user.onQuit(event);
         }
+        unload(player);
     }
 }
