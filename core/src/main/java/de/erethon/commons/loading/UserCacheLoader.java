@@ -162,6 +162,15 @@ public abstract class UserCacheLoader<USER extends LoadableUser> implements List
         return new HashSet<>(idToUser.values());
     }
 
+    /**
+     * Returns the amount of users that are currently in the cache.
+     *
+     * @return the amount of users currently cached
+     */
+    public int getCachedUsersAmount() {
+        return idToUser.size();
+    }
+
     /* abstracts */
 
     /**
