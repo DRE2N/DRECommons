@@ -12,8 +12,13 @@
  */
 package de.erethon.commons.misc;
 
+import de.erethon.commons.chat.MessageUtil;
+import org.bukkit.plugin.Plugin;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,6 +120,32 @@ public class FileUtil {
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
+        }
+        return file;
+    }
+
+    /**
+     * Tries to find a resource for the given path and copies it into the specified file if found.
+     *
+     * @param plugin the plugin to get resource with
+     * @param file the file to get resource for
+     * @param resourcePath the path of the resource file
+     * @return the final file
+     */
+    public static File initFile(Plugin plugin, File file, String resourcePath) {
+        try {
+            if (!file.exists()) {
+                InputStream link = plugin.getResource(resourcePath);
+                if (link != null) {
+                    Files.copy(link, file.getAbsoluteFile().toPath());
+                } else {
+                    MessageUtil.log(plugin, "Couldn't copy " + file.getName() + " into the plugin folder");
+                    MessageUtil.log(plugin, "Cause: Resource not found");
+                }
+            }
+        } catch (IOException e) {
+            MessageUtil.log(plugin, "Couldn't copy " + file.getName() + " into the plugin folder");
+            MessageUtil.log(plugin, "Cause: " + e.getMessage());
         }
         return file;
     }
