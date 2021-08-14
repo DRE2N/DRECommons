@@ -42,13 +42,7 @@ public class DRECommandExecutor implements CommandExecutor {
             command = plugin.getCommandCache().getCommand(args[0]);
 
             if (command != null) {
-                if (sender instanceof ConsoleCommandSender) {
-                    if (!command.isConsoleCommand()) {
-                        MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
-                        return false;
-                    }
-
-                } else if (sender instanceof Player) {
+                if (sender instanceof Player) {
                     Player player = (Player) sender;
 
                     if (!command.isPlayerCommand()) {
@@ -60,6 +54,11 @@ public class DRECommandExecutor implements CommandExecutor {
                             MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PERMISSION.getMessage());
                             return false;
                         }
+                    }
+                } else {
+                    if (!command.isConsoleCommand()) {
+                        MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
+                        return false;
                     }
                 }
 

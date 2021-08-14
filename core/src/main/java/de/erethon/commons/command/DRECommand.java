@@ -132,12 +132,7 @@ public abstract class DRECommand {
                 DRECommand command = this.subCommands.getCommand(argsCopy[0]);
 
                 if (command != null) {
-                    if (sender instanceof ConsoleCommandSender) {
-                        if (!command.isConsoleCommand()) {
-                            MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
-                            return;
-                        }
-                    } else if (sender instanceof Player) {
+                    if (sender instanceof Player) {
                         Player player = (Player)sender;
                         if (!command.isPlayerCommand()) {
                             MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PLAYER_COMMAND.getMessage());
@@ -146,6 +141,11 @@ public abstract class DRECommand {
 
                         if (!command.senderHasPermissions(player)) {
                             MessageUtil.sendMessage(player, CommonMessage.CMD_NO_PERMISSION.getMessage());
+                            return;
+                        }
+                    } else {
+                        if (!command.isConsoleCommand()) {
+                            MessageUtil.log(CommonMessage.CMD_NO_CONSOLE_COMMAND.getMessage());
                             return;
                         }
                     }
