@@ -31,6 +31,8 @@ public enum Version {
      * getCraftBukkitInternals() might return a known package version or NEW.
      */
     NEW(true, true, true, Internals.NEW),
+    MC1_18_1(true, true, true, v1_18_R1),
+    MC1_18(true, true, true, v1_18_R1),
     MC1_17_1(true, true, true, v1_17_R1),
     MC1_17(true, true, true, v1_17_R1),
     MC1_16_5(true, true, true, v1_16_R3),
