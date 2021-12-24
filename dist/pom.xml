@@ -7,7 +7,7 @@
     <parent>
         <groupId>de.erethon.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>6.3.2</version>
+        <version>6.3.3</version>
     </parent>
     <build>
         <plugins>
@@ -25,6 +25,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>de.erethon.commons:*</include>
+                                    <include>org.bstats:bstats-base</include>
                                     <include>org.bstats:bstats-bukkit</include>
                                     <include>org.inventivetalent.spiget-update</include>
                                     <include>net.kyori:*</include>
@@ -32,7 +33,7 @@
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.bstats.bukkit</pattern>
+                                    <pattern>org.bstats</pattern>
                                     <shadedPattern>de.erethon.commons.bstats</shadedPattern>
                                 </relocation>
                                 <relocation>
@@ -40,8 +41,8 @@
                                     <shadedPattern>de.erethon.commons.spiget</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>net.kyori.adventure.*</pattern>
-                                    <shadedPattern>de.erethon.commons.adventure.*</shadedPattern>
+                                    <pattern>net.kyori</pattern>
+                                    <shadedPattern>de.erethon.commons.kyori</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
